@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard - IT Sync | IT Department Digital Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="sidebar-backdrop"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline><line x1="14" y1="4" x2="10" y2="20"></line></svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">IT Sync</span>
+          <span class="brand-subtitle">Faculty Portal</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Faculty Hub</div>
+        <ul class="nav-list">
+          <li class="nav-item active">
+            <a data-view="staffDashboardView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffAttendanceView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span>
+              <span>Mark Attendance</span>
+              <span class="nav-badge" style="background:#2563eb;">Live</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffTimetableView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+              <span>Teaching Timetable</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffMaterialsView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+              <span>Upload Materials</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffAssignmentsView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span>
+              <span>Assignments</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffLeaveApprovalView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg></span>
+              <span>Leave Approvals</span>
+              <span class="nav-badge" style="background:#ef4444;">Action</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffAnnouncementsView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></span>
+              <span>Announcements</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffStudentMgmtView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+              <span>Student Directory (CRUD)</span>
+              <span class="nav-badge" style="background:#10b981;">Manage</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffMarksEntryView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
+              <span>Enter / Edit Marks</span>
+              <span class="nav-badge" style="background:#8b5cf6;">Faculty Only</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffMessagesView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+              <span>Faculty Messenger</span>
+              <span class="nav-badge" style="background:#2563eb;">HOD & DMs</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="staffPerformanceView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>
+              <span>Performance Roster</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="user-avatar-sm" style="background: linear-gradient(135deg, #10b981, #059669);">FC</div>
+          <div class="user-mini-info">
+            <h4>Prof. Rajesh K.</h4>
+            <p>Dept. of IT</p>
+          </div>
+        </div>
+        <button class="icon-btn logout-action" title="Logout" aria-label="Sign out" style="width: 32px; height: 32px; color: #ef4444; border-color: rgba(239,68,68,0.3);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button class="menu-toggle-btn" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="page-breadcrumb">
+            <span>IT Hub</span>
+            <span>/</span>
+            <span class="breadcrumb-active">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <button class="icon-btn theme-toggle-btn" title="Toggle Theme" aria-label="Toggle theme">
+            <span class="theme-toggle-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+          </button>
+
+          <div style="position: relative;">
+            <button class="icon-btn" id="notifToggleBtn" title="Notifications" aria-label="View notifications">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="icon-badge"></span>
+            </button>
+            <div class="dropdown-menu notification-dropdown" id="notifDropdown">
+              <div class="dropdown-header"><h5>Faculty Alerts</h5><p>2 pending items</p></div>
+              <div class="notification-list">
+                <div class="notification-card"><span class="notif-dot"></span><div class="notif-content"><h6>Student OD Application</h6><p>8 student OD applications pending approval.</p><span class="notif-time">1 hr ago</span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-menu-wrapper">
+            <button class="user-profile-btn" id="userMenuToggleBtn" aria-label="Faculty menu">
+              <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">FC</div>
+              <div class="user-meta"><span class="user-name">Faculty</span><span class="user-role-tag">Assistant Professor</span></div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px; color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu" id="userMenuDropdown">
+              <div class="dropdown-header"><h5>Faculty Account</h5><p>faculty@itdept.edu</p></div>
+              <a href="#" class="dropdown-item danger logout-action"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Log Out</span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Views -->
+      <main class="dashboard-content">
+
+        <!-- ==================== VIEW 1: STAFF MAIN DASHBOARD ==================== -->
+        <div class="module-view active" id="staffDashboardView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Welcome, Faculty 👋</h1>
+              <p>Faculty Management & Academic Portal • IT Department</p>
+            </div>
+            <div class="dashboard-actions">
+              <span class="badge-tag"><circle cx="12" cy="12" r="10"></circle><span>Faculty ID: IT-FAC-018</span></span>
+            </div>
+          </div>
+
+          <div class="stat-cards-grid">
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="staffTimetableView">
+              <div class="stat-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+              <div class="stat-details"><div class="stat-value">4</div><div class="stat-label">Classes Today</div><div class="stat-trend up"><span>2 completed, 2 remaining</span></div></div>
+            </div>
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="staffAttendanceView">
+              <div class="stat-icon cyan"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+              <div class="stat-details"><div class="stat-value">120</div><div class="stat-label">Students</div><div class="stat-trend up"><span>Across 2 Course Batches</span></div></div>
+            </div>
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="staffLeaveApprovalView">
+              <div class="stat-icon amber"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg></div>
+              <div class="stat-details"><div class="stat-value">8</div><div class="stat-label">Pending Leaves</div><div class="stat-trend warning"><span>Review applications</span></div></div>
+            </div>
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="staffAssignmentsView">
+              <div class="stat-icon purple"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></div>
+              <div class="stat-details"><div class="stat-value">12</div><div class="stat-label">Assignments</div><div class="stat-trend up"><span>Submissions received</span></div></div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid-2col">
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>Today's Scheduled Classes</h3>
+                <span class="view-all-btn" data-nav-target="staffTimetableView">Full Schedule →</span>
+              </div>
+              <div class="timetable-list">
+                <div class="timetable-item success">
+                  <div class="timetable-time">09:00 AM</div>
+                  <div class="timetable-info"><strong>Data Structures & Algorithms</strong><div class="timetable-meta"><span>Batch: II Year IT-A</span><span>📍 Hall 201</span></div></div>
+                  <span class="status-badge completed">Completed</span>
+                </div>
+                <div class="timetable-item">
+                  <div class="timetable-time">11:00 AM</div>
+                  <div class="timetable-info"><strong>Java Programming Lab</strong><div class="timetable-meta"><span>Batch: III Year IT-B</span><span>📍 Lab 2</span></div></div>
+                  <button class="table-btn primary" data-nav-target="staffAttendanceView">Mark Roll Call</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>Pending Action Items</h3>
+              </div>
+              <div class="timetable-list">
+                <div class="timetable-item">
+                  <div class="timetable-info"><strong>Review Student Leave Applications</strong><div class="timetable-meta"><span>8 pending requests</span></div></div>
+                  <button class="table-btn primary" data-nav-target="staffLeaveApprovalView">Review</button>
+                </div>
+                <div class="timetable-item purple">
+                  <div class="timetable-info"><strong>Upload Unit 3 Notes</strong><div class="timetable-meta"><span>Java Programming</span></div></div>
+                  <button class="table-btn" data-nav-target="staffMaterialsView">Upload</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 2: STAFF MARK ATTENDANCE ==================== -->
+        <div class="module-view" id="staffAttendanceView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Interactive Roll-Call Attendance Marker 📝</h1>
+              <p>Mark daily attendance with live synchronization to departmental database</p>
+            </div>
+            <div class="dashboard-actions">
+              <button class="table-btn" id="markAllPresentBtn">✓ Mark All Present</button>
+              <button class="btn-primary" id="saveAttendanceBatchBtn" style="width:auto; padding:8px 16px;">💾 Save Attendance</button>
+            </div>
+          </div>
+
+          <div class="toolbar-row" style="margin-bottom:16px;">
+            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+              <div class="form-group" style="margin:0; min-width:200px;">
+                <label style="font-size:0.75rem; color:var(--text-muted);">Assigned Subject Course</label>
+                <select id="staffAttendanceSubjectSelect" class="form-select" style="padding:8px 12px;">
+                  <option value="1">IT8601 - Java Programming (III Year IT-A)</option>
+                  <option value="2">IT8602 - Database Systems (III Year IT-B)</option>
+                  <option value="3">IT8603 - Computer Networks (II Year IT-A)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0; width:160px;">
+                <label style="font-size:0.75rem; color:var(--text-muted);">Date of Session</label>
+                <input type="date" id="staffAttendanceDate" class="form-input" style="padding:8px 10px;" value="2026-08-27">
+              </div>
+            </div>
+          </div>
+
+          <div class="card-widget">
+            <div class="card-widget-header">
+              <h3>Student Roll Call Register (10 Students in Batch)</h3>
+              <span class="status-badge active">Live ERP Sync</span>
+            </div>
+            <div class="roll-call-list" id="rollCallContainer">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 3: STAFF TIMETABLE ==================== -->
+        <div class="module-view" id="staffTimetableView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Faculty Teaching Schedule 🗓️</h1>
+              <p>Weekly lecture hours, laboratory sessions, and tutorial hours</p>
+            </div>
+          </div>
+          <div class="timetable-grid-view">
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Monday</div>
+              <div class="timetable-list"><div class="timetable-item"><span>09:00 AM</span><div><strong>Data Structures (II Year)</strong></div></div></div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Tuesday</div>
+              <div class="timetable-list"><div class="timetable-item success"><span>11:00 AM</span><div><strong>Java Lab (III Year)</strong></div></div></div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Wednesday</div>
+              <div class="timetable-list"><div class="timetable-item purple"><span>02:00 PM</span><div><strong>Mini Project Mentoring</strong></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 4: STAFF MATERIALS UPLOAD ==================== -->
+        <div class="module-view" id="staffMaterialsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Upload Course Notes & Materials 📤</h1>
+              <p>Publish PDF notes, question banks, and syllabus to student portals</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <div class="card-widget-header"><h3>Publish New Resource</h3></div>
+            <form onsubmit="event.preventDefault(); showToast('Material uploaded and published to students!'); this.reset();" style="display:flex; flex-direction:column; gap:12px;">
+              <div class="form-group"><label>Resource Title</label><input type="text" class="form-input" placeholder="e.g. Unit 3 Trees & Graphs Notes" required style="padding-left:14px;"></div>
+              <div class="form-group"><label>Target Course Subject</label><select class="form-select"><option>Java Programming</option><option>DBMS</option><option>Computer Networks</option></select></div>
+              <div class="form-group"><label>Select File (PDF / DOC)</label><input type="file" class="form-input" required style="padding-left:14px;"></div>
+              <button type="submit" class="btn-primary" style="width:200px;">Publish Material</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 5: STAFF ASSIGNMENTS ==================== -->
+        <div class="module-view" id="staffAssignmentsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Coursework & Assignment Manager 📝</h1>
+              <p>Create new assignments and evaluate student submissions</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <div class="card-widget-header"><h3>Create Assignment</h3></div>
+            <form onsubmit="event.preventDefault(); showToast('New assignment created & published!'); this.reset();" style="display:flex; flex-direction:column; gap:12px;">
+              <div class="form-group"><label>Assignment Title</label><input type="text" class="form-input" placeholder="e.g. Assignment 4: Binary Search Tree Implementation" required style="padding-left:14px;"></div>
+              <div class="form-group"><label>Due Date</label><input type="date" class="form-input" required style="padding-left:14px;"></div>
+              <button type="submit" class="btn-primary" style="width:200px;">Create Assignment</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 6: STAFF LEAVE APPROVALS ==================== -->
+        <div class="module-view" id="staffLeaveApprovalView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Student Leave & On-Duty Approval Queue 📋</h1>
+              <p>Review student leave applications, check medical proof, and grant approvals</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>App ID</th><th>Student (Roll)</th><th>Type</th><th>Duration</th><th>Reason</th><th>Actions</th></tr></thead>
+                <tbody id="staffLeaveTableBody">
+                  <!-- Rendered dynamically by script.js with Live Approve / Reject buttons -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 7: STAFF ANNOUNCEMENTS ==================== -->
+        <div class="module-view" id="staffAnnouncementsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Post Class Notice / Announcement 📢</h1>
+              <p>Broadcast alerts to your course students</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <form onsubmit="event.preventDefault(); showToast('Announcement broadcasted to batch!'); this.reset();" style="display:flex; flex-direction:column; gap:12px;">
+              <div class="form-group"><label>Notice Title</label><input type="text" class="form-input" placeholder="e.g. Lab Cycle 2 Submission Date Extended" required style="padding-left:14px;"></div>
+              <div class="form-group"><label>Notice Details</label><textarea class="form-textarea" placeholder="Type notice content..." required></textarea></div>
+              <button type="submit" class="btn-primary" style="width:200px;">Post Notice</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 8: STUDENT DIRECTORY (STAFF CRUD) ==================== -->
+        <div class="module-view" id="staffStudentMgmtView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Student Directory & Ward Management (CRUD) 👥</h1>
+              <p>Add new enrolled students and update academic records for your advisory batch</p>
+            </div>
+            <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="openAddStudentModal()">+ Add New Student</button>
+          </div>
+
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll No</th>
+                    <th>Register No</th>
+                    <th>Full Name</th>
+                    <th>Batch</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="staffStudentTableBody">
+                  <tr>
+                    <td><strong>23IT001</strong></td>
+                    <td>730423205001</td>
+                    <td><strong>Aarav Sharma</strong></td>
+                    <td>III Year IT-A</td>
+                    <td>aarav@gceerode.ac.in</td>
+                    <td>+91 91234 56781</td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button class="table-btn" onclick="openEditStudentModal('23IT001', 'Aarav Sharma', '730423205001', 'III Year IT-A', 'aarav@gceerode.ac.in', '+91 91234 56781')">Edit</button>
+                        <button class="table-btn danger" onclick="showToast('Student record archived')">Archive</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>23IT002</strong></td>
+                    <td>730423205002</td>
+                    <td><strong>Ananya Ramesh</strong></td>
+                    <td>III Year IT-A</td>
+                    <td>ananya@gceerode.ac.in</td>
+                    <td>+91 91234 56782</td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button class="table-btn" onclick="openEditStudentModal('23IT002', 'Ananya Ramesh', '730423205002', 'III Year IT-A', 'ananya@gceerode.ac.in', '+91 91234 56782')">Edit</button>
+                        <button class="table-btn danger" onclick="showToast('Student record archived')">Archive</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>23IT042</strong></td>
+                    <td>730423205042</td>
+                    <td><strong>Student User</strong></td>
+                    <td>III Year IT-A</td>
+                    <td>student@gceerode.ac.in</td>
+                    <td>+91 91234 56789</td>
+                    <td>
+                      <div class="action-btn-group">
+                        <button class="table-btn" onclick="openEditStudentModal('23IT042', 'Student User', '730423205042', 'III Year IT-A', 'student@gceerode.ac.in', '+91 91234 56789')">Edit</button>
+                        <button class="table-btn danger" onclick="showToast('Student record archived')">Archive</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 9: STAFF MARKS ENTRY (FACULTY ONLY) ==================== -->
+        <div class="module-view" id="staffMarksEntryView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Internal Assessment & Semester Marks Entry 📝</h1>
+              <p>Faculty portal to enter, calculate, and publish marks for assigned courses</p>
+            </div>
+            <div class="dashboard-actions">
+              <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="saveAllMarksBatch()">💾 Publish & Sync All Marks</button>
+            </div>
+          </div>
+
+          <div class="toolbar-row" style="margin-bottom:16px;">
+            <div class="form-group" style="margin:0; min-width:280px;">
+              <label style="font-size:0.75rem; color:var(--text-muted);">Assigned Subject Course</label>
+              <select id="staffMarksSubjectSelect" class="form-select" style="padding:8px 12px;">
+                <option value="1">IT8601 - Java Programming (III Year IT-A)</option>
+                <option value="2">IT8602 - Database Systems (III Year IT-B)</option>
+                <option value="3">IT8603 - Computer Networks (II Year IT-A)</option>
+                <option value="4">IT8611 - Web Technology Lab (III Year IT-A)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th style="width:110px;">Internal 1 (50)</th>
+                    <th style="width:110px;">Internal 2 (50)</th>
+                    <th style="width:110px;">Model Exam (100)</th>
+                    <th style="width:110px;">Assignment (100)</th>
+                    <th style="width:120px;">Semester Grade</th>
+                    <th>Calculated GPA</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="staffMarksTableBody">
+                  <tr>
+                    <td><strong>23IT001</strong></td>
+                    <td>Aarav Sharma</td>
+                    <td><input type="number" class="form-input mark-input" value="46.0" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="48.0" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="92.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="95.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td>
+                      <select class="form-select mark-grade-select" style="padding:6px 8px;">
+                        <option value="O" selected>O (10.0)</option>
+                        <option value="A+">A+ (9.0)</option>
+                        <option value="A">A (8.0)</option>
+                        <option value="B+">B+ (7.0)</option>
+                        <option value="B">B (6.0)</option>
+                        <option value="RA">RA (Arrear)</option>
+                      </select>
+                    </td>
+                    <td><strong style="color:var(--accent-primary);">9.20</strong></td>
+                    <td><button class="table-btn primary" onclick="showToast('Marks for 23IT001 saved & synced to student!')">Save</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>23IT002</strong></td>
+                    <td>Ananya Ramesh</td>
+                    <td><input type="number" class="form-input mark-input" value="44.0" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="45.5" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="88.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="90.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td>
+                      <select class="form-select mark-grade-select" style="padding:6px 8px;">
+                        <option value="O">O (10.0)</option>
+                        <option value="A+" selected>A+ (9.0)</option>
+                        <option value="A">A (8.0)</option>
+                        <option value="B+">B+ (7.0)</option>
+                        <option value="B">B (6.0)</option>
+                        <option value="RA">RA (Arrear)</option>
+                      </select>
+                    </td>
+                    <td><strong style="color:var(--accent-primary);">8.70</strong></td>
+                    <td><button class="table-btn primary" onclick="showToast('Marks for 23IT002 saved & synced to student!')">Save</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>23IT042</strong></td>
+                    <td>Student User</td>
+                    <td><input type="number" class="form-input mark-input" value="46.0" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="48.0" max="50" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="92.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td><input type="number" class="form-input mark-input" value="95.0" max="100" min="0" style="padding:6px 8px;"></td>
+                    <td>
+                      <select class="form-select mark-grade-select" style="padding:6px 8px;">
+                        <option value="O" selected>O (10.0)</option>
+                        <option value="A+">A+ (9.0)</option>
+                        <option value="A">A (8.0)</option>
+                        <option value="B+">B+ (7.0)</option>
+                        <option value="B">B (6.0)</option>
+                        <option value="RA">RA (Arrear)</option>
+                      </select>
+                    </td>
+                    <td><strong style="color:var(--accent-primary);">9.20</strong></td>
+                    <td><button class="table-btn primary" onclick="showToast('Marks for 23IT042 saved & published!')">Save</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 10: STAFF MESSENGER (HOD & STUDENTS) ==================== -->
+        <div class="module-view" id="staffMessagesView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Faculty Department Messenger 💬</h1>
+              <p>Send official requests to HOD and Direct Messages (DM) to students and wards</p>
+            </div>
+          </div>
+
+          <div class="messenger-container">
+            <div class="messenger-sidebar">
+              <div class="messenger-tabs-nav">
+                <button type="button" class="msg-nav-tab active" id="staffMsgTabHod">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <span>HOD Requests</span>
+                </button>
+                <button type="button" class="msg-nav-tab" id="staffMsgTabStudents">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  <span>Student DMs</span>
+                </button>
+              </div>
+
+              <div class="messenger-contacts-list" id="staffContactsList">
+                <div class="contact-card active" data-channel="hod">
+                  <div class="contact-avatar hod">🏛️</div>
+                  <div class="contact-info">
+                    <h4>Dr. K. Senthil (HOD)</h4>
+                    <p>Head of Department</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+                <div class="contact-card" data-channel="student-42">
+                  <div class="contact-avatar">🎓</div>
+                  <div class="contact-info">
+                    <h4>Student User (23IT042)</h4>
+                    <p>III Year IT-A Ward</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+                <div class="contact-card" data-channel="student-01">
+                  <div class="contact-avatar">🎓</div>
+                  <div class="contact-info">
+                    <h4>Aarav Sharma (23IT001)</h4>
+                    <p>Class Representative</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="messenger-chat-pane">
+              <div class="chat-pane-header">
+                <div class="chat-current-user">
+                  <div class="chat-current-avatar" id="staffChatAvatar">🏛️</div>
+                  <div>
+                    <h4 id="staffChatName">Dr. K. Senthil, Ph.D. (HOD)</h4>
+                    <p id="staffChatRole">Executive Channel • Online</p>
+                  </div>
+                </div>
+                <span class="status-badge active">Direct Channel</span>
+              </div>
+
+              <div class="chat-stream-box" id="staffChatStream">
+                <div class="chat-bubble-row sent">
+                  <div class="chat-bubble sent">
+                    <span class="bubble-sender">You (Prof. Rajesh):</span>
+                    Respected HOD, requesting sanction for purchase of 15 IoT development kits for Sem VI project lab.
+                    <span class="bubble-time">09:30 AM</span>
+                  </div>
+                </div>
+                <div class="chat-bubble-row received">
+                  <div class="chat-bubble received">
+                    <span class="bubble-sender">Dr. K. Senthil (HOD):</span>
+                    Request noted Prof. Rajesh. Please submit the quotation in the executive approvals queue. Budget is sanctioned.
+                    <span class="bubble-time">10:15 AM</span>
+                  </div>
+                </div>
+              </div>
+
+              <form id="staffMessageSendForm" class="chat-composer-form">
+                <div class="form-group" style="margin-bottom:8px; display:flex; gap:10px;">
+                  <select id="staffRequestTagSelect" class="form-select" style="max-width:240px; padding:8px 12px; font-size:0.82rem;">
+                    <option value="Official Sanction Request">📌 Official Sanction Request</option>
+                    <option value="Lab Equipment Requirement">🔬 Lab Hardware Requirement</option>
+                    <option value="Exam Duty Notification">📄 Exam Duty Clarification</option>
+                    <option value="Direct Message">💬 Direct Message</option>
+                  </select>
+                </div>
+                <div class="chat-input-row">
+                  <input type="text" id="staffMessageInput" class="form-input" placeholder="Type your message or official request..." required style="padding-left:16px;">
+                  <button type="submit" class="btn-primary" style="width:auto; padding:10px 22px;">
+                    <span>Send</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 11: STAFF STUDENT PERFORMANCE ==================== -->
+        <div class="module-view" id="staffPerformanceView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Student Performance Overview & Grade Roster 📈</h1>
+              <p>Batch: III Year IT-A • Course: Java Programming & Distributed Systems</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>Roll No</th><th>Student Name</th><th>Attendance</th><th>Internal 1 (50)</th><th>Assignment Score</th><th>Overall Status</th></tr></thead>
+                <tbody>
+                  <tr><td>23IT001</td><td><strong>Aarav Sharma</strong></td><td><span class="status-badge active">90.4%</span></td><td>46 / 50</td><td>94 / 100</td><td><span class="status-badge active">Distinction</span></td></tr>
+                  <tr><td>23IT002</td><td><strong>Ananya Ramesh</strong></td><td><span class="status-badge active">88.0%</span></td><td>44 / 50</td><td>90 / 100</td><td><span class="status-badge active">Distinction</span></td></tr>
+                  <tr><td>23IT003</td><td><strong>Bala Chandran</strong></td><td><span class="status-badge pending">72.0%</span></td><td>31 / 50</td><td>70 / 100</td><td><span class="status-badge pending">Warning</span></td></tr>
+                  <tr><td>23IT004</td><td><strong>Deepika S.</strong></td><td><span class="status-badge active">85.5%</span></td><td>42 / 50</td><td>88 / 100</td><td><span class="status-badge active">Good</span></td></tr>
+                  <tr><td>23IT042</td><td><strong>Student User</strong></td><td><span class="status-badge active">82.4%</span></td><td>43 / 50</td><td>92 / 100</td><td><span class="status-badge active">Good</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Student Modal for Staff -->
+  <div class="modal-overlay" id="addEditStudentModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3 id="studentModalTitle">Add New Student to Batch</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('addEditStudentModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="staffAddStudentForm" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="hidden" id="editStudentId" value="0">
+        <div class="form-group">
+          <label>Roll Number</label>
+          <input type="text" id="studRollInput" class="form-input" placeholder="e.g. 23IT045" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Register Number</label>
+          <input type="text" id="studRegInput" class="form-input" placeholder="e.g. 730423205045" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="studNameInput" class="form-input" placeholder="e.g. K. Vignesh" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Batch / Section</label>
+          <select id="studBatchSelect" class="form-select">
+            <option value="III Year IT-A">III Year IT-A</option>
+            <option value="III Year IT-B">III Year IT-B</option>
+            <option value="II Year IT-A">II Year IT-A</option>
+            <option value="I Year IT-A">I Year IT-A</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department Email</label>
+          <input type="email" id="studEmailInput" class="form-input" placeholder="vignesh@gceerode.ac.in" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Contact Phone</label>
+          <input type="text" id="studPhoneInput" class="form-input" placeholder="+91 91234 56789" style="padding-left:14px;">
+        </div>
+        <button type="submit" class="btn-primary" id="saveStudentBtn">Save Student Record</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Grade Assignment Modal -->
+  <div class="modal-overlay" id="gradeAssignmentModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3>Evaluate Student Submission</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('gradeAssignmentModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="gradeAssignmentForm" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="hidden" id="gradeSubmissionId">
+        <p style="font-size:0.86rem; color:var(--text-secondary);">Student: <strong>Aarav Sharma (23IT042)</strong> • Subject: <strong>Java Multi-threading</strong></p>
+        <div class="form-group">
+          <label>Marks Awarded (out of 100)</label>
+          <input type="number" id="gradeMarksInput" class="form-input" min="0" max="100" value="95" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Faculty Feedback & Remarks</label>
+          <textarea id="gradeFeedbackInput" class="form-textarea" placeholder="Good code structure and comprehensive test suite...">Well structured multi-threaded architecture with clean exception handling.</textarea>
+        </div>
+        <button type="submit" class="btn-primary">Save & Publish Grade</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating IT-Bot AI Assistant -->
+  <button class="ai-fab-btn" id="aiFabBtn" title="Ask IT Department AI Assistant" aria-label="Ask IT Bot">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><circle cx="9" cy="13" r="1"></circle><circle cx="15" cy="13" r="1"></circle><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+  </button>
+
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <h4 style="font-size:0.95rem;">IT-Bot Assistant</h4>
+          <p style="font-size:0.72rem; opacity:0.85;">Department AI • Online</p>
+        </div>
+      </div>
+      <button type="button" id="aiChatCloseBtn" style="color:#ffffff; font-size:1.1rem;">✕</button>
+    </div>
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="chat-bubble bot">
+        Hello Faculty! I can assist with academic schedules, syllabus policies, attendance requirements, and symposium details.
+      </div>
+    </div>
+    <div class="ai-quick-chips">
+      <button class="quick-chip" data-prompt="When are the internal exams?">Exam Dates</button>
+      <button class="quick-chip" data-prompt="What is the attendance criteria?">Attendance Rule</button>
+      <button class="quick-chip" data-prompt="Who is the HOD?">Faculty Info</button>
+    </div>
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask a question...">
+      <button class="ai-chat-send-btn" id="aiChatSendBtn">Send</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

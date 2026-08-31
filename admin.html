@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - IT Sync | IT Department Digital Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="sidebar-backdrop"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon" style="background: linear-gradient(135deg, #ef4444, #f97316);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline><line x1="14" y1="4" x2="10" y2="20"></line></svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">IT Sync</span>
+          <span class="brand-subtitle">System Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Administration</div>
+        <ul class="nav-list">
+          <li class="nav-item active">
+            <a data-view="adminDashboardView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="adminUserMgmtView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+              <span>User Directory</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="adminSubjectsView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+              <span>Subjects & Courses</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="adminSystemStatsView">
+              <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg></span>
+              <span>System Health</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="user-avatar-sm" style="background: linear-gradient(135deg, #ef4444, #dc2626);">AD</div>
+          <div class="user-mini-info">
+            <h4>Super Admin</h4>
+            <p>IT Infrastructure</p>
+          </div>
+        </div>
+        <button class="icon-btn logout-action" title="Logout" aria-label="Sign out" style="width: 32px; height: 32px; color: #ef4444; border-color: rgba(239,68,68,0.3);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button class="menu-toggle-btn" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="page-breadcrumb">
+            <span>IT Hub</span>
+            <span>/</span>
+            <span class="breadcrumb-active">Administrator Control</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <button class="icon-btn theme-toggle-btn" title="Toggle Theme" aria-label="Toggle theme">
+            <span class="theme-toggle-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+          </button>
+
+          <div class="user-menu-wrapper">
+            <button class="user-profile-btn" id="userMenuToggleBtn" aria-label="Admin menu">
+              <div class="user-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626);">AD</div>
+              <div class="user-meta"><span class="user-name">Administrator</span><span class="user-role-tag">Root Access</span></div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px; color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu" id="userMenuDropdown">
+              <div class="dropdown-header"><h5>Administrator</h5><p>admin@itdept.edu</p></div>
+              <a href="#" class="dropdown-item danger logout-action"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Log Out</span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+
+        <!-- VIEW 1: ADMIN MAIN DASHBOARD -->
+        <div class="module-view active" id="adminDashboardView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Welcome, Administrator 👋</h1>
+              <p>System Administration & Directory Control • IT Sync Hub</p>
+            </div>
+            <div class="dashboard-actions">
+              <span class="badge-tag"><circle cx="12" cy="12" r="10"></circle><span>Uptime: 99.98%</span></span>
+            </div>
+          </div>
+
+          <div class="stat-cards-grid">
+            <div class="stat-card">
+              <div class="stat-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+              <div class="stat-details"><div class="stat-value">420</div><div class="stat-label">Students</div><div class="stat-trend up"><span>Active enrollments</span></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+              <div class="stat-details"><div class="stat-value">25</div><div class="stat-label">Staff</div><div class="stat-trend up"><span>Teaching & Lab Staff</span></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon purple"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path></svg></div>
+              <div class="stat-details"><div class="stat-value">4</div><div class="stat-label">Courses</div><div class="stat-trend up"><span>UG / PG Tracks</span></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+              <div class="stat-details"><div class="stat-value">445</div><div class="stat-label">System Users</div><div class="stat-trend up"><span>Total Active</span></div></div>
+            </div>
+          </div>
+
+          <!-- User Management Table with Add User Modal Trigger -->
+          <section class="card-widget" style="margin-bottom: 28px;">
+            <div class="card-widget-header">
+              <h3>User Directory & Permissions</h3>
+              <button class="btn-primary" style="width:auto; padding:7px 16px;" onclick="document.getElementById('addUserModal').classList.add('show');">+ Add New User</button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>User ID</th><th>Full Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="adminUserTableBody">
+                  <tr>
+                    <td>USR-1001</td>
+                    <td><strong>Dr. K. Senthil</strong></td>
+                    <td>hod@itdept.edu</td>
+                    <td><span class="status-badge purple">HOD</span></td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td><div class="action-btn-group"><button class="table-btn" onclick="showToast('Editing Dr. Senthil')">Edit</button></div></td>
+                  </tr>
+                  <tr>
+                    <td>USR-1002</td>
+                    <td><strong>Prof. Rajesh Kumar</strong></td>
+                    <td>rajesh.k@itdept.edu</td>
+                    <td><span class="status-badge active">Staff</span></td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td><div class="action-btn-group"><button class="table-btn" onclick="showToast('Editing Prof. Rajesh')">Edit</button></div></td>
+                  </tr>
+                  <tr>
+                    <td>USR-2042</td>
+                    <td><strong>Aarav Sharma</strong></td>
+                    <td>student@itdept.edu</td>
+                    <td><span class="status-badge upcoming">Student</span></td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td><div class="action-btn-group"><button class="table-btn danger" onclick="this.closest('tr').remove(); showToast('User removed');">Delete</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="dashboard-grid-2col">
+            <section class="card-widget">
+              <div class="card-widget-header"><h3>Recent Activity Stream</h3></div>
+              <div class="announcement-list">
+                <div class="announcement-item"><div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path></svg></div><div class="announcement-content"><h4>Batch imported 60 student accounts</h4><div class="announcement-meta"><span>45 mins ago</span></div></div></div>
+                <div class="announcement-item"><div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect></svg></div><div class="announcement-content"><h4>Semester VI Timetable published</h4><div class="announcement-meta"><span>3 hrs ago</span></div></div></div>
+              </div>
+            </section>
+
+            <section class="card-widget">
+              <div class="card-widget-header"><h3>System Health</h3><span class="status-badge active">Operational</span></div>
+              <div class="bar-chart">
+                <div class="bar-group"><div class="bar-label-row"><span>CPU Utilization</span><span>18%</span></div><div class="bar-track"><div class="bar-fill green" style="width: 18%;"></div></div></div>
+                <div class="bar-group"><div class="bar-label-row"><span>Storage (42 GB / 100 GB)</span><span>42%</span></div><div class="bar-track"><div class="bar-fill blue" style="width: 42%;"></div></div></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 2: USER DIRECTORY ==================== -->
+        <div class="module-view" id="adminUserMgmtView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>User Directory & Role Permissions 👥</h1>
+              <p>Create, update, and manage access credentials across all department roles</p>
+            </div>
+            <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="document.getElementById('addUserModal').classList.add('show');">+ Add New User</button>
+          </div>
+
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>User ID</th><th>Full Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="adminUserTableBodyAlt">
+                  <tr><td>USR-1001</td><td><strong>Dr. K. Senthil</strong></td><td>hod@itdept.edu</td><td><span class="status-badge purple">HOD</span></td><td><span class="status-badge active">Active</span></td><td><button class="table-btn" onclick="showToast('Editing Dr. Senthil')">Edit</button></td></tr>
+                  <tr><td>USR-1002</td><td><strong>Prof. Rajesh Kumar</strong></td><td>faculty@itdept.edu</td><td><span class="status-badge active">Staff</span></td><td><span class="status-badge active">Active</span></td><td><button class="table-btn" onclick="showToast('Editing Prof. Rajesh')">Edit</button></td></tr>
+                  <tr><td>USR-2042</td><td><strong>Student User</strong></td><td>student@itdept.edu</td><td><span class="status-badge upcoming">Student</span></td><td><span class="status-badge active">Active</span></td><td><button class="table-btn danger" onclick="this.closest('tr').remove(); showToast('User removed');">Delete</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 3: SUBJECTS & COURSES ==================== -->
+        <div class="module-view" id="adminSubjectsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Subjects & Course Management 📚</h1>
+              <p>Curriculum tracks, semester courses, and faculty course allocations</p>
+            </div>
+            <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="document.getElementById('addSubjectModal').classList.add('show');">+ Add Subject</button>
+          </div>
+
+          <div class="card-widget">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead><tr><th>Code</th><th>Subject Name</th><th>Semester</th><th>Credits</th><th>Assigned Faculty</th><th>Actions</th></tr></thead>
+                <tbody id="adminSubjectTableBody">
+                  <tr><td>IT8601</td><td><strong>Java Programming</strong></td><td>Sem VI</td><td>4</td><td>Prof. Rajesh Kumar</td><td><button class="table-btn" onclick="showToast('Editing IT8601')">Edit</button></td></tr>
+                  <tr><td>IT8602</td><td><strong>DBMS (Database Systems)</strong></td><td>Sem VI</td><td>4</td><td>Dr. Meenakshi S.</td><td><button class="table-btn" onclick="showToast('Editing IT8602')">Edit</button></td></tr>
+                  <tr><td>IT8603</td><td><strong>Computer Networks</strong></td><td>Sem VI</td><td>3</td><td>Prof. Anand V.</td><td><button class="table-btn" onclick="showToast('Editing IT8603')">Edit</button></td></tr>
+                  <tr><td>IT8611</td><td><strong>Web Technology & React Lab</strong></td><td>Sem VI</td><td>2</td><td>Prof. Kavitha M.</td><td><button class="table-btn" onclick="showToast('Editing IT8611')">Edit</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 4: SYSTEM HEALTH ==================== -->
+        <div class="module-view" id="adminSystemStatsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>System Health & Infrastructure Diagnostics ⚙️</h1>
+              <p>Database connections, server load, and automated daily backup status</p>
+            </div>
+            <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="showToast('Database backup archive created successfully!');">💾 Create SQL Backup</button>
+          </div>
+
+          <div class="dashboard-grid-2col">
+            <div class="card-widget">
+              <div class="card-widget-header"><h3>Service Status</h3><span class="status-badge active">All Operational</span></div>
+              <div class="timetable-list">
+                <div class="timetable-item success"><div class="timetable-info"><strong>MySQL Database Node (it_digital_hub)</strong><div class="timetable-meta"><span>Port 3306 • Latency 1ms</span></div></div><span class="status-badge active">Online</span></div>
+                <div class="timetable-item success"><div class="timetable-info"><strong>Apache HTTP Web Server (PHP 8.2)</strong><div class="timetable-meta"><span>Port 80 / 443 • Active Sessions: 42</span></div></div><span class="status-badge active">Online</span></div>
+                <div class="timetable-item success"><div class="timetable-info"><strong>Document Storage File System</strong><div class="timetable-meta"><span>Uploads Volume: 42 GB Used</span></div></div><span class="status-badge active">Healthy</span></div>
+              </div>
+            </div>
+
+            <div class="card-widget">
+              <div class="card-widget-header"><h3>Recent System Audit Logs</h3></div>
+              <div class="announcement-list">
+                <div class="announcement-item"><div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg></div><div class="announcement-content"><h4>Database Schema & Sample Seed Synced</h4><div class="announcement-meta"><span>Today at 10:00 AM</span></div></div></div>
+                <div class="announcement-item"><div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><div class="announcement-content"><h4>Security Scan: 0 vulnerabilities</h4><div class="announcement-meta"><span>Yesterday</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal-overlay" id="addUserModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3>Create New User Account</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('addUserModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="adminAddUserForm" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="newUserName" class="form-input" placeholder="e.g. Priya Sundaram" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="newUserEmail" class="form-input" placeholder="priya@itdept.edu" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>User Role</label>
+          <select id="newUserRole" class="form-select" required>
+            <option value="Student">Student</option>
+            <option value="Staff">Staff / Faculty</option>
+            <option value="HOD">HOD</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Create User</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Subject Modal -->
+  <div class="modal-overlay" id="addSubjectModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3>Add Curriculum Subject</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('addSubjectModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="adminAddSubjectForm" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="form-group">
+          <label>Subject Code</label>
+          <input type="text" id="newSubjectCode" class="form-input" placeholder="e.g. IT8605" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Subject Title</label>
+          <input type="text" id="newSubjectTitle" class="form-input" placeholder="e.g. Artificial Intelligence" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Credits</label>
+          <input type="number" id="newSubjectCredits" class="form-input" value="3" min="1" max="6" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Assigned Faculty Member</label>
+          <select id="newSubjectFaculty" class="form-select">
+            <option>Prof. Rajesh Kumar</option>
+            <option>Dr. Meenakshi S.</option>
+            <option>Prof. Anand V.</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Save Subject</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating IT-Bot AI Assistant -->
+  <button class="ai-fab-btn" id="aiFabBtn" title="Ask IT Department AI Assistant" aria-label="Ask IT Bot">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><circle cx="9" cy="13" r="1"></circle><circle cx="15" cy="13" r="1"></circle><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+  </button>
+
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <h4 style="font-size:0.95rem;">IT-Bot Assistant</h4>
+          <p style="font-size:0.72rem; opacity:0.85;">Department AI • Online</p>
+        </div>
+      </div>
+      <button type="button" id="aiChatCloseBtn" style="color:#ffffff; font-size:1.1rem;">✕</button>
+    </div>
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="chat-bubble bot">
+        Administrator access active. Database, server nodes, and user directory are operational.
+      </div>
+    </div>
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask a question...">
+      <button class="ai-chat-send-btn" id="aiChatSendBtn">Send</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

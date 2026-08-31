@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - IT Sync | IT Department Digital Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+            <line x1="14" y1="4" x2="10" y2="20"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">IT Sync</span>
+          <span class="brand-subtitle">Student Portal</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Academic & Student Hub</div>
+        <ul class="nav-list">
+          <li class="nav-item active">
+            <a data-view="studentDashboardView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              </span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentAttendanceView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              </span>
+              <span>Attendance</span>
+              <span class="nav-badge" style="background:#10b981;">82%</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentTimetableView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </span>
+              <span>Timetable</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentMaterialsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              </span>
+              <span>Materials</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentAssignmentsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              </span>
+              <span>Assignments</span>
+              <span class="nav-badge" style="background:#f59e0b;">2 Due</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentAnnouncementsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              </span>
+              <span>Announcements</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentMessagesView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </span>
+              <span>Department Messenger</span>
+              <span class="nav-badge" style="background:#2563eb;">Chat</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentLeaveView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+              </span>
+              <span>Leave</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentPerformanceView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              </span>
+              <span>Performance</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentEventsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </span>
+              <span>Events & Symposium</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentGalleryView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </span>
+              <span>Gallery</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentAchievementsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              </span>
+              <span>Achievements</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentProjectsView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </span>
+              <span>Projects</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a data-view="studentPlacementView">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </span>
+              <span>Placement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="studentSidebarProfileLink" href="#" onclick="document.getElementById('studentProfileModal').classList.add('show'); return false;">
+              <span class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </span>
+              <span>Student Profile</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="user-avatar-sm">ST</div>
+          <div class="user-mini-info">
+            <h4>Student User</h4>
+            <p>Roll: IT-2023-042</p>
+          </div>
+        </div>
+        <button class="icon-btn logout-action" title="Logout" aria-label="Sign out" style="width: 32px; height: 32px; color: #ef4444; border-color: rgba(239,68,68,0.3);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button class="menu-toggle-btn" aria-label="Toggle menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="page-breadcrumb">
+            <span>IT Hub</span>
+            <span>/</span>
+            <span class="breadcrumb-active">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <!-- Theme Toggle -->
+          <button class="icon-btn theme-toggle-btn" title="Toggle Theme" aria-label="Toggle theme">
+            <span class="theme-toggle-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </span>
+          </button>
+
+          <!-- Notifications -->
+          <div style="position: relative;">
+            <button class="icon-btn" id="notifToggleBtn" title="Notifications" aria-label="View notifications">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="icon-badge"></span>
+            </button>
+
+            <div class="dropdown-menu notification-dropdown" id="notifDropdown">
+              <div class="dropdown-header">
+                <h5>Department Notifications</h5>
+                <p>3 unread alerts</p>
+              </div>
+              <div class="notification-list">
+                <div class="notification-card">
+                  <span class="notif-dot"></span>
+                  <div class="notif-content">
+                    <h6>Internal Exam Timetable</h6>
+                    <p>Internal Examination starts from 15th next month.</p>
+                    <span class="notif-time">10 mins ago</span>
+                  </div>
+                </div>
+                <div class="notification-card">
+                  <span class="notif-dot"></span>
+                  <div class="notif-content">
+                    <h6>Symposium 2026 Registration</h6>
+                    <p>Early bird registrations close this Friday.</p>
+                    <span class="notif-time">2 hours ago</span>
+                  </div>
+                </div>
+                <div class="notification-card">
+                  <span class="notif-dot"></span>
+                  <div class="notif-content">
+                    <h6>AI Workshop Confirmation</h6>
+                    <p>Venue assigned to IT Seminar Hall 2.</p>
+                    <span class="notif-time">Yesterday</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Menu -->
+          <div class="user-menu-wrapper">
+            <button class="user-profile-btn" id="userMenuToggleBtn" aria-label="User profile menu">
+              <div class="user-avatar">ST</div>
+              <div class="user-meta">
+                <span class="user-name">Student</span>
+                <span class="user-role-tag">Semester VI • IT</span>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px; color: var(--text-muted);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+
+            <div class="dropdown-menu" id="userMenuDropdown">
+              <div class="dropdown-header">
+                <h5>Student Account</h5>
+                <p>student@itdept.edu</p>
+              </div>
+              <a href="#" class="dropdown-item" onclick="document.getElementById('studentProfileModal').classList.add('show'); document.getElementById('userMenuDropdown').classList.remove('show'); return false;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>My Profile</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item danger logout-action">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Log Out</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Main Content Views -->
+      <main class="dashboard-content">
+
+        <!-- ==================== VIEW 1: MAIN DASHBOARD ==================== -->
+        <div class="module-view active" id="studentDashboardView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Welcome back, Student 👋</h1>
+              <p>Department of Information Technology • Academic Year 2026-2027</p>
+            </div>
+            <div class="dashboard-actions">
+              <span class="badge-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                <span>Current Term: Sem VI</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 4 Cards -->
+          <div class="stat-cards-grid">
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="studentAttendanceView">
+              <div class="stat-icon blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-value">82%</div>
+                <div class="stat-label">Attendance</div>
+                <div class="stat-trend up"><span>Eligible for internals</span></div>
+              </div>
+            </div>
+
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="studentPerformanceView">
+              <div class="stat-icon green">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-value">76%</div>
+                <div class="stat-label">Average Marks</div>
+                <div class="stat-trend up"><span>CGPA: 8.42 / 10</span></div>
+              </div>
+            </div>
+
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="studentAssignmentsView">
+              <div class="stat-icon amber">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-value">3 Pending</div>
+                <div class="stat-label">Assignments</div>
+                <div class="stat-trend warning"><span>1 due tonight</span></div>
+              </div>
+            </div>
+
+            <div class="stat-card" style="cursor:pointer;" data-nav-target="studentEventsView">
+              <div class="stat-icon purple">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Upcoming Events</div>
+                <div class="stat-trend up"><span>IT Symposium 2026</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Class Advisor Info Card -->
+          <div class="advisor-info-card" style="margin-bottom: 22px;">
+            <div class="advisor-left">
+              <div class="advisor-avatar">👨‍🏫</div>
+              <div class="advisor-details">
+                <span class="advisor-badge">Assigned Class Advisor</span>
+                <h4>Prof. Rajesh Kumar, M.E.</h4>
+                <p>Associate Professor • <strong>III Year IT-A Batch In-Charge</strong></p>
+                <div class="advisor-contact-meta">
+                  <span>📍 Cabin: <strong>Room IT-204 (2nd Floor IT Block)</strong></span>
+                  <span>✉️ Email: <strong>rajesh.k@gceerode.ac.in</strong></span>
+                  <span>📞 Intercom: <strong>Ext. 342</strong></span>
+                </div>
+              </div>
+            </div>
+            <div class="advisor-actions">
+              <button type="button" class="btn-primary" style="width:auto; padding:8px 18px;" data-nav-target="studentMessagesView">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>Message Advisor</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2 Columns: Today's Timetable & Announcements -->
+          <div class="dashboard-grid-2col">
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <div class="card-widget-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                  <h3>Today's Timetable</h3>
+                </div>
+                <span class="view-all-btn" data-nav-target="studentTimetableView">Full Weekly Schedule →</span>
+              </div>
+              <div class="timetable-list">
+                <div class="timetable-item">
+                  <div class="timetable-time">10:00 AM</div>
+                  <div class="timetable-info">
+                    <div class="timetable-subject">Java Programming</div>
+                    <div class="timetable-meta"><span>📍 Lab 1</span><span>👤 Prof. Rajesh Kumar</span></div>
+                  </div>
+                  <span class="status-badge upcoming">Next Class</span>
+                </div>
+                <div class="timetable-item success">
+                  <div class="timetable-time">11:00 AM</div>
+                  <div class="timetable-info">
+                    <div class="timetable-subject">DBMS (Database Systems)</div>
+                    <div class="timetable-meta"><span>📍 Hall 302</span><span>👤 Dr. Meenakshi S.</span></div>
+                  </div>
+                  <span class="status-badge active">Scheduled</span>
+                </div>
+                <div class="timetable-item purple">
+                  <div class="timetable-time">01:30 PM</div>
+                  <div class="timetable-info">
+                    <div class="timetable-subject">Computer Networks</div>
+                    <div class="timetable-meta"><span>📍 Smart Room 104</span><span>👤 Prof. Anand V.</span></div>
+                  </div>
+                  <span class="status-badge completed">Afternoon</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <div class="card-widget-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                  <h3>Recent Announcements</h3>
+                </div>
+                <span class="view-all-btn" data-nav-target="studentAnnouncementsView">All Notices →</span>
+              </div>
+              <div class="announcement-list">
+                <div class="announcement-item">
+                  <div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                  <div class="announcement-content">
+                    <h4>Internal examination schedule released</h4>
+                    <div class="announcement-meta"><span class="announcement-tag">#Exam</span><span>• Published 2 hrs ago</span></div>
+                  </div>
+                </div>
+                <div class="announcement-item">
+                  <div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                  <div class="announcement-content">
+                    <h4>Symposium registration started</h4>
+                    <div class="announcement-meta"><span class="announcement-tag">#Symposium</span><span>• Published Yesterday</span></div>
+                  </div>
+                </div>
+                <div class="announcement-item">
+                  <div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                  <div class="announcement-content">
+                    <h4>Workshop on Artificial Intelligence</h4>
+                    <div class="announcement-meta"><span class="announcement-tag">#Workshop</span><span>• Published 2 days ago</span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 2: ATTENDANCE MODULE ==================== -->
+        <div class="module-view" id="studentAttendanceView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Attendance Tracking & Calculator 📊</h1>
+              <p>Subject-wise breakdown and semester eligibility estimation</p>
+            </div>
+          </div>
+
+          <!-- Low attendance warning banner -->
+          <div class="low-attendance-alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <div>
+              <strong>Attendance Shortage Alert:</strong> Computer Networks is currently at <strong>73.6%</strong> (below required 75% threshold). Please attend remaining classes to avoid exam condonation fine.
+            </div>
+          </div>
+
+          <div class="dashboard-grid-2col">
+            <!-- Subject Breakdown Table -->
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>Subject-Wise Attendance Breakdown</h3>
+                <span class="status-badge active">Aggregate: 82.4%</span>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr><th>Course Subject</th><th>Attended / Total</th><th>Percentage</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Java Programming</strong></td><td>38 / 42</td><td>90.4%</td><td><span class="status-badge active">Safe</span></td></tr>
+                    <tr><td><strong>Database Management Systems</strong></td><td>34 / 40</td><td>85.0%</td><td><span class="status-badge active">Safe</span></td></tr>
+                    <tr><td><strong>Computer Networks</strong></td><td>28 / 38</td><td>73.6%</td><td><span class="status-badge pending">Warning (&lt;75%)</span></td></tr>
+                    <tr><td><strong>Web Technology Lab</strong></td><td>18 / 20</td><td>90.0%</td><td><span class="status-badge active">Safe</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Interactive Attendance Calculator -->
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>🎯 Target Attendance Calculator</h3>
+              </div>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px;">Calculate how many more classes you need to reach your target percentage.</p>
+              
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="form-group">
+                  <label>Classes Attended</label>
+                  <input type="number" id="calcAttended" class="form-input" value="118" style="padding-left:14px;">
+                </div>
+                <div class="form-group">
+                  <label>Total Classes Conducted</label>
+                  <input type="number" id="calcTotal" class="form-input" value="140" style="padding-left:14px;">
+                </div>
+                <div class="form-group">
+                  <label>Target Goal %</label>
+                  <select id="calcTarget" class="form-select">
+                    <option value="75">75% (Minimum Exam Eligibility)</option>
+                    <option value="80">80% (Safe Zone)</option>
+                    <option value="85" selected>85% (Distinction Criteria)</option>
+                    <option value="90">90% (Placement Filter)</option>
+                  </select>
+                </div>
+                <button class="btn-primary" id="calculateAttendanceBtn" type="button">Calculate Projection</button>
+                <div id="calcResultBox" style="display:none; padding:12px; background:var(--bg-primary); border-radius:var(--radius-md); font-size:0.86rem; border:1px solid var(--border-color); margin-top:6px;"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 3: TIMETABLE MODULE ==================== -->
+        <div class="module-view" id="studentTimetableView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Weekly Academic Timetable 🗓️</h1>
+              <p>Semester VI • Section IT-A • Class Representative: Aarav S.</p>
+            </div>
+          </div>
+
+          <div class="timetable-grid-view">
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Monday</div>
+              <div class="timetable-list">
+                <div class="timetable-item"><span>09:00 AM</span><div><strong>Data Structures</strong><div style="font-size:0.75rem; color:var(--text-muted);">Hall 301 • Prof. Rajesh</div></div></div>
+                <div class="timetable-item success"><span>11:00 AM</span><div><strong>DBMS Lab</strong><div style="font-size:0.75rem; color:var(--text-muted);">Lab 2 • Dr. Meenakshi</div></div></div>
+              </div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Tuesday</div>
+              <div class="timetable-list">
+                <div class="timetable-item purple"><span>10:00 AM</span><div><strong>Computer Networks</strong><div style="font-size:0.75rem; color:var(--text-muted);">Smart Hall 104 • Prof. Anand</div></div></div>
+                <div class="timetable-item"><span>01:30 PM</span><div><strong>Cloud Computing</strong><div style="font-size:0.75rem; color:var(--text-muted);">Hall 302 • Dr. Senthil</div></div></div>
+              </div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Wednesday</div>
+              <div class="timetable-list">
+                <div class="timetable-item warning"><span>09:00 AM</span><div><strong>Java Programming</strong><div style="font-size:0.75rem; color:var(--text-muted);">Lab 1 • Prof. Rajesh</div></div></div>
+                <div class="timetable-item success"><span>02:00 PM</span><div><strong>Web Tech Lab</strong><div style="font-size:0.75rem; color:var(--text-muted);">Lab 3 • Prof. Kavitha</div></div></div>
+              </div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Thursday</div>
+              <div class="timetable-list">
+                <div class="timetable-item"><span>10:00 AM</span><div><strong>Software Engineering</strong><div style="font-size:0.75rem; color:var(--text-muted);">Hall 301 • Dr. Meenakshi</div></div></div>
+                <div class="timetable-item purple"><span>01:30 PM</span><div><strong>Mini Project Review</strong><div style="font-size:0.75rem; color:var(--text-muted);">Project Lab • Faculty Panel</div></div></div>
+              </div>
+            </div>
+            <div class="day-schedule-card">
+              <div class="day-schedule-header">Friday</div>
+              <div class="timetable-list">
+                <div class="timetable-item success"><span>09:00 AM</span><div><strong>AI & Deep Learning</strong><div style="font-size:0.75rem; color:var(--text-muted);">Hall 302 • Dr. Senthil</div></div></div>
+                <div class="timetable-item"><span>11:00 AM</span><div><strong>Placement Aptitude</strong><div style="font-size:0.75rem; color:var(--text-muted);">Seminar Hall • Training Team</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 4: MATERIALS MODULE ==================== -->
+        <div class="module-view" id="studentMaterialsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Course Materials & Question Papers 📚</h1>
+              <p>Download lecture notes, syllabus, lab manuals & previous university QP</p>
+            </div>
+          </div>
+
+          <div class="toolbar-row">
+            <div class="filter-btn-group">
+              <button class="filter-chip material-filter-chip active" data-type="all">All Resources</button>
+              <button class="filter-chip material-filter-chip" data-type="pdf">Lecture Notes</button>
+              <button class="filter-chip material-filter-chip" data-type="qp">Question Papers</button>
+              <button class="filter-chip material-filter-chip" data-type="doc">Lab Manuals</button>
+            </div>
+            <div class="search-input-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="materialsSearchInput" placeholder="Search subject or topic...">
+            </div>
+          </div>
+
+          <div class="materials-grid">
+            <div class="material-card" data-type="pdf">
+              <div>
+                <span class="material-type-tag pdf">PDF • 4.2 MB</span>
+                <div class="material-info">
+                  <h4>Unit 1 & 2: Java Multithreading & Streams</h4>
+                  <p>Course: Java Programming • Uploaded by Prof. Rajesh</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Downloading Java Notes PDF...')">Download Notes</button>
+            </div>
+
+            <div class="material-card" data-type="pdf">
+              <div>
+                <span class="material-type-tag pdf">PDF • 6.8 MB</span>
+                <div class="material-info">
+                  <h4>Relational Algebra & Normalization 3NF/BCNF</h4>
+                  <p>Course: DBMS • Uploaded by Dr. Meenakshi</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Downloading DBMS Notes PDF...')">Download Notes</button>
+            </div>
+
+            <div class="material-card" data-type="qp">
+              <div>
+                <span class="material-type-tag qp">Question Bank</span>
+                <div class="material-info">
+                  <h4>Anna University 2021-2025 Solved Papers</h4>
+                  <p>Course: Computer Networks • 5 Year Collection</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Downloading Solved QP...')">Download QP</button>
+            </div>
+
+            <div class="material-card" data-type="doc">
+              <div>
+                <span class="material-type-tag doc">Lab Manual</span>
+                <div class="material-info">
+                  <h4>Web Technology & React Lab Experiments</h4>
+                  <p>Lab Course: IT6811 • Department Approved</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Downloading Lab Manual...')">Download Manual</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 5: ASSIGNMENTS MODULE ==================== -->
+        <div class="module-view" id="studentAssignmentsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Assignments & Coursework 📝</h1>
+              <p>Track deadlines, submit solutions, and view faculty marks/evaluations</p>
+            </div>
+          </div>
+
+          <div class="card-widget">
+            <div class="card-widget-header">
+              <h3>Active Course Assignments</h3>
+              <span class="status-badge pending">Submission Portal Open</span>
+            </div>
+            <div id="assignmentsContainer">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 6: ANNOUNCEMENTS MODULE ==================== -->
+        <div class="module-view" id="studentAnnouncementsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Department Announcements 📢</h1>
+              <p>Official circulars, exam dates, and notices from HOD Office</p>
+            </div>
+          </div>
+
+          <div class="card-widget">
+            <div class="announcement-list">
+              <div class="announcement-item">
+                <div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg></div>
+                <div class="announcement-content">
+                  <h4>Internal Assessment Examination - 1 Schedule</h4>
+                  <p style="font-size:0.84rem; color:var(--text-secondary); margin:4px 0;">All students are notified that Internal Exam 1 will commence from 15th next month. Portions: Unit 1 & 2. Hall tickets will be issued in respective classrooms.</p>
+                  <div class="announcement-meta"><span class="announcement-tag">#ExamBranch</span><span>• Oct 02, 2026</span></div>
+                </div>
+              </div>
+
+              <div class="announcement-item">
+                <div class="announcement-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                <div class="announcement-content">
+                  <h4>National Level Symposium "INFORMIX 2026" Registrations</h4>
+                  <p style="font-size:0.84rem; color:var(--text-secondary); margin:4px 0;">Registrations for paper presentation, web designing, and hackathon are now live. Cash prizes worth Rs. 50,000 to be won!</p>
+                  <div class="announcement-meta"><span class="announcement-tag">#Symposium</span><span>• Sep 28, 2026</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 7: LEAVE & OD PORTAL ==================== -->
+        <div class="module-view" id="studentLeaveView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Leave & On-Duty (OD) Portal 🗓️</h1>
+              <p>Apply for medical leaves or event on-duty approvals with live status tracking</p>
+            </div>
+            <button class="btn-primary" style="width:auto; padding:8px 18px;" onclick="document.getElementById('applyLeaveModal').classList.add('show');">+ Apply for Leave</button>
+          </div>
+
+          <div class="card-widget">
+            <div class="card-widget-header">
+              <h3>My Leave Applications History</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr><th>App ID</th><th>Leave Type</th><th>Duration</th><th>Reason</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody id="studentLeaveTableBody">
+                  <!-- Rendered dynamically by script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 7: STUDENT MESSAGES & INQUIRIES ==================== -->
+        <div class="module-view" id="studentMessagesView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Department Messenger & Academic Inquiries 💬</h1>
+              <p>Send official requests to Faculty / Class Advisor and Direct Messages (DM) to fellow students</p>
+            </div>
+          </div>
+
+          <div class="messenger-container">
+            <!-- Left: Message Type Tabs & Contacts -->
+            <div class="messenger-sidebar">
+              <div class="messenger-tabs-nav">
+                <button type="button" class="msg-nav-tab active" id="msgTabRequests">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <span>Official Requests</span>
+                </button>
+                <button type="button" class="msg-nav-tab" id="msgTabDms">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  <span>Student DMs</span>
+                </button>
+              </div>
+
+              <!-- Contact / Channel List -->
+              <div class="messenger-contacts-list" id="studentContactsList">
+                <div class="contact-card active" data-channel="advisor">
+                  <div class="contact-avatar advisor">👨‍🏫</div>
+                  <div class="contact-info">
+                    <h4>Prof. Rajesh Kumar</h4>
+                    <p>Class Advisor (III Year IT-A)</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+                <div class="contact-card" data-channel="hod">
+                  <div class="contact-avatar hod">🏛️</div>
+                  <div class="contact-info">
+                    <h4>Dr. K. Senthil</h4>
+                    <p>Head of Department</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+                <div class="contact-card" data-channel="student-rep">
+                  <div class="contact-avatar">🎓</div>
+                  <div class="contact-info">
+                    <h4>Ananya Ramesh</h4>
+                    <p>Student Representative</p>
+                  </div>
+                  <span class="online-indicator"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Chat Box / Request Composer -->
+            <div class="messenger-chat-pane">
+              <div class="chat-pane-header">
+                <div class="chat-current-user">
+                  <div class="chat-current-avatar" id="currentChatAvatar">👨‍🏫</div>
+                  <div>
+                    <h4 id="currentChatName">Prof. Rajesh Kumar, M.E.</h4>
+                    <p id="currentChatRole">Class Advisor • Online & Available</p>
+                  </div>
+                </div>
+                <span class="status-badge active">Encrypted Channel</span>
+              </div>
+
+              <!-- Message Stream -->
+              <div class="chat-stream-box" id="studentChatStream">
+                <div class="chat-bubble-row received">
+                  <div class="chat-bubble received">
+                    <span class="bubble-sender">Prof. Rajesh Kumar (Class Advisor):</span>
+                    Hello Aarav, your Java Socket Programming assignment was submitted on time. Keep up the consistent work.
+                    <span class="bubble-time">10:45 AM</span>
+                  </div>
+                </div>
+                <div class="chat-bubble-row sent">
+                  <div class="chat-bubble sent">
+                    <span class="bubble-sender">You:</span>
+                    Thank you Sir! When will the Internal Assessment II marks be published on our portal?
+                    <span class="bubble-time">11:15 AM</span>
+                  </div>
+                </div>
+                <div class="chat-bubble-row received">
+                  <div class="chat-bubble received">
+                    <span class="bubble-sender">Prof. Rajesh Kumar:</span>
+                    Internal marks entry is in progress today. It will be updated by evening.
+                    <span class="bubble-time">11:20 AM</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chat Composer Input -->
+              <form id="studentMessageSendForm" class="chat-composer-form">
+                <div class="form-group" style="margin-bottom:8px; display:flex; gap:10px;">
+                  <select id="studentRequestTagSelect" class="form-select" style="max-width:240px; padding:8px 12px; font-size:0.82rem;">
+                    <option value="Official Inquiry">📌 Official Inquiry</option>
+                    <option value="Lab Slot Request">🔬 Lab Extra Slot Request</option>
+                    <option value="Bonafide Certificate Request">📄 Bonafide Request</option>
+                    <option value="General Question">💬 General Question</option>
+                  </select>
+                </div>
+                <div class="chat-input-row">
+                  <input type="text" id="studentMessageInput" class="form-input" placeholder="Type your message or inquiry to faculty..." required style="padding-left:16px;">
+                  <button type="submit" class="btn-primary" style="width:auto; padding:10px 22px;">
+                    <span>Send</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 8: PERFORMANCE MODULE ==================== -->
+        <div class="module-view" id="studentPerformanceView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Academic Performance & Subject Marks 📈</h1>
+              <p>Semester scorecards, CGPA progression, and faculty-published internal marks</p>
+            </div>
+          </div>
+
+          <div class="stat-cards-grid">
+            <div class="stat-card">
+              <div class="stat-details">
+                <div class="stat-value">8.42</div>
+                <div class="stat-label">Cumulative GPA (CGPA)</div>
+                <div class="stat-trend up"><span>Rank: 4th in Dept (Anna Univ)</span></div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Standing Arrears</div>
+                <div class="stat-trend up"><span>100% Clear Record</span></div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-details">
+                <div class="stat-value">118 / 160</div>
+                <div class="stat-label">Credits Earned</div>
+                <div class="stat-trend up"><span>On track for First Class Distinction</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabular Subject Marks Breakdown (Entered by Faculty) -->
+          <div class="card-widget" style="margin-top:20px;">
+            <div class="card-widget-header">
+              <h3>Current Semester VI Subject Marks Register (Faculty Verified)</h3>
+              <span class="status-badge active">Live Marks Roster</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Subject Name</th>
+                    <th>Credits</th>
+                    <th>Internal 1 (50)</th>
+                    <th>Internal 2 (50)</th>
+                    <th>Assignment (100)</th>
+                    <th>Semester Grade</th>
+                    <th>Course GPA</th>
+                    <th>Faculty In-Charge</th>
+                  </tr>
+                </thead>
+                <tbody id="studentScorecardTableBody">
+                  <tr>
+                    <td><strong>IT8601</strong></td>
+                    <td>Java Programming</td>
+                    <td>4</td>
+                    <td><span class="status-badge active">46.0 / 50</span></td>
+                    <td><span class="status-badge active">48.0 / 50</span></td>
+                    <td>95 / 100</td>
+                    <td><span class="status-badge active">O (Outstanding)</span></td>
+                    <td><strong>9.20</strong></td>
+                    <td>Prof. Rajesh Kumar</td>
+                  </tr>
+                  <tr>
+                    <td><strong>IT8602</strong></td>
+                    <td>Database Management Systems</td>
+                    <td>4</td>
+                    <td><span class="status-badge active">44.0 / 50</span></td>
+                    <td><span class="status-badge active">45.5 / 50</span></td>
+                    <td>90 / 100</td>
+                    <td><span class="status-badge active">A+ (Excellent)</span></td>
+                    <td><strong>8.70</strong></td>
+                    <td>Dr. Meenakshi S.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>IT8603</strong></td>
+                    <td>Computer Networks</td>
+                    <td>3</td>
+                    <td><span class="status-badge active">42.0 / 50</span></td>
+                    <td><span class="status-badge active">43.0 / 50</span></td>
+                    <td>88 / 100</td>
+                    <td><span class="status-badge active">A (Very Good)</span></td>
+                    <td><strong>8.20</strong></td>
+                    <td>Prof. Anand V.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>IT8611</strong></td>
+                    <td>Web Technology & Cloud Lab</td>
+                    <td>2</td>
+                    <td><span class="status-badge active">48.0 / 50</span></td>
+                    <td><span class="status-badge active">49.0 / 50</span></td>
+                    <td>98 / 100</td>
+                    <td><span class="status-badge active">O (Outstanding)</span></td>
+                    <td><strong>9.50</strong></td>
+                    <td>Prof. Rajesh Kumar</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 9: EVENTS & SYMPOSIUM ==================== -->
+        <div class="module-view" id="studentEventsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Department Events & Symposium 2026 🏆</h1>
+              <p>Register for tech events, hackathons, and generate instant verified E-Passes</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid-2col">
+            <!-- Symposium Registration Form -->
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>Symposium Event Registration</h3>
+              </div>
+              <form id="symposiumRegForm" style="display:flex; flex-direction:column; gap:12px;">
+                <div class="form-group">
+                  <label>Student Full Name</label>
+                  <input type="text" id="sympName" class="form-input" value="Aarav Sharma" required style="padding-left:14px;">
+                </div>
+                <div class="form-group">
+                  <label>Roll Number / Reg No</label>
+                  <input type="text" id="sympRoll" class="form-input" value="23IT042" required style="padding-left:14px;">
+                </div>
+                <div class="form-group">
+                  <label>College Name</label>
+                  <input type="text" id="sympCollege" class="form-input" value="College of Engineering IT" required style="padding-left:14px;">
+                </div>
+                <div class="form-group">
+                  <label>Select Event</label>
+                  <select id="sympEvent" class="form-select" required>
+                    <option value="Code Debugging & Speed Coding">Code Debugging & Speed Coding</option>
+                    <option value="UI/UX & Web Design Challenge">UI/UX & Web Design Challenge</option>
+                    <option value="AI / ML Paper Presentation">AI / ML Paper Presentation</option>
+                    <option value="Capture the Flag (Cybersecurity)">Capture the Flag (Cybersecurity)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn-primary">Generate My Event E-Pass</button>
+              </form>
+
+              <div id="generatedEPassContainer" style="display:none; margin-top:18px;"></div>
+            </section>
+
+            <!-- Upcoming Events Calendar -->
+            <section class="card-widget">
+              <div class="card-widget-header">
+                <h3>Event Schedule</h3>
+              </div>
+              <div class="events-list">
+                <div class="event-card">
+                  <div class="event-date-box"><span class="event-month">OCT</span><span class="event-day">14</span></div>
+                  <div class="event-details">
+                    <h4 class="event-title">National IT Symposium 2026</h4>
+                    <div class="event-meta"><span>📍 Main Auditorium</span><span>⏰ 09:00 AM</span></div>
+                  </div>
+                </div>
+                <div class="event-card">
+                  <div class="event-date-box"><span class="event-month">NOV</span><span class="event-day">02</span></div>
+                  <div class="event-details">
+                    <h4 class="event-title">Fullstack Web Dev Bootcamp</h4>
+                    <div class="event-meta"><span>📍 Lab 3</span><span>⏰ 10:00 AM</span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 10: GALLERY ==================== -->
+        <div class="module-view" id="studentGalleryView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Department Gallery & Highlights 📸</h1>
+              <p>Memories from symposiums, hackathons, and industrial visits</p>
+            </div>
+          </div>
+          <div class="materials-grid">
+            <div class="card-widget" style="padding:14px; text-align:center;">
+              <div style="height:140px; background:linear-gradient(135deg, #2563eb, #60a5fa); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.2rem; font-weight:700;">Hackathon 2025</div>
+              <h4 style="margin-top:10px;">Smart India Hackathon Winners</h4>
+            </div>
+            <div class="card-widget" style="padding:14px; text-align:center;">
+              <div style="height:140px; background:linear-gradient(135deg, #10b981, #34d399); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.2rem; font-weight:700;">ISRO Visit</div>
+              <h4 style="margin-top:10px;">Industrial Visit to Bangalore</h4>
+            </div>
+            <div class="card-widget" style="padding:14px; text-align:center;">
+              <div style="height:140px; background:linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.2rem; font-weight:700;">AI Workshop</div>
+              <h4 style="margin-top:10px;">Hands-on Deep Learning Summit</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 11: ACHIEVEMENTS ==================== -->
+        <div class="module-view" id="studentAchievementsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Department Hall of Fame 🌟</h1>
+              <p>Top achievements by students and faculty</p>
+            </div>
+          </div>
+          <div class="announcement-list">
+            <div class="announcement-item">
+              <div class="announcement-icon" style="background:var(--warning-light); color:var(--warning);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+              <div class="announcement-content">
+                <h4>1st Prize in National Hackathon - Team ByteCraft</h4>
+                <p style="font-size:0.84rem; color:var(--text-secondary);">Won Rs. 1,00,000 cash prize for developing an AI-driven disaster relief dashboard.</p>
+              </div>
+            </div>
+            <div class="announcement-item">
+              <div class="announcement-icon" style="background:var(--success-light); color:var(--success);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+              <div class="announcement-content">
+                <h4>University Rank Holders (2024 Batch)</h4>
+                <p style="font-size:0.84rem; color:var(--text-secondary);">3 students achieved Top 10 University Ranks in Anna University Examinations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 12: PROJECTS ==================== -->
+        <div class="module-view" id="studentProjectsView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Final Year & Capstone Projects 💡</h1>
+              <p>Project proposals, guide allocations, and milestone reviews</p>
+            </div>
+          </div>
+          <div class="card-widget">
+            <div class="card-widget-header">
+              <h3>My Assigned Project: "IT Sync Cloud Ecosystem"</h3>
+              <span class="status-badge active">Phase 1 Approved</span>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.5;"><strong>Guide:</strong> Dr. K. Senthil | <strong>Tech Stack:</strong> HTML5, CSS3, Vanilla JS, LocalStorage, Web APIs<br><strong>Next Review:</strong> Design Review on October 20, 2026.</p>
+          </div>
+        </div>
+
+        <!-- ==================== VIEW 13: PLACEMENT ==================== -->
+        <div class="module-view" id="studentPlacementView">
+          <div class="dashboard-header">
+            <div class="dashboard-title">
+              <h1>Placement & Corporate Drives 💼</h1>
+              <p>Upcoming recruitment drives, eligibility filters, and job offers</p>
+            </div>
+          </div>
+          <div class="materials-grid">
+            <div class="material-card">
+              <div>
+                <span class="material-type-tag doc">8.5 LPA</span>
+                <div class="material-info">
+                  <h4>Zoho Corporation</h4>
+                  <p>Role: Software Development Engineer<br>Eligibility: CGPA &gt;= 7.0 (0 Arrears)</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Application submitted to Zoho drive!')">Apply Now</button>
+            </div>
+            <div class="material-card">
+              <div>
+                <span class="material-type-tag doc">7.2 LPA</span>
+                <div class="material-info">
+                  <h4>TCS Digital</h4>
+                  <p>Role: Systems Engineer & Cloud Trainee<br>Eligibility: CGPA &gt;= 7.5 (0 Arrears)</p>
+                </div>
+              </div>
+              <button class="table-btn primary" onclick="showToast('Application submitted to TCS Digital!')">Apply Now</button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Apply Leave Modal -->
+  <div class="modal-overlay" id="applyLeaveModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3>Apply for Leave / OD</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('applyLeaveModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="applyLeaveForm" style="display:flex; flex-direction:column; gap:12px;">
+        <div class="form-group">
+          <label>Leave Category</label>
+          <select id="leaveType" class="form-select" required>
+            <option value="Medical Leave">Medical Leave</option>
+            <option value="On-Duty (Symposium / Hackathon)">On-Duty (Symposium / Hackathon)</option>
+            <option value="Personal Leave">Personal Leave</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>From Date</label>
+          <input type="date" id="leaveFromDate" class="form-input" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>To Date</label>
+          <input type="date" id="leaveToDate" class="form-input" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Reason / Purpose</label>
+          <textarea id="leaveReason" class="form-textarea" placeholder="Explain the reason for leave..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Submit Assignment Modal -->
+  <div class="modal-overlay" id="submitAssignmentModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header-row">
+        <h3>Submit Assignment</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('submitAssignmentModal').classList.remove('show');">✕</button>
+      </div>
+      <form id="submitAssignmentForm" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="hidden" id="submitAssignmentId">
+        <p id="submitModalAssignmentTitle" style="font-weight:700; color:var(--text-primary);"></p>
+        <div class="form-group">
+          <label>Upload Code / PDF Submission</label>
+          <input type="file" class="form-input" required style="padding-left:14px;">
+        </div>
+        <div class="form-group">
+          <label>Student Notes / Comments</label>
+          <textarea class="form-textarea" placeholder="Any specific notes for the faculty reviewer..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Upload & Complete Submission</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Student Profile Modal -->
+  <div class="modal-overlay" id="studentProfileModal" role="dialog" aria-modal="true">
+    <div class="modal-box lg">
+      <div class="modal-header-row">
+        <h3>Student Official Academic Profile</h3>
+        <button type="button" class="table-btn" onclick="document.getElementById('studentProfileModal').classList.remove('show');">✕</button>
+      </div>
+
+      <div class="profile-header-card">
+        <div class="profile-avatar-large">ST</div>
+        <div class="profile-meta-main">
+          <h4 id="profFullName">Student User</h4>
+          <p>Roll No: <strong id="profRollNo">23IT042</strong> • Reg No: <span id="profRegNo">312323205042</span></p>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="status-badge active">B.Tech IT • Sem VI</span>
+            <span class="status-badge purple">Section IT-A</span>
+            <span class="status-badge upcoming">Batch 2023-2027</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-info-grid">
+        <div class="profile-info-item">
+          <label>Cumulative CGPA</label>
+          <span style="color:var(--accent-primary); font-size:1.1rem;">8.42 / 10.0</span>
+        </div>
+        <div class="profile-info-item">
+          <label>Overall Attendance</label>
+          <span style="color:var(--success); font-size:1.1rem;">82.4% (Eligible)</span>
+        </div>
+        <div class="profile-info-item">
+          <label>Credits Earned</label>
+          <span>132 / 160 Credits</span>
+        </div>
+        <div class="profile-info-item">
+          <label>Standing Arrears</label>
+          <span style="color:var(--success);">0 (All Clear)</span>
+        </div>
+        <div class="profile-info-item">
+          <label>Department Email</label>
+          <span>student@itdept.edu</span>
+        </div>
+        <div class="profile-info-item">
+          <label>Contact Phone</label>
+          <span id="profPhoneDisplay">+91 98765 43210</span>
+        </div>
+      </div>
+
+      <form id="studentProfileUpdateForm" style="display:flex; flex-direction:column; gap:12px; border-top:1px solid var(--border-color); padding-top:16px;">
+        <h4 style="font-size:0.95rem; color:var(--text-primary);">Update Contact Information</h4>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" id="profPhoneInput" class="form-input" value="+91 98765 43210" style="padding-left:14px;" required>
+        </div>
+        <div class="form-group">
+          <label>Permanent Residential Address</label>
+          <textarea id="profAddressInput" class="form-textarea" required>124, College Road, Green Park Campus, Chennai, Tamil Nadu</textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:220px;">Save Profile Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating IT-Bot AI Assistant -->
+  <button class="ai-fab-btn" id="aiFabBtn" title="Ask IT Department AI Assistant" aria-label="Ask IT Bot">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><circle cx="9" cy="13" r="1"></circle><circle cx="15" cy="13" r="1"></circle><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+  </button>
+
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <h4 style="font-size:0.95rem;">IT-Bot Assistant</h4>
+          <p style="font-size:0.72rem; opacity:0.85;">Department AI • Online</p>
+        </div>
+      </div>
+      <button type="button" id="aiChatCloseBtn" style="color:#ffffff; font-size:1.1rem;">✕</button>
+    </div>
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="chat-bubble bot">
+        Hello! I am your <strong>IT Sync Assistant</strong>. How can I help you with your classes, exams, syllabus, or symposium registration today?
+      </div>
+    </div>
+    <div class="ai-quick-chips">
+      <button class="quick-chip" data-prompt="When are the internal exams?">Exam Dates</button>
+      <button class="quick-chip" data-prompt="What is the attendance criteria?">Attendance Rule</button>
+      <button class="quick-chip" data-prompt="How to register for the symposium?">Symposium</button>
+      <button class="quick-chip" data-prompt="Who is the HOD?">Faculty Info</button>
+    </div>
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask a question...">
+      <button class="ai-chat-send-btn" id="aiChatSendBtn">Send</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
