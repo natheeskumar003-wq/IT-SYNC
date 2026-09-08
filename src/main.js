@@ -11,6 +11,15 @@
     return;
   }
 
+  // Single Port Dynamic API URL Resolver
+  const resolveApiUrl = (endpoint) => {
+    const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    if (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin.startsWith('http')) {
+      return `${window.location.origin}${clean}`;
+    }
+    return `http://localhost:5000${clean}`;
+  };
+
   // =========================================================================
   // 1. ICONS LIBRARY (SVG)
   // =========================================================================
@@ -76,7 +85,38 @@
     AlertTriangle: createSvg(["M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z", "M12 9v4", "M12 17h.01"]),
     Printer: createSvg(["M6 9V2h12v7", "M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2", "M6 14h12v8H6z"]),
     Mail: createSvg(["M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z", "M22 6l-10 7L2 6"]),
-    Menu: createSvg(["M3 12h18", "M3 6h18", "M3 18h18"])
+    Send: createSvg(["M22 2L11 13", "M22 2l-7 20-4-9-9-4 20-7z"]),
+    Inbox: createSvg(["M22 12h-6l-2 3h-4l-2-3H2", "M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"]),
+    Menu: createSvg(["M3 12h18", "M3 6h18", "M3 18h18"]),
+    Image: createSvg([
+      "M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z",
+      "M8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z",
+      "M21 15l-5-5L5 21"
+    ]),
+    Heart: createSvg([
+      "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+    ]),
+    Camera: createSvg([
+      "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
+      "M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
+    ]),
+    MessageCircle: createSvg([
+      "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+    ]),
+    Maximize2: createSvg([
+      "M15 3h6v6",
+      "M9 21H3v-6",
+      "M21 3l-7 7",
+      "M3 21l7-7"
+    ]),
+    Folder: createSvg([
+      "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+    ]),
+    RefreshCw: createSvg([
+      "M23 4v6h-6",
+      "M1 20v-6h6",
+      "M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+    ])
   };
 
   // =========================================================================
@@ -96,8 +136,14 @@
     });
 
     const [studentProfile, setStudentProfile] = useState(() => {
+      const savedUser = localStorage.getItem('gce_it_user');
+      const parsedUser = savedUser ? JSON.parse(savedUser) : null;
       const saved = localStorage.getItem('gce_it_student_profile');
-      return saved ? JSON.parse(saved) : AppData.INITIAL_STUDENT_PROFILE;
+      const base = saved ? JSON.parse(saved) : AppData.INITIAL_STUDENT_PROFILE;
+      if (parsedUser && parsedUser.role === 'student') {
+        return { ...base, ...parsedUser, name: parsedUser.name, rollNo: parsedUser.rollNo || parsedUser.id };
+      }
+      return base;
     });
 
     const [subjects, setSubjects] = useState(AppData.INITIAL_SUBJECTS);
@@ -123,8 +169,41 @@
       const saved = localStorage.getItem('gce_it_certificates');
       return saved ? JSON.parse(saved) : AppData.INITIAL_CERTIFICATES;
     });
-    const [notifications, setNotifications] = useState(AppData.INITIAL_NOTIFICATIONS);
-    const [facultyList, setFacultyList] = useState(AppData.INITIAL_FACULTY_LIST);
+    const [facultyList, setFacultyList] = useState(() => {
+      const saved = localStorage.getItem('gce_it_faculty');
+      return saved ? JSON.parse(saved) : AppData.INITIAL_FACULTY_LIST;
+    });
+    const [hodList, setHodList] = useState(() => {
+      const saved = localStorage.getItem('gce_it_hod_list');
+      return saved ? JSON.parse(saved) : [
+        {
+          id: "ITHOD01",
+          pass: "1234",
+          name: "Dr. S. K. Murugesan",
+          role: "hod",
+          designation: "Professor & Head",
+          qualification: "M.E., Ph.D.",
+          experience: "24 Years",
+          specialization: "Cloud Computing, High Speed Networks",
+          email: "hod.it@gceerode.ac.in",
+          phone: "+91 94433 11223",
+          cabin: "HOD Chamber, IT Block - Ground Floor",
+          status: "Active"
+        }
+      ];
+    });
+    const [classAdvisors, setClassAdvisors] = useState(() => {
+      const saved = localStorage.getItem('gce_it_class_advisors');
+      return saved ? JSON.parse(saved) : (AppData.INITIAL_CLASS_ADVISORS || {});
+    });
+    const [messages, setMessages] = useState(() => {
+      const saved = localStorage.getItem('gce_it_messages');
+      return saved ? JSON.parse(saved) : (AppData.INITIAL_MESSAGES || []);
+    });
+    const [notifications, setNotifications] = useState(() => {
+      const saved = localStorage.getItem('gce_it_notifications');
+      return saved ? JSON.parse(saved) : (AppData.INITIAL_NOTIFICATIONS || []);
+    });
     const [auditLogs, setAuditLogs] = useState(AppData.INITIAL_AUDIT_LOGS);
     const [toasts, setToasts] = useState([]);
 
@@ -151,6 +230,22 @@
     }, [students]);
 
     useEffect(() => {
+      localStorage.setItem('gce_it_faculty', JSON.stringify(facultyList));
+    }, [facultyList]);
+
+    useEffect(() => {
+      localStorage.setItem('gce_it_hod_list', JSON.stringify(hodList));
+    }, [hodList]);
+
+    useEffect(() => {
+      localStorage.setItem('gce_it_class_advisors', JSON.stringify(classAdvisors));
+    }, [classAdvisors]);
+
+    useEffect(() => {
+      localStorage.setItem('gce_it_messages', JSON.stringify(messages));
+    }, [messages]);
+
+    useEffect(() => {
       localStorage.setItem('gce_it_assignments', JSON.stringify(assignments));
     }, [assignments]);
 
@@ -170,37 +265,145 @@
       localStorage.setItem('gce_it_certificates', JSON.stringify(certificates));
     }, [certificates]);
 
-    const login = (role, userId, password) => {
-      const cred = AppData.DEMO_CREDENTIALS[role];
-      if (!cred) {
-        showToast('Invalid role selected', 'error');
+    useEffect(() => {
+      localStorage.setItem('gce_it_notifications', JSON.stringify(notifications));
+    }, [notifications]);
+
+    useEffect(() => {
+      fetch(resolveApiUrl('/api/materials'))
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+            setStudyMaterials(data.data);
+          }
+        })
+        .catch(() => {});
+
+      fetch(resolveApiUrl('/api/students/certificates'))
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+            setCertificates(data.data);
+          }
+        })
+        .catch(() => {});
+
+      fetch(resolveApiUrl('/api/students/achievements'))
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+            setAchievements(data.data);
+          }
+        })
+        .catch(() => {});
+    }, []);
+
+    const login = async (role, userId, password) => {
+      try {
+        const res = await fetch(resolveApiUrl('/api/auth/login'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role, userId, password })
+        });
+        const data = await res.json();
+        if (data.success && data.user) {
+          setCurrentUser(data.user);
+          if (data.user.role === 'student') {
+            setStudentProfile(prev => ({
+              ...prev,
+              ...data.user,
+              name: data.user.name,
+              rollNo: data.user.rollNo || data.user.id
+            }));
+          }
+          if (data.token) localStorage.setItem('gce_it_token', data.token);
+          showToast(`Welcome back, ${data.user.name}!`, 'success');
+          return true;
+        }
+      } catch (err) {
+        console.warn('Real API login fallback to local validation:', err.message);
+      }
+
+      const trimmedId = (userId || '').trim();
+      const trimmedPass = (password || '').trim();
+
+      if (trimmedPass !== '1234') {
+        showToast('Invalid Password. Institutional password is required.', 'error');
         return false;
       }
-      if (cred.id.toLowerCase() === userId.trim().toLowerCase() && cred.pass === password.trim()) {
-        let userData = {
-          role: role,
-          id: cred.id,
-          name: cred.name,
-          email: `${cred.id.toLowerCase()}@gceerode.ac.in`
+
+      let foundUser = null;
+      if (role === 'student') {
+        const isRollNo = /^[0-9]{2}[A-Za-z]{2,4}[0-9]{2,4}$/i.test(trimmedId);
+        const s = students.find(item => 
+          (item.rollNo || '').toLowerCase() === trimmedId.toLowerCase() || 
+          (item.id || '').toLowerCase() === trimmedId.toLowerCase() ||
+          (item.name || '').toLowerCase() === trimmedId.toLowerCase() ||
+          (item.name || '').toLowerCase().includes(trimmedId.toLowerCase())
+        );
+        const resolvedName = (!isRollNo && trimmedId.length > 1) ? trimmedId : (s ? s.name : trimmedId);
+        const baseStd = s || students[0] || {};
+        const roll = s ? (s.rollNo || s.id) : (isRollNo ? trimmedId.toUpperCase() : "24IMT30");
+
+        foundUser = {
+          ...studentProfile,
+          ...baseStd,
+          role: 'student',
+          id: roll,
+          rollNo: roll,
+          regNo: s?.regNo || `731124205030`,
+          name: resolvedName,
+          email: s?.email || `${roll.toLowerCase()}@gceerode.ac.in`,
+          year: Number(s?.year) || 2,
+          sem: Number(s?.sem) || 4,
+          sec: s?.sec || 'A',
+          cgpa: s?.cgpa !== undefined ? Number(s.cgpa) : 8.5,
+          attendance: s?.attendance !== undefined ? Number(s.attendance) : 90.0,
+          standingArrears: s?.arrears !== undefined ? Number(s.arrears) : 0,
+          mentor: s?.mentor || 'Assigned Faculty',
+          status: s?.status || 'Active'
         };
-        if (role === 'student') {
-          userData = { ...userData, ...studentProfile };
+      } else if (role === 'staff') {
+        const f = facultyList.find(item => item.id.toLowerCase() === trimmedId.toLowerCase());
+        if (f) {
+          foundUser = {
+            role: 'staff',
+            ...f
+          };
         }
-        setCurrentUser(userData);
-        const newLog = {
-          id: `LOG-${Date.now().toString().slice(-4)}`,
-          action: "User Login",
-          user: `${cred.id} (${cred.name})`,
-          role: role.toUpperCase(),
-          ip: "192.168.1.100",
-          timestamp: "Just now",
-          status: "Success"
-        };
-        setAuditLogs(prev => [newLog, ...prev]);
-        showToast(`Welcome back, ${cred.name}!`, 'success');
+      } else if (role === 'hod') {
+        const h = (hodList && hodList.find(item => item.id.toLowerCase() === trimmedId.toLowerCase() || trimmedId.toLowerCase() === 'hod')) || hodList?.[0];
+        if (h && (trimmedId.toLowerCase() === h.id.toLowerCase() || trimmedId.toLowerCase() === 'hod')) {
+          foundUser = {
+            role: 'hod',
+            ...h
+          };
+        }
+      } else if (role === 'admin') {
+        if (trimmedId.toLowerCase() === 'itadmin01') {
+          foundUser = {
+            role: 'admin',
+            id: 'ITADMIN01',
+            name: 'Er. M. Senthil Kumar',
+            email: 'admin.it@gceerode.ac.in'
+          };
+        }
+      }
+
+      if (foundUser) {
+        setCurrentUser(foundUser);
+        if (role === 'student') {
+          setStudentProfile(prev => ({
+            ...prev,
+            ...foundUser,
+            name: foundUser.name,
+            rollNo: foundUser.rollNo
+          }));
+        }
+        showToast(`Welcome back, ${foundUser.name}!`, 'success');
         return true;
       } else {
-        showToast('Invalid User ID or Password. Click Quick Demo Credentials below to load.', 'error');
+        showToast(`Invalid ${role.toUpperCase()} ID or account not registered.`, 'error');
         return false;
       }
     };
@@ -211,23 +414,103 @@
       showToast('Logged out successfully', 'info');
     };
 
-    const submitAssignment = (asnId, fileName) => {
+    const submitAssignment = (asnId, fileName, fileData) => {
       setAssignments(prev => prev.map(a => a.id === asnId ? { ...a, status: 'Submitted', submissionFile: fileName, submittedDate: new Date().toISOString().split('T')[0] } : a));
       setStudentProfile(prev => ({ ...prev, pendingAssignments: Math.max(0, prev.pendingAssignments - 1) }));
       showToast('Assignment submitted successfully!', 'success');
     };
 
-    const addAchievement = (ach) => {
-      setAchievements(prev => [{ id: `ACH-${Date.now().toString().slice(-4)}`, ...ach }, ...prev]);
-      showToast('Achievement recorded successfully!', 'success');
+    const addAchievement = async (ach) => {
+      try {
+        const isFormData = typeof FormData !== 'undefined' && ach instanceof FormData;
+        const res = await fetch(resolveApiUrl('/api/students/achievements'), {
+          method: 'POST',
+          headers: isFormData ? {} : { 'Content-Type': 'application/json' },
+          body: isFormData ? ach : JSON.stringify(ach)
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          setAchievements(prev => [data.data, ...prev.filter(a => a.id !== data.data.id)]);
+          showToast('Achievement uploaded successfully!', 'success');
+          return data.data;
+        }
+      } catch (err) {}
+
+      const newAch = {
+        id: `ACH-${Date.now().toString().slice(-4)}`,
+        uploadDate: new Date().toISOString().split('T')[0],
+        date: new Date().toISOString().split('T')[0],
+        ...(typeof FormData !== 'undefined' && ach instanceof FormData ? {
+          title: ach.get('title') || 'Student Achievement',
+          description: ach.get('description') || '',
+          category: ach.get('category') || 'Achievement'
+        } : ach)
+      };
+      setAchievements(prev => [newAch, ...prev]);
+      showToast('Achievement uploaded successfully!', 'success');
+      return newAch;
     };
 
-    const addCertificate = (cert) => {
-      setCertificates(prev => [{ id: `CERT-${Date.now().toString().slice(-4)}`, ...cert }, ...prev]);
+    const deleteAchievement = async (id) => {
+      try {
+        await fetch(resolveApiUrl(`/api/students/achievements/${id}`), {
+          method: 'DELETE'
+        });
+      } catch (err) {}
+      setAchievements(prev => prev.filter(a => a.id !== id));
+      showToast('Achievement deleted successfully!', 'info');
+    };
+
+    const addCertificate = async (cert) => {
+      try {
+        const isFormData = typeof FormData !== 'undefined' && cert instanceof FormData;
+        const res = await fetch(resolveApiUrl('/api/students/certificates'), {
+          method: 'POST',
+          headers: isFormData ? {} : { 'Content-Type': 'application/json' },
+          body: isFormData ? cert : JSON.stringify(cert)
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          setCertificates(prev => [data.data, ...prev.filter(c => c.id !== data.data.id)]);
+          showToast('Certificate uploaded successfully!', 'success');
+          return data.data;
+        }
+      } catch (err) {}
+
+      const newCert = {
+        id: `CERT-${Date.now().toString().slice(-4)}`,
+        uploadDate: new Date().toISOString().split('T')[0],
+        ...(typeof FormData !== 'undefined' && cert instanceof FormData ? { name: cert.get('title') || 'Certificate' } : cert)
+      };
+      setCertificates(prev => [newCert, ...prev]);
       showToast('Certificate uploaded successfully!', 'success');
+      return newCert;
     };
 
-    const addStudyMaterial = (mat) => {
+    const deleteCertificate = async (id) => {
+      try {
+        await fetch(resolveApiUrl(`/api/students/certificates/${id}`), {
+          method: 'DELETE'
+        });
+      } catch (err) {}
+      setCertificates(prev => prev.filter(c => c.id !== id));
+      showToast('Certificate deleted successfully!', 'info');
+    };
+
+    const addStudyMaterial = async (mat) => {
+      try {
+        const res = await fetch(resolveApiUrl('/api/materials'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(mat)
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          setStudyMaterials(prev => [data.data, ...prev.filter(m => m.id !== data.data.id)]);
+          showToast('Study Material uploaded to department repository!', 'success');
+          return data.data;
+        }
+      } catch (err) {}
       setStudyMaterials(prev => [{ id: `MAT-${Date.now().toString().slice(-4)}`, downloads: 0, date: new Date().toISOString().split('T')[0], ...mat }, ...prev]);
       showToast('Study Material uploaded to department repository!', 'success');
     };
@@ -242,34 +525,225 @@
       showToast('Assignment evaluated and score published!', 'success');
     };
 
+    const updateInternalMarksBatch = (subjectCode, examType, marksList) => {
+      setInternalMarks(prev => {
+        if (Array.isArray(prev)) {
+          return prev.map(item => {
+            if (item.code === subjectCode) {
+              const updated = { ...item };
+              const score = Number(marksList?.[0]?.score !== undefined ? marksList[0].score : (examType === 'Model Exam' ? 85 : 45));
+              if (examType === 'CIA-1') updated.cia1 = score;
+              if (examType === 'CIA-2') updated.cia2 = score;
+              if (examType === 'Model Exam') updated.model = score;
+              const ciaAvg = ((Number(updated.cia1) || 0) + (Number(updated.cia2) || 0)) / 2;
+              const modelWeighted = ((Number(updated.model) || 0) / 100) * 20;
+              const asgn = Number(updated.assignment || 9.5);
+              updated.totalInternal = Number((ciaAvg * 0.4 + modelWeighted + asgn * 0.4).toFixed(1));
+              return updated;
+            }
+            return item;
+          });
+        }
+        return prev;
+      });
+      showToast(`${examType} marks updated & published for ${subjectCode}!`, 'success');
+    };
+
+    const updateSemesterResults = (rollNo, semesterKey, newCourseResult) => {
+      showToast(`Semester result updated for ${newCourseResult.code}!`, 'success');
+    };
+
     const addAnnouncement = (ann) => {
       setAnnouncements(prev => [{ id: `ANN-${Date.now().toString().slice(-3)}`, date: new Date().toISOString().split('T')[0], ...ann }, ...prev]);
       showToast('Department announcement published live!', 'success');
     };
 
     const addStudent = (std) => {
-      setStudents(prev => [{ arrears: 0, status: "Active", ...std }, ...prev]);
-      showToast(`Student ${std.name} (${std.rollNo}) enrolled!`, 'success');
+      const roll = (std.rollNo || '').trim().toUpperCase();
+      const newStd = {
+        arrears: 0,
+        status: "Active",
+        pass: "1234",
+        ...std,
+        rollNo: roll,
+        regNo: std.regNo || `7304${std.year || 2}4205${roll.slice(-3) || '001'}`,
+        email: std.email || `${roll.toLowerCase()}@gceerode.ac.in`
+      };
+      // Add to local state
+      setStudents(prev => {
+        const idx = prev.findIndex(s => (s.rollNo || '').toUpperCase() === roll);
+        if (idx !== -1) {
+          const copy = [...prev];
+          copy[idx] = { ...copy[idx], ...newStd };
+          return copy;
+        }
+        return [newStd, ...prev];
+      });
+      
+      // Sync with backend API
+      const syncWithBackend = async () => {
+        try {
+          await fetch(resolveApiUrl('/api/students'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newStd)
+          });
+        } catch (error) {
+          console.warn('Backend API unavailable, using local state only:', error.message);
+        }
+      };
+      
+      syncWithBackend();
+      showToast(`Student ${newStd.name} (${newStd.rollNo}) enrolled! Credentials auto-generated (Pass: 1234)`, 'success');
+      return newStd;
     };
 
     const updateStudent = (rollNo, updatedData) => {
+      // Update local state
       setStudents(prev => prev.map(s => s.rollNo === rollNo ? { ...s, ...updatedData } : s));
+      
+      // Try to sync with backend API
+      const syncWithBackend = async () => {
+        try {
+          const response = await fetch(resolveApiUrl(`/api/students/${rollNo}`), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+          });
+          
+          if (!response.ok) {
+            console.error('Failed to update student on backend');
+            return;
+          }
+          
+          const data = await response.json();
+          if (data.success) {
+            console.log('Student updated on backend:', data.data);
+          }
+        } catch (error) {
+          console.warn('Backend API unavailable, using local state only:', error.message);
+        }
+      };
+      
+      syncWithBackend();
       showToast(`Student record for ${rollNo} updated!`, 'success');
     };
 
     const deleteStudent = (rollNo) => {
+      // Remove from local state
       setStudents(prev => prev.filter(s => s.rollNo !== rollNo));
+      
+      // Try to sync with backend API
+      const syncWithBackend = async () => {
+        try {
+          const response = await fetch(resolveApiUrl(`/api/students/${rollNo}`), {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          
+          if (!response.ok) {
+            console.error('Failed to delete student from backend');
+            return;
+          }
+          
+          const data = await response.json();
+          if (data.success) {
+            console.log('Student deleted from backend:', data.data);
+          }
+        } catch (error) {
+          console.warn('Backend API unavailable, using local state only:', error.message);
+        }
+      };
+      
+      syncWithBackend();
       showToast(`Student record ${rollNo} deleted.`, 'info');
     };
 
-    const addFaculty = (f) => {
-      setFacultyList(prev => [...prev, { id: `ITSTAFF0${facultyList.length + 1}`, publications: 0, ...f }]);
-      showToast(`Faculty member ${f.name} added!`, 'success');
+    const addFaculty = async (f) => {
+      const newFaculty = {
+        id: f.id || `ITSTAFF0${(facultyList.length + 1).toString().padStart(2, '0')}`,
+        publications: f.publications || 0,
+        ...f
+      };
+      try {
+        if (window.adminApi && window.adminApi.createFaculty) {
+          await window.adminApi.createFaculty(newFaculty);
+        }
+      } catch (e) {}
+      setFacultyList(prev => [...prev, newFaculty]);
+      showToast(`Faculty member ${newFaculty.name} added!`, 'success');
     };
 
-    const deleteFaculty = (id) => {
+    const updateFaculty = async (facultyId, updatedData) => {
+      try {
+        if (window.adminApi && window.adminApi.updateFaculty) {
+          await window.adminApi.updateFaculty(facultyId, updatedData);
+        }
+      } catch (e) {}
+      setFacultyList(prev => prev.map(f => f.id === facultyId ? { ...f, ...updatedData } : f));
+      showToast(`Faculty record for ${updatedData.name || facultyId} updated!`, 'success');
+    };
+
+    const deleteFaculty = async (id) => {
+      try {
+        if (window.adminApi && window.adminApi.deleteFaculty) {
+          await window.adminApi.deleteFaculty(id);
+        }
+      } catch (e) {}
       setFacultyList(prev => prev.filter(f => f.id !== id));
       showToast('Faculty record removed.', 'info');
+    };
+
+    const updateClassAdvisor = (year, staffId) => {
+      const yNum = Number(year);
+      const staffMember = facultyList.find(f => f.id === staffId);
+      if (!staffMember) return;
+      setClassAdvisors(prev => ({
+        ...prev,
+        [yNum]: {
+          year: yNum,
+          batch: yNum === 1 ? "2026 - 2030" : yNum === 2 ? "2025 - 2029" : yNum === 3 ? "2024 - 2028" : "2023 - 2027",
+          staffId: staffMember.id,
+          staffName: staffMember.name,
+          designation: staffMember.designation,
+          email: staffMember.email,
+          phone: staffMember.phone,
+          cabin: staffMember.cabin
+        }
+      }));
+      setFacultyList(prev => prev.map(f => {
+        if (f.id === staffId) return { ...f, classAdvisorFor: yNum, classAdvisorLabel: `Class Advisor - Year ${yNum}` };
+        if (f.classAdvisorFor === yNum) return { ...f, classAdvisorFor: null, classAdvisorLabel: null };
+        return f;
+      }));
+      fetch(resolveApiUrl(`/api/hod/class-advisors/${yNum}`), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ staffId })
+      }).catch(e => console.warn('Class advisor sync warning:', e.message));
+
+      showToast(`${staffMember.name} assigned as Class Advisor for Year ${yNum}!`, 'success');
+    };
+
+    const sendMessage = (messageData) => {
+      const newMsg = {
+        id: `MSG-${Date.now().toString().slice(-4)}`,
+        timestamp: 'Just now',
+        read: false,
+        status: messageData.type === 'Request' ? 'Pending' : 'Delivered',
+        fromId: currentUser?.id || '24IT001',
+        fromName: currentUser?.name || 'User',
+        fromRole: currentUser?.role || 'student',
+        ...messageData
+      };
+      setMessages(prev => [newMsg, ...prev]);
+      showToast(messageData.type === 'Request' ? 'Request submitted!' : 'Message dispatched!', 'success');
+      return newMsg;
+    };
+
+    const updateMessageStatus = (msgId, status) => {
+      setMessages(prev => prev.map(m => m.id === msgId ? { ...m, status, read: true } : m));
+      showToast(`Request status updated to ${status}`, 'info');
     };
 
     const markAllNotificationsRead = () => {
@@ -291,6 +765,8 @@
       setCertificates(AppData.INITIAL_CERTIFICATES);
       setNotifications(AppData.INITIAL_NOTIFICATIONS);
       setFacultyList(AppData.INITIAL_FACULTY_LIST);
+      setClassAdvisors(AppData.INITIAL_CLASS_ADVISORS);
+      setMessages(AppData.INITIAL_MESSAGES);
       setAuditLogs(AppData.INITIAL_AUDIT_LOGS);
       showToast('Department Demo Database reset to original factory state!', 'success');
     };
@@ -302,15 +778,101 @@
       students, studentProfile, subjects, attendance, internalMarks,
       semesterResults: AppData.INITIAL_SEMESTER_RESULTS,
       timetable: AppData.INITIAL_TIMETABLE,
-      studyMaterials, assignments, facultyList, announcements,
+      studyMaterials, assignments, facultyList, hodList, classAdvisors, messages, announcements,
       questionPapers: AppData.INITIAL_QUESTION_PAPERS,
       placements: AppData.INITIAL_PLACEMENTS,
       achievements, certificates, notifications,
       hodAnalytics: AppData.HOD_DEPARTMENT_ANALYTICS,
       auditLogs,
-      submitAssignment, addAchievement, addCertificate, addStudyMaterial,
-      createAssignment, gradeAssignment, addAnnouncement, addStudent,
-      updateStudent, deleteStudent, addFaculty, deleteFaculty,
+      submitAssignment, addAchievement, deleteAchievement, addCertificate, deleteCertificate, addStudyMaterial,
+      createAssignment, gradeAssignment, updateInternalMarksBatch, updateSemesterResults,
+      addAnnouncement, addStudent, updateStudent, deleteStudent, addFaculty, updateFaculty, deleteFaculty,
+      updateClassAdvisor,
+      addHOD: async (hodData) => {
+        const newHOD = {
+          id: hodData.id || `ITHOD0${hodList.length + 1}`,
+          name: hodData.name,
+          designation: hodData.designation || 'Professor & Head of Department',
+          qualification: hodData.qualification || 'M.E., Ph.D.',
+          experience: hodData.experience || '20+ Years',
+          specialization: hodData.specialization || 'Computer Science & Engineering',
+          email: hodData.email || `${(hodData.id || 'ithod').toLowerCase()}@gceerode.ac.in`,
+          phone: hodData.phone || '+91 94433 11223',
+          cabin: hodData.cabin || 'HOD Chamber, IT Block - Ground Floor',
+          role: 'hod',
+          pass: hodData.pass || '1234',
+          status: 'Active'
+        };
+        try {
+          await fetch(resolveApiUrl('/api/admin/hods'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newHOD)
+          });
+        } catch (e) {}
+        setHodList(prev => [...prev, newHOD]);
+        showToast(`Head of Department ${newHOD.name} registered by Admin!`, 'success');
+        return newHOD;
+      },
+      updateHOD: async (hodData, id) => {
+        const targetId = id || hodData.id || 'ITHOD01';
+        try {
+          await fetch(resolveApiUrl(`/api/admin/hods/${targetId}`), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(hodData)
+          });
+        } catch (e) {}
+        setHodList(prev => prev.map(h => h.id.toUpperCase() === targetId.toUpperCase() ? { ...h, ...hodData } : h));
+        setFacultyList(prev => prev.map(f => (f.id.toUpperCase() === targetId.toUpperCase() || f.role === 'hod') ? { ...f, ...hodData } : f));
+        if (currentUser && currentUser.role === 'hod' && currentUser.id.toUpperCase() === targetId.toUpperCase()) {
+          setCurrentUser(prev => ({ ...prev, ...hodData }));
+        }
+        showToast(`HOD profile for ${hodData.name || targetId} updated!`, 'success');
+      },
+      deleteHOD: async (id) => {
+        if (hodList.length <= 1) {
+          showToast('Cannot delete the sole HOD. At least one HOD must remain.', 'error');
+          return;
+        }
+        try {
+          await fetch(resolveApiUrl(`/api/admin/hods/${id}`), { method: 'DELETE' });
+        } catch (e) {}
+        setHodList(prev => prev.filter(h => h.id.toUpperCase() !== id.toUpperCase()));
+        showToast(`HOD account ${id} removed by Admin.`, 'info');
+      },
+      changeHOD: async (newHODData) => {
+        const target = {
+          id: newHODData.id || `ITHOD0${hodList.length + 1}`,
+          name: newHODData.name,
+          designation: newHODData.designation || 'Professor & Head of Department',
+          qualification: newHODData.qualification || 'M.E., Ph.D.',
+          experience: newHODData.experience || '15+ Years',
+          specialization: newHODData.specialization || 'Information Technology',
+          email: newHODData.email || 'hod.it@gceerode.ac.in',
+          phone: newHODData.phone || '+91 94433 11223',
+          cabin: newHODData.cabin || 'IT Block - Ground Floor (Room 101)',
+          publications: Number(newHODData.publications) || 20,
+          subjects: newHODData.subjects || ["Advanced IT Systems", "Cloud Computing"],
+          role: 'hod',
+          pass: '1234',
+          status: 'Active'
+        };
+        try {
+          await fetch(resolveApiUrl('/api/admin/hods'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(target)
+          });
+        } catch (e) {}
+        setHodList(prev => [...prev, target]);
+        setFacultyList(prev => [target, ...prev]);
+        if (currentUser && currentUser.role === 'hod') {
+          setCurrentUser(prev => ({ ...prev, ...target }));
+        }
+        showToast(`Dr./Prof. ${target.name} officially appointed as Head of Department!`, 'success');
+      },
+      sendMessage, updateMessageStatus,
       markAllNotificationsRead, resetAllData
     };
 
@@ -395,6 +957,6 @@
 
   // Attach context and UI components to window for sub-components
   window.ITAuthContext = { AuthContext, AuthProvider, useAuth, Icons };
-  window.UIComponents = { StatCard, Modal };
+  window.UIComponents = { ...(window.UIComponents || {}), StatCard, Modal };
 })();
 

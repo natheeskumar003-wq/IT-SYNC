@@ -1,19 +1,20 @@
 // IT DIGITAL HUB - Main Application & Role-Based Layout
 // Department of Information Technology - Government College of Engineering, Erode
 
-import { useAuth } from './context/AuthContext.js';
-import { LoginPage } from './components/auth/LoginPage.js';
-import { Topbar, Sidebar, ToastContainer, AIAssistant } from './components/common/UIComponents.js';
-import { StudentViews } from './components/student/StudentViews.js';
-import { StaffViews } from './components/staff/StaffViews.js';
-import { HODViews } from './components/hod/HODViews.js';
-import { AdminViews } from './components/admin/AdminViews.js';
+const useAuth = (typeof require !== 'undefined') ? require('./context/AuthContext.js').useAuth : (window.ITAuthContext && window.ITAuthContext.useAuth);
+const LoginPage = (typeof require !== 'undefined') ? require('./components/auth/LoginPage.js').LoginPage : window.LoginPage;
+const { Topbar, Sidebar, ToastContainer, AIAssistant } = (typeof require !== 'undefined') ? require('./components/common/UIComponents.js') : (window.UIComponents || {});
+const StudentViews = (typeof require !== 'undefined') ? require('./components/student/StudentViews.js') : window.ITStudentViews;
+const StaffViews = (typeof require !== 'undefined') ? require('./components/staff/StaffViews.js') : window.ITStaffViews;
+const HODViews = (typeof require !== 'undefined') ? require('./components/hod/HODViews.js') : window.ITHODViews;
+const AdminViews = (typeof require !== 'undefined') ? require('./components/admin/AdminViews.js') : window.ITAdminViews;
 
 // Navigation Menus Config
 const NAV_CONFIG = {
   student: [
     { id: 'dashboard', label: 'Dashboard', icon: 'Dashboard' },
     { id: 'my-profile', label: 'My Profile', icon: 'User' },
+    { id: 'messages', label: 'Messages & Requests', icon: 'MessageSquare', badge: 'Hub' },
     { id: 'subjects', label: 'Subjects', icon: 'BookOpen' },
     { id: 'attendance', label: 'Attendance', icon: 'CheckCircle', badge: '89.5%' },
     { id: 'internal-marks', label: 'Internal Marks', icon: 'BarChart' },
@@ -25,14 +26,15 @@ const NAV_CONFIG = {
     { id: 'department-announcements', label: 'Department Announcements', icon: 'Bell', badge: 'New' },
     { id: 'previous-year-question-papers', label: 'Previous Year Question Papers', icon: 'Database' },
     { id: 'placement-internship', label: 'Placement & Internship', icon: 'Briefcase', badge: 'Drives' },
+    { id: 'gallery', label: 'Gallery', icon: 'Image', badge: 'Hub' },
     { id: 'achievements', label: 'Achievements', icon: 'Sparkles' },
     { id: 'certificates', label: 'Certificates', icon: 'Award' },
-    { id: 'notifications', label: 'Notifications', icon: 'Bell' },
-    { id: 'feedback', label: 'Feedback', icon: 'MessageSquare' }
+    { id: 'notifications', label: 'Notifications', icon: 'Bell' }
   ],
   staff: [
     { id: 'dashboard', label: 'Dashboard', icon: 'Dashboard' },
     { id: 'my-profile', label: 'My Profile', icon: 'User' },
+    { id: 'messages', label: 'Messages & Requests', icon: 'MessageSquare', badge: 'Hub' },
     { id: 'my-subjects', label: 'My Subjects', icon: 'BookOpen' },
     { id: 'student-list', label: 'Student List', icon: 'Users' },
     { id: 'attendance-management', label: 'Attendance Management', icon: 'CheckCircle' },
@@ -41,14 +43,17 @@ const NAV_CONFIG = {
     { id: 'upload-study-materials', label: 'Upload Study Materials', icon: 'Upload' },
     { id: 'timetable', label: 'Timetable', icon: 'Calendar' },
     { id: 'announcements', label: 'Announcements', icon: 'Bell' },
+    { id: 'gallery', label: 'Gallery', icon: 'Image', badge: 'Review' },
+    { id: 'achievements', label: 'Achievements', icon: 'Sparkles' },
     { id: 'student-performance', label: 'Student Performance', icon: 'PieChart' },
     { id: 'notifications', label: 'Notifications', icon: 'Bell' }
   ],
   hod: [
     { id: 'dashboard', label: 'Dashboard', icon: 'Dashboard', badge: 'Analytics' },
     { id: 'hod-profile', label: 'HOD Profile', icon: 'User' },
+    { id: 'messages', label: 'Messages & DM Hub', icon: 'Send', badge: 'DM' },
     { id: 'student-management', label: 'Student Management', icon: 'Users' },
-    { id: 'staff-management', label: 'Staff Management', icon: 'Award', badge: 'Leave Req' },
+    { id: 'staff-management', label: 'Staff Management', icon: 'Award', badge: 'Advisors' },
     { id: 'attendance-monitoring', label: 'Attendance Monitoring', icon: 'CheckCircle', badge: '12 Low' },
     { id: 'internal-marks-monitoring', label: 'Internal Marks Monitoring', icon: 'BarChart' },
     { id: 'student-performance', label: 'Student Performance', icon: 'PieChart' },
@@ -57,6 +62,8 @@ const NAV_CONFIG = {
     { id: 'department-announcements', label: 'Department Announcements', icon: 'Bell' },
     { id: 'study-materials', label: 'Study Materials', icon: 'Download' },
     { id: 'placement-internship', label: 'Placement & Internship', icon: 'Briefcase', badge: '86.5%' },
+    { id: 'gallery', label: 'Gallery', icon: 'Image', badge: 'Hub' },
+    { id: 'achievements', label: 'Achievements', icon: 'Sparkles' },
     { id: 'reports', label: 'Reports', icon: 'FileText', badge: 'NAAC/NBA' },
     { id: 'notifications', label: 'Notifications', icon: 'Bell' }
   ],
@@ -73,13 +80,15 @@ const NAV_CONFIG = {
     { id: 'marks-management', label: 'Marks Management', icon: 'BarChart' },
     { id: 'timetable-management', label: 'Timetable Management', icon: 'Calendar' },
     { id: 'announcements', label: 'Announcements', icon: 'Bell' },
+    { id: 'gallery', label: 'Gallery', icon: 'Image', badge: 'Media' },
+    { id: 'achievements', label: 'Achievements', icon: 'Sparkles' },
     { id: 'study-materials', label: 'Study Materials', icon: 'Download' },
     { id: 'reports', label: 'Reports', icon: 'FileText', badge: 'Audit' },
     { id: 'system-settings', label: 'System Settings', icon: 'Settings' }
   ]
 };
 
-export const App = () => {
+const App = () => {
   const { currentUser, logout } = useAuth();
   
   // Navigation State
@@ -149,10 +158,14 @@ export const App = () => {
       React.createElement(
         'main',
         { className: 'flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto' },
-        activeRole === 'student' && React.createElement(StudentViews, { currentTab: currentTab, onNavigate: handleSelectTab }),
-        activeRole === 'staff' && React.createElement(StaffViews, { currentTab: currentTab, onNavigate: handleSelectTab }),
-        activeRole === 'hod' && React.createElement(HODViews, { currentTab: currentTab, onNavigate: handleSelectTab }),
-        activeRole === 'admin' && React.createElement(AdminViews, { currentTab: currentTab, onNavigate: handleSelectTab })
+        currentTab === 'gallery' && (typeof window !== 'undefined' && (window.ITGalleryView || window.GalleryView))
+          ? React.createElement(window.ITGalleryView || window.GalleryView, { onNavigate: handleSelectTab })
+          : (
+              (activeRole === 'student' && React.createElement(StudentViews, { currentTab: currentTab, onNavigate: handleSelectTab })) ||
+              (activeRole === 'staff' && React.createElement(StaffViews, { currentTab: currentTab, onNavigate: handleSelectTab })) ||
+              (activeRole === 'hod' && React.createElement(HODViews, { currentTab: currentTab, onNavigate: handleSelectTab })) ||
+              (activeRole === 'admin' && React.createElement(AdminViews, { currentTab: currentTab, onNavigate: handleSelectTab }))
+            )
       ),
 
       // Footer
@@ -172,3 +185,10 @@ export const App = () => {
     React.createElement(AIAssistant, null)
   );
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { App };
+}
+if (typeof window !== 'undefined') {
+  window.App = App;
+}

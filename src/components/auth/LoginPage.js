@@ -1,26 +1,26 @@
 // IT DIGITAL HUB - Glassmorphism Login Page
 // Government College of Engineering, Erode - Department of Information Technology
 
-import { Icons } from '../common/Icons.js';
-import { useAuth } from '../../context/AuthContext.js';
-import { Modal } from '../common/UIComponents.js';
+const Icons = (typeof require !== 'undefined') ? require('../common/Icons.js').Icons : (window.Icons || (window.ITAuthContext && window.ITAuthContext.Icons) || {});
+const useAuth = (typeof require !== 'undefined') ? require('../../context/AuthContext.js').useAuth : (window.ITAuthContext && window.ITAuthContext.useAuth);
+const Modal = (typeof require !== 'undefined') ? require('../common/UIComponents.js').Modal : (window.UIComponents && window.UIComponents.Modal);
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const { login, demoCredentials, collegeInfo } = useAuth();
   
   const [selectedRole, setSelectedRole] = React.useState('student');
-  const [userId, setUserId] = React.useState(demoCredentials.student.id);
-  const [password, setPassword] = React.useState(demoCredentials.student.pass);
+  const [userId, setUserId] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [rememberMe, setRememberMe] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
   const [forgotModalOpen, setForgotModalOpen] = React.useState(false);
 
-  // When role changes, prefill with role's demo credentials for quick demo testing
+  // When role changes, reset input fields for clean user credential entry
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    setUserId(demoCredentials[role].id);
-    setPassword(demoCredentials[role].pass);
+    setUserId('');
+    setPassword('');
   };
 
   const handleLoginSubmit = (e) => {
@@ -39,7 +39,7 @@ export const LoginPage = () => {
       desc: 'Access attendance, internals, study materials & results',
       icon: Icons.GraduationCap,
       color: 'from-cyan-500 to-blue-600',
-      idPlaceholder: 'e.g. 24IT001'
+      idPlaceholder: 'e.g. 24IMT30 or Nathees Kumar T'
     },
     staff: {
       label: 'Faculty / Staff',
@@ -166,7 +166,7 @@ export const LoginPage = () => {
           React.createElement(
             'label',
             { className: 'block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5' },
-            `${roleMeta[selectedRole].label} User ID / Roll Number`
+            `${roleMeta[selectedRole].label} Full Name / Roll Number / ID`
           ),
           React.createElement(
             'div',
@@ -276,40 +276,6 @@ export const LoginPage = () => {
             React.createElement(Icons.ArrowRight, { className: 'w-4 h-4' })
           )
         )
-      ),
-
-      // Quick-Fill Demo Credentials Bar (Convenient for Expo & Testing)
-      React.createElement(
-        'div',
-        { className: 'mt-6 pt-4 border-t border-slate-800/80' },
-        React.createElement(
-          'p',
-          { className: 'text-[11px] font-semibold text-slate-400 uppercase tracking-wider text-center mb-2.5' },
-          '⚡ Quick Demo Credentials (Click to Load)'
-        ),
-        React.createElement(
-          'div',
-          { className: 'grid grid-cols-2 gap-2 text-xs' },
-          [
-            { role: 'student', label: 'Student (24IT001)' },
-            { role: 'staff', label: 'Staff (ITSTAFF01)' },
-            { role: 'hod', label: 'HOD (ITHOD01)' },
-            { role: 'admin', label: 'Admin (ITADMIN01)' }
-          ].map(demo => React.createElement(
-            'button',
-            {
-              key: demo.role,
-              type: 'button',
-              onClick: () => handleRoleSelect(demo.role),
-              className: `px-2.5 py-1.5 rounded-lg border text-left truncate transition ${
-                selectedRole === demo.role
-                  ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-300 font-bold'
-                  : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
-              }`
-            },
-            demo.label
-          ))
-        )
       )
     ),
 
@@ -328,21 +294,19 @@ export const LoginPage = () => {
         React.createElement(
           'p',
           { className: 'text-slate-300' },
-          'For institutional security, password resets are processed via the Department System Administrator or Faculty Mentors.'
+          'Login is restricted to registered department members. Default account setup password is institutional (1234).'
         ),
         React.createElement(
           'div',
-          { className: 'p-3 rounded-xl bg-slate-900/70 border border-slate-800 space-y-1.5' },
-          React.createElement('p', { className: 'font-bold text-cyan-400' }, 'Default Demo Credentials:'),
-          React.createElement('p', null, '• Student: 24IT001 / student123'),
-          React.createElement('p', null, '• Staff: ITSTAFF01 / staff123'),
-          React.createElement('p', null, '• HOD: ITHOD01 / hod123'),
-          React.createElement('p', null, '• Admin: ITADMIN01 / admin123')
+          { className: 'p-3 rounded-xl bg-slate-900/70 border border-slate-800 space-y-1.5 text-slate-300' },
+          React.createElement('p', { className: 'font-bold text-cyan-400' }, 'Institutional Login Notice:'),
+          React.createElement('p', null, '• All authorized Student, Faculty Staff, HOD, and Admin accounts are configured.'),
+          React.createElement('p', null, '• Use your registered Department ID and institutional password.')
         ),
         React.createElement(
           'p',
           { className: 'text-slate-400' },
-          'Need immediate support? Contact: hod.it@gceerode.ac.in or visit IT Block Cabin 101.'
+          'Need account assistance or credential reset? Contact System Admin: admin.it@gceerode.ac.in or HOD Cabin 101.'
         ),
         React.createElement(
           'button',
@@ -356,3 +320,10 @@ export const LoginPage = () => {
     )
   );
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { LoginPage };
+}
+if (typeof window !== 'undefined') {
+  window.LoginPage = LoginPage;
+}

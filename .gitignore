@@ -1,0 +1,19 @@
+node_modules/
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Ignore dynamic user-uploaded test media but preserve folders
+uploads/certificates/*
+!uploads/certificates/README.txt
+!uploads/certificates/.gitkeep
+uploads/achievements/*
+!uploads/achievements/.gitkeep
+uploads/study_materials/*
+!uploads/study_materials/.gitkeep
+uploads/gallery/*/*
+!uploads/gallery/**/README.txt
+!uploads/gallery/**/.gitkeep

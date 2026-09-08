@@ -1,7 +1,7 @@
 // IT DIGITAL HUB - Mock Database & Academic System State
 // Government College of Engineering, Erode - Department of Information Technology
 
-export const COLLEGE_INFO = {
+const COLLEGE_INFO = {
   name: "Government College of Engineering, Erode",
   shortName: "GCE Erode",
   formerName: "Formerly Institute of Road and Transport Technology (IRTT)",
@@ -23,19 +23,19 @@ export const COLLEGE_INFO = {
   ]
 };
 
-export const DEMO_CREDENTIALS = {
-  student: { id: "24IT001", pass: "student123", role: "student", name: "Naveen Kumar R" },
-  staff: { id: "ITSTAFF01", pass: "staff123", role: "staff", name: "Dr. A. Venkatesh" },
-  hod: { id: "ITHOD01", pass: "hod123", role: "hod", name: "Dr. S. K. Murugesan" },
-  admin: { id: "ITADMIN01", pass: "admin123", role: "admin", name: "Er. M. Senthil Kumar" }
+const DEMO_CREDENTIALS = {
+  student: { id: "25IT001", pass: "1234", role: "student", name: "Naveen Kumar R" },
+  staff: { id: "ITSTAFF01", pass: "1234", role: "staff", name: "Prof. B. V. Prakash" },
+  hod: { id: "ITHOD01", pass: "1234", role: "hod", name: "Dr.I. Bhuvaneshwarri" },
+  admin: { id: "ITADMIN01", pass: "1234", role: "admin", name: "Er. M. Senthil Kumar" }
 };
 
-export const INITIAL_STUDENT_PROFILE = {
-  rollNo: "24IT001",
-  regNo: "730424205001",
+const INITIAL_STUDENT_PROFILE = {
+  rollNo: "25IT001",
+  regNo: "730425205001",
   name: "Naveen Kumar R",
   department: "Information Technology",
-  batch: "2024 - 2028",
+  batch: "2025 - 2029",
   semester: 4,
   year: "II Year / IV Sem",
   section: "A",
@@ -46,20 +46,20 @@ export const INITIAL_STUDENT_PROFILE = {
   dob: "2006-05-14",
   gender: "Male",
   bloodGroup: "O +ve",
-  email: "naveenkumar.24it@gceerode.ac.in",
+  email: "25it001@gceerode.ac.in",
   phone: "+91 98421 54321",
   address: "42, Perundurai Road, Erode - 638011, Tamil Nadu",
   fatherName: "Rajendran K",
   fatherPhone: "+91 94432 10987",
   motherName: "Saraswathi R",
-  mentorName: "Dr. A. Venkatesh (Assoc. Prof)",
+  mentorName: "Dr. Mohanasundaram (Assoc. Prof)",
   mentorEmail: "a.venkatesh@gceerode.ac.in",
   mentorPhone: "+91 94421 87654",
   hostelStatus: "Hosteller (Kavery Hostel, Room 304)",
   scholarship: "First Graduate Scholarship (Govt of Tamil Nadu)"
 };
 
-export const INITIAL_SUBJECTS = [
+const INITIAL_SUBJECTS = [
   {
     code: "IT8401",
     name: "Database Management Systems",
@@ -160,7 +160,7 @@ export const INITIAL_SUBJECTS = [
   }
 ];
 
-export const INITIAL_STUDENT_ATTENDANCE = [
+const INITIAL_STUDENT_ATTENDANCE = [
   { code: "IT8401", name: "Database Management Systems", total: 42, attended: 39, percentage: 92.8, status: "Good" },
   { code: "IT8402", name: "Design & Analysis of Algorithms", total: 38, attended: 34, percentage: 89.4, status: "Good" },
   { code: "IT8403", name: "Operating Systems Principles", total: 40, attended: 35, percentage: 87.5, status: "Good" },
@@ -170,7 +170,7 @@ export const INITIAL_STUDENT_ATTENDANCE = [
   { code: "IT8412", name: "Web Technologies Laboratory", total: 14, attended: 13, percentage: 92.8, status: "Good" }
 ];
 
-export const INITIAL_INTERNAL_MARKS = [
+const INITIAL_INTERNAL_MARKS = [
   {
     code: "IT8401",
     name: "Database Management Systems",
@@ -250,7 +250,7 @@ export const INITIAL_INTERNAL_MARKS = [
   }
 ];
 
-export const INITIAL_SEMESTER_RESULTS = [
+const INITIAL_SEMESTER_RESULTS = [
   {
     semester: 1,
     gpa: 8.65,
@@ -298,7 +298,7 @@ export const INITIAL_SEMESTER_RESULTS = [
   }
 ];
 
-export const INITIAL_TIMETABLE = {
+const INITIAL_TIMETABLE = {
   Monday: [
     { period: 1, time: "09:00 - 09:50", subject: "IT8401 DBMS", room: "IT LH-1", faculty: "Dr. A. Venkatesh" },
     { period: 2, time: "09:50 - 10:40", subject: "IT8402 DAA", room: "IT LH-1", faculty: "Prof. P. Kavin" },
@@ -342,7 +342,7 @@ export const INITIAL_TIMETABLE = {
   ]
 };
 
-export const INITIAL_STUDY_MATERIALS = [
+const INITIAL_STUDY_MATERIALS = [
   {
     id: "MAT-01",
     title: "Unit 3 - Normalization and BCNF Complete Lecture Notes",
@@ -417,7 +417,7 @@ export const INITIAL_STUDY_MATERIALS = [
   }
 ];
 
-export const INITIAL_ASSIGNMENTS = [
+const INITIAL_ASSIGNMENTS = [
   {
     id: "ASN-101",
     title: "Design Relational Schema & 3NF Normalization for Hospital System",
@@ -484,88 +484,70 @@ export const INITIAL_ASSIGNMENTS = [
   }
 ];
 
-export const INITIAL_FACULTY_LIST = [
-  {
-    id: "ITHOD01",
-    name: "Dr. S. K. Murugesan",
-    designation: "Professor & Head of Department",
-    qualification: "B.E., M.Tech., Ph.D. (IIT Madras)",
-    experience: "24 Years",
-    specialization: "Cloud Computing, Distributed Systems, Big Data",
-    email: "hod.it@gceerode.ac.in",
-    phone: "+91 94433 11223",
-    cabin: "IT Block - Ground Floor (Room 101)",
-    publications: 38,
-    subjects: ["Cloud Architecture", "Advanced Distributed Systems"]
-  },
+const INITIAL_FACULTY_LIST = [
   {
     id: "ITSTAFF01",
-    name: "Dr. A. Venkatesh",
+    name: "Prof. B. V. Prakash",
     designation: "Associate Professor",
     qualification: "M.E., Ph.D. (Anna University)",
     experience: "16 Years",
     specialization: "Database Systems, Data Mining, Information Security",
-    email: "a.venkatesh@gceerode.ac.in",
-    phone: "+91 94421 87654",
+    email: "prakash.it@gceerode.ac.in",
+    phone: "+91 98421 22334",
     cabin: "IT Block - First Floor (Room 204)",
-    publications: 22,
-    subjects: ["Database Management Systems", "DBMS Lab", "Information Security"]
+    publications: 26,
+    subjects: ["Database Management Systems", "DBMS Lab", "Information Security"],
+    classAdvisorFor: 1,
+    classAdvisorLabel: "Class Advisor - I Year IT (Batch 2026-2030)"
   },
   {
     id: "ITSTAFF02",
-    name: "Dr. M. Deepa",
+    name: "Dr. Mohanasundaram",
     designation: "Associate Professor",
     qualification: "M.Tech., Ph.D. (NIT Trichy)",
-    experience: "14 Years",
+    experience: "15 Years",
     specialization: "Operating Systems, High Performance Computing, IoT",
-    email: "m.deepa@gceerode.ac.in",
-    phone: "+91 98433 76543",
+    email: "mohanasundaram.it@gceerode.ac.in",
+    phone: "+91 98422 33445",
     cabin: "IT Block - First Floor (Room 205)",
     publications: 19,
-    subjects: ["Operating Systems", "IoT & Embedded Computing"]
+    subjects: ["Operating Systems", "IoT & Embedded Computing"],
+    classAdvisorFor: 2,
+    classAdvisorLabel: "Class Advisor - II Year IT (Batch 2025-2029)"
   },
   {
     id: "ITSTAFF03",
-    name: "Dr. K. Sathish Kumar",
-    designation: "Assistant Professor (Sr. Gr.)",
-    qualification: "M.E., Ph.D. (GCE Erode / AU)",
-    experience: "11 Years",
-    specialization: "Full Stack Web Technologies, Cloud Native, DevOps",
-    email: "k.sathish@gceerode.ac.in",
-    phone: "+91 97890 12345",
-    cabin: "IT Block - Second Floor (Room 302)",
-    publications: 14,
-    subjects: ["Web Technologies", "Web Tech Lab", "Mobile App Development"]
+    name: "Prof. Sathyakala",
+    designation: "Assistant Professor (Sr. Gr)",
+    qualification: "M.Tech. (NIT Surathkal), (Ph.D.)",
+    experience: "12 Years",
+    specialization: "Design & Analysis of Algorithms, Competitive Coding",
+    email: "sathyakala.it@gceerode.ac.in",
+    phone: "+91 98423 44556",
+    cabin: "IT Block - Second Floor (Room 306)",
+    publications: 12,
+    subjects: ["Design & Analysis of Algorithms", "Artificial Intelligence & ML"],
+    classAdvisorFor: 3,
+    classAdvisorLabel: "Class Advisor - III Year IT (Batch 2024-2028)"
   },
   {
     id: "ITSTAFF04",
-    name: "Prof. R. Priya",
+    name: "Prof. Murugan",
     designation: "Assistant Professor",
-    qualification: "M.E., (Ph.D.)",
-    experience: "9 Years",
-    specialization: "Computer Networks, Wireless Sensor Networks, 5G",
-    email: "r.priya@gceerode.ac.in",
-    phone: "+91 96555 98765",
-    cabin: "IT Block - Second Floor (Room 304)",
-    publications: 10,
-    subjects: ["Computer Networks", "Network Security", "Cryptography"]
-  },
-  {
-    id: "ITSTAFF05",
-    name: "Prof. P. Kavin",
-    designation: "Assistant Professor",
-    qualification: "M.Tech. (NIT Surathkal), (Ph.D.)",
-    experience: "8 Years",
-    specialization: "Algorithms, Machine Learning, Data Science",
-    email: "p.kavin@gceerode.ac.in",
-    phone: "+91 99444 32109",
-    cabin: "IT Block - Second Floor (Room 305)",
-    publications: 8,
-    subjects: ["Design & Analysis of Algorithms", "Artificial Intelligence & ML"]
+    qualification: "M.E.",
+    experience: "10 Years",
+    specialization: "Full Stack Web Technologies, React, Cloud Native",
+    email: "murugan.it@gceerode.ac.in",
+    phone: "+91 98424 55667",
+    cabin: "IT Block - Second Floor (Room 307)",
+    publications: 11,
+    subjects: ["Web Technologies", "Web Technologies Laboratory"],
+    classAdvisorFor: 4,
+    classAdvisorLabel: "Class Advisor - IV Year IT (Batch 2023-2027)"
   }
 ];
 
-export const INITIAL_ANNOUNCEMENTS = [
+const INITIAL_ANNOUNCEMENTS = [
   {
     id: "ANN-201",
     title: "Continuous Internal Assessment - II (CIA-2) Schedule Announced",
@@ -608,7 +590,7 @@ export const INITIAL_ANNOUNCEMENTS = [
   }
 ];
 
-export const INITIAL_QUESTION_PAPERS = [
+const INITIAL_QUESTION_PAPERS = [
   {
     id: "QP-01",
     subjectCode: "IT8401",
@@ -671,7 +653,7 @@ export const INITIAL_QUESTION_PAPERS = [
   }
 ];
 
-export const INITIAL_PLACEMENTS = [
+const INITIAL_PLACEMENTS = [
   {
     id: "DRIVE-01",
     company: "Zoho Corporation",
@@ -726,7 +708,7 @@ export const INITIAL_PLACEMENTS = [
   }
 ];
 
-export const INITIAL_ACHIEVEMENTS = [
+const INITIAL_ACHIEVEMENTS = [
   {
     id: "ACH-01",
     title: "1st Prize - State Level Hackathon 'Hack-Erode 2026'",
@@ -753,7 +735,7 @@ export const INITIAL_ACHIEVEMENTS = [
   }
 ];
 
-export const INITIAL_CERTIFICATES = [
+const INITIAL_CERTIFICATES = [
   {
     id: "CERT-01",
     name: "AWS Certified Cloud Practitioner",
@@ -783,7 +765,7 @@ export const INITIAL_CERTIFICATES = [
   }
 ];
 
-export const INITIAL_NOTIFICATIONS = [
+const INITIAL_NOTIFICATIONS = [
   {
     id: "NOTIF-01",
     title: "CIA-2 Exam Timetable Uploaded",
@@ -818,26 +800,17 @@ export const INITIAL_NOTIFICATIONS = [
   }
 ];
 
-// Department Student Roster for Staff, HOD, and Admin
-export const INITIAL_ALL_STUDENTS = [
-  { rollNo: "24IT001", regNo: "730424205001", name: "Naveen Kumar R", year: 2, sem: 4, sec: "A", attendance: 89.5, cgpa: 8.74, arrears: 0, mentor: "Dr. A. Venkatesh", phone: "+91 98421 54321", email: "naveenkumar.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT002", regNo: "730424205002", name: "Abinaya S", year: 2, sem: 4, sec: "A", attendance: 94.2, cgpa: 9.15, arrears: 0, mentor: "Dr. A. Venkatesh", phone: "+91 98422 11111", email: "abinaya.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT003", regNo: "730424205003", name: "Balaji V", year: 2, sem: 4, sec: "A", attendance: 71.0, cgpa: 7.20, arrears: 1, mentor: "Dr. M. Deepa", phone: "+91 98423 22222", email: "balaji.24it@gceerode.ac.in", status: "Low Attendance" },
-  { rollNo: "24IT004", regNo: "730424205004", name: "Deepika M", year: 2, sem: 4, sec: "A", attendance: 96.0, cgpa: 9.42, arrears: 0, mentor: "Dr. A. Venkatesh", phone: "+91 98424 33333", email: "deepika.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT005", regNo: "730424205005", name: "Dinesh K", year: 2, sem: 4, sec: "A", attendance: 68.5, cgpa: 6.85, arrears: 2, mentor: "Prof. P. Kavin", phone: "+91 98425 44444", email: "dinesh.24it@gceerode.ac.in", status: "Low Attendance" },
-  { rollNo: "24IT006", regNo: "730424205006", name: "Gokulraj P", year: 2, sem: 4, sec: "A", attendance: 88.0, cgpa: 8.35, arrears: 0, mentor: "Prof. R. Priya", phone: "+91 98426 55555", email: "gokulraj.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT007", regNo: "730424205007", name: "Harini T", year: 2, sem: 4, sec: "A", attendance: 92.5, cgpa: 8.90, arrears: 0, mentor: "Dr. K. Sathish", phone: "+91 98427 66666", email: "harini.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT008", regNo: "730424205008", name: "Jeevitha S", year: 2, sem: 4, sec: "A", attendance: 85.0, cgpa: 8.10, arrears: 0, mentor: "Prof. P. Kavin", phone: "+91 98428 77777", email: "jeevitha.24it@gceerode.ac.in", status: "Active" },
-  { rollNo: "24IT009", regNo: "730424205009", name: "Karthikeyan B", year: 2, sem: 4, sec: "A", attendance: 74.0, cgpa: 7.45, arrears: 1, mentor: "Dr. A. Venkatesh", phone: "+91 98429 88888", email: "karthikeyan.24it@gceerode.ac.in", status: "Low Attendance" },
-  { rollNo: "24IT010", regNo: "730424205010", name: "Kavya R", year: 2, sem: 4, sec: "A", attendance: 97.4, cgpa: 9.60, arrears: 0, mentor: "Dr. M. Deepa", phone: "+91 98430 99999", email: "kavya.24it@gceerode.ac.in", status: "Top Ranker" },
-  { rollNo: "23IT015", regNo: "730423205015", name: "Manoj Kumar S", year: 3, sem: 6, sec: "A", attendance: 91.0, cgpa: 8.65, arrears: 0, mentor: "Dr. K. Sathish", phone: "+91 98431 12345", email: "manoj.23it@gceerode.ac.in", status: "Active" },
-  { rollNo: "23IT022", regNo: "730423205022", name: "Pooja V", year: 3, sem: 6, sec: "A", attendance: 95.0, cgpa: 9.25, arrears: 0, mentor: "Prof. R. Priya", phone: "+91 98432 23456", email: "pooja.23it@gceerode.ac.in", status: "Top Ranker" },
-  { rollNo: "22IT008", regNo: "730422205008", name: "Aravindhan G", year: 4, sem: 8, sec: "A", attendance: 88.5, cgpa: 8.80, arrears: 0, mentor: "Dr. S. K. Murugesan", phone: "+91 98433 34567", email: "aravindh.22it@gceerode.ac.in", status: "Placed (Zoho 10 LPA)" },
-  { rollNo: "22IT014", regNo: "730422205014", name: "Gayathri M", year: 4, sem: 8, sec: "A", attendance: 93.0, cgpa: 9.30, arrears: 0, mentor: "Dr. S. K. Murugesan", phone: "+91 98434 45678", email: "gayathri.22it@gceerode.ac.in", status: "Placed (Amazon 18 LPA)" }
+// Department Student Roster for Staff, HOD, and Admin (5 Registered Students)
+const INITIAL_ALL_STUDENTS = [
+  { rollNo: "24IMT30", regNo: "731124205030", name: "Nathees Kumar T", year: 2, sem: 6, sec: "A", attendance: 85.0, cgpa: 7.50, arrears: 0, mentor: "Prof. Sathyakala", phone: "9655561053", email: "natheeskumar003@gmail.com", status: "Active", pass: "1234" },
+  { rollNo: "26IT001", regNo: "730426205001", name: "K. Ananya", year: 1, sem: 2, sec: "A", attendance: 94.5, cgpa: 8.90, arrears: 0, mentor: "Prof. B. V. Prakash", phone: "+91 98421 54321", email: "26it001@gceerode.ac.in", status: "Active", pass: "1234" },
+  { rollNo: "25IT001", regNo: "730425205001", name: "Naveen Kumar R", year: 2, sem: 4, sec: "A", attendance: 89.5, cgpa: 8.74, arrears: 0, mentor: "Dr. Mohanasundaram", phone: "+91 98421 54322", email: "25it001@gceerode.ac.in", status: "Active", pass: "1234" },
+  { rollNo: "24IT001", regNo: "730424205001", name: "S. Priya", year: 3, sem: 6, sec: "A", attendance: 92.0, cgpa: 8.85, arrears: 0, mentor: "Prof. Sathyakala", phone: "+91 98421 54323", email: "24it001@gceerode.ac.in", status: "Active", pass: "1234" },
+  { rollNo: "23IT001", regNo: "730423205001", name: "M. Vignesh", year: 4, sem: 8, sec: "A", attendance: 88.0, cgpa: 8.60, arrears: 0, mentor: "Prof. Murugan", phone: "+91 98421 54324", email: "23it001@gceerode.ac.in", status: "Active", pass: "1234" }
 ];
 
 // Department Analytics Data for HOD & Admin
-export const HOD_DEPARTMENT_ANALYTICS = {
+const HOD_DEPARTMENT_ANALYTICS = {
   totalStudents: 240,
   totalStaff: 18,
   averageAttendance: 88.4,
@@ -893,10 +866,116 @@ export const HOD_DEPARTMENT_ANALYTICS = {
 };
 
 // System audit logs for Admin
-export const INITIAL_AUDIT_LOGS = [
+const INITIAL_AUDIT_LOGS = [
   { id: "LOG-501", action: "User Login", user: "24IT001 (Naveen Kumar R)", role: "STUDENT", ip: "192.168.1.45", timestamp: "Today at 09:12 AM", status: "Success" },
   { id: "LOG-502", action: "Marks Updated", user: "ITSTAFF01 (Dr. A. Venkatesh)", role: "STAFF", ip: "192.168.1.12", timestamp: "Today at 10:45 AM", status: "Success" },
   { id: "LOG-503", action: "Attendance Committed", user: "ITSTAFF03 (Dr. K. Sathish)", role: "STAFF", ip: "192.168.1.18", timestamp: "Today at 11:30 AM", status: "Success" },
   { id: "LOG-504", action: "Announcement Published", user: "ITHOD01 (Dr. S. K. Murugesan)", role: "HOD", ip: "192.168.1.10", timestamp: "Yesterday at 04:15 PM", status: "Success" },
   { id: "LOG-505", action: "Database Backup Completed", user: "ITADMIN01 (System Admin)", role: "ADMIN", ip: "127.0.0.1", timestamp: "Yesterday at 11:59 PM", status: "Success" }
 ];
+
+// Year-wise Class Advisors Mapping
+const INITIAL_CLASS_ADVISORS = {
+  1: { year: 1, batch: "2026 - 2030", staffId: "ITSTAFF01", staffName: "Prof. B. V. Prakash", designation: "Associate Professor", email: "prakash.it@gceerode.ac.in", phone: "+91 98421 22334", cabin: "Room 304, IT Block" },
+  2: { year: 2, batch: "2025 - 2029", staffId: "ITSTAFF02", staffName: "Dr. Mohanasundaram", designation: "Associate Professor", email: "mohanasundaram.it@gceerode.ac.in", phone: "+91 98422 33445", cabin: "Room 305, IT Block" },
+  3: { year: 3, batch: "2024 - 2028", staffId: "ITSTAFF03", staffName: "Prof. Sathyakala", designation: "Assistant Professor (Sr. Gr)", email: "sathyakala.it@gceerode.ac.in", phone: "+91 98423 44556", cabin: "Room 306, IT Block" },
+  4: { year: 4, batch: "2023 - 2027", staffId: "ITSTAFF04", staffName: "Prof. Murugan", designation: "Assistant Professor", email: "murugan.it@gceerode.ac.in", phone: "+91 98424 55667", cabin: "Room 307, IT Block" }
+};
+
+// Department Communication Messages & Requests
+const INITIAL_MESSAGES = [
+  {
+    id: "MSG-01",
+    fromId: "24IT001",
+    fromName: "Naveen Kumar R (24IT001)",
+    fromRole: "student",
+    toId: "ITSTAFF01",
+    toName: "Dr. A. Venkatesh (Class Advisor - Year 2)",
+    toRole: "staff",
+    type: "Request",
+    subject: "Permission for SIH 2026 Hackathon OD",
+    content: "Respected Sir, our team has been selected for the SIH 2026 Internal Screening Round. Kindly sanction On-Duty permission for September 03.",
+    timestamp: "Today at 10:30 AM",
+    read: false,
+    status: "Pending"
+  },
+  {
+    id: "MSG-02",
+    fromId: "ITSTAFF01",
+    fromName: "Dr. A. Venkatesh",
+    fromRole: "staff",
+    toId: "ITHOD01",
+    toName: "Dr. S. K. Murugesan (HOD)",
+    toRole: "hod",
+    type: "Request",
+    subject: "Lab-2 GPU Server Memory Expansion Proposal",
+    content: "Respected HOD Sir, we request approval to procure 64GB ECC RAM expansion for the AI computing workstation in IT Lab-2 for student projects.",
+    timestamp: "Yesterday at 03:15 PM",
+    read: true,
+    status: "Approved"
+  },
+  {
+    id: "MSG-03",
+    fromId: "ITHOD01",
+    fromName: "Dr. S. K. Murugesan (HOD)",
+    fromRole: "hod",
+    toId: "ALL",
+    toName: "All IT Staff & Students",
+    toRole: "all",
+    type: "Broadcast",
+    subject: "NBA Accreditation Review Meeting",
+    content: "All faculty members and student class representatives are requested to assemble in the Department Seminar Hall at 4:00 PM today.",
+    timestamp: "Today at 09:00 AM",
+    read: false,
+    status: "Active"
+  },
+  {
+    id: "MSG-04",
+    fromId: "24IT001",
+    fromName: "Naveen Kumar R",
+    fromRole: "student",
+    toId: "24IT002",
+    toName: "Abinaya S (24IT002)",
+    toRole: "student",
+    type: "DM",
+    subject: "DBMS Lab Query Optimization",
+    content: "Hey Abinaya, did you test the BCNF decomposition and composite index trigger? Let's cross-verify our results before tomorrow's lab session.",
+    timestamp: "Today at 11:20 AM",
+    read: true,
+    status: "Delivered"
+  }
+];
+
+
+const ITDepartmentData = {
+  COLLEGE_INFO,
+  DEMO_CREDENTIALS,
+  INITIAL_STUDENT_PROFILE,
+  INITIAL_SUBJECTS,
+  INITIAL_STUDENT_ATTENDANCE,
+  INITIAL_INTERNAL_MARKS,
+  INITIAL_SEMESTER_RESULTS,
+  INITIAL_TIMETABLE,
+  INITIAL_STUDY_MATERIALS,
+  INITIAL_ASSIGNMENTS,
+  INITIAL_FACULTY_LIST,
+  INITIAL_ANNOUNCEMENTS,
+  INITIAL_QUESTION_PAPERS,
+  INITIAL_PLACEMENTS,
+  INITIAL_ACHIEVEMENTS,
+  INITIAL_CERTIFICATES,
+  INITIAL_NOTIFICATIONS,
+  INITIAL_ALL_STUDENTS,
+  HOD_DEPARTMENT_ANALYTICS,
+  INITIAL_AUDIT_LOGS,
+  INITIAL_CLASS_ADVISORS,
+  INITIAL_MESSAGES
+};
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ITDepartmentData;
+}
+if (typeof window !== 'undefined') {
+  window.ITDepartmentData = ITDepartmentData;
+  window.ITDepartmentApp = ITDepartmentData;
+}

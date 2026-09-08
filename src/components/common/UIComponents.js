@@ -448,18 +448,40 @@ const Sidebar = ({ navItems, currentTab, onSelectTab, isCollapsed, onToggleColla
         })
       ),
 
-      // Bottom User & Logout Pill
+      // Bottom User Profile Card & Logout Pill
       React.createElement(
         'div',
-        { className: 'p-3 border-t border-slate-800/80 bg-slate-950/60' },
+        { className: 'p-3 border-t border-slate-800/80 bg-slate-950/60 space-y-2' },
+        // Logged-in User Profile Card in Sidebar
+        React.createElement(
+          'div',
+          {
+            onClick: () => {
+              if (onSelectTab) onSelectTab(activeRole === 'student' ? 'my-profile' : activeRole === 'staff' ? 'my-profile' : activeRole === 'hod' ? 'hod-profile' : 'system-settings');
+            },
+            title: isCollapsed ? (currentUser?.name || 'My Profile') : undefined,
+            className: `flex items-center gap-2.5 p-2 rounded-xl bg-slate-900/60 border border-slate-800/80 hover:border-cyan-500/40 cursor-pointer transition ${isCollapsed ? 'justify-center' : ''}`
+          },
+          React.createElement(
+            'div',
+            { className: 'w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-700 text-white font-bold flex items-center justify-center text-sm shadow flex-shrink-0' },
+            currentUser?.name ? currentUser.name.charAt(0) : 'U'
+          ),
+          !isCollapsed && React.createElement(
+            'div',
+            { className: 'flex-1 min-w-0' },
+            React.createElement('p', { className: 'text-xs font-bold text-white truncate' }, currentUser?.name || 'User'),
+            React.createElement('p', { className: 'text-[10px] text-cyan-400 capitalize truncate' }, `${activeRole || 'User'} • ${currentUser?.rollNo || currentUser?.id || 'Active'}`)
+          )
+        ),
         React.createElement(
           'button',
           {
             onClick: logout,
             title: isCollapsed ? 'Logout' : undefined,
-            className: `w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border border-transparent hover:border-rose-800/40 transition group`
+            className: `w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border border-transparent hover:border-rose-800/40 transition group`
           },
-          React.createElement(Icons.LogOut, { className: 'w-5 h-5 flex-shrink-0 text-rose-400 group-hover:-translate-x-0.5 transition-transform' }),
+          React.createElement(Icons.LogOut, { className: 'w-4 h-4 flex-shrink-0 text-rose-400 group-hover:-translate-x-0.5 transition-transform' }),
           !isCollapsed && React.createElement('span', { className: 'flex-1 text-left' }, 'Sign Out')
         )
       )
@@ -646,8 +668,112 @@ const AIAssistant = () => {
   );
 };
 
+// ==========================================
+// FILE DIRECTORY UPLOADER COMPONENT
+// ==========================================
+const FileUploader = ({ onFileSelect, accept = ".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg,.pptx", label = "Choose file from directory", helperText = "PDF, DOC, PPTX or ZIP up to 25MB", required = false }) => {
+  const [selectedFile, setSelectedFile] = React.useState(null);
+  const fileInputRef = React.useRef(null);
+
+  const formatFileSize = (bytes) => {
+    if (!bytes) return "0 KB";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const fileData = {
+        name: file.name,
+        size: formatFileSize(file.size),
+        rawSize: file.size,
+        type: file.name.split('.').pop().toUpperCase(),
+        mimeType: file.type,
+        file: file,
+        url: URL.createObjectURL(file)
+      };
+      setSelectedFile(fileData);
+      if (onFileSelect) onFileSelect(fileData);
+    }
+  };
+
+  const handleClear = (e) => {
+    e.stopPropagation();
+    setSelectedFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (onFileSelect) onFileSelect(null);
+  };
+
+  return React.createElement(
+    'div',
+    { className: 'w-full' },
+    React.createElement('input', {
+      ref: fileInputRef,
+      type: 'file',
+      accept: accept,
+      required: required && !selectedFile,
+      onChange: handleFileChange,
+      className: 'hidden'
+    }),
+    React.createElement(
+      'div',
+      {
+        onClick: () => fileInputRef.current && fileInputRef.current.click(),
+        className: `w-full p-4 rounded-2xl border-2 border-dashed transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group ${
+          selectedFile
+            ? 'border-emerald-500/50 bg-emerald-950/20 text-emerald-300'
+            : 'border-slate-700/80 hover:border-cyan-500/60 bg-slate-900/60 hover:bg-slate-900 text-slate-400'
+        }`
+      },
+      selectedFile
+        ? React.createElement(
+            'div',
+            { className: 'flex items-center justify-between w-full gap-3' },
+            React.createElement(
+              'div',
+              { className: 'flex items-center gap-3 truncate' },
+              React.createElement(
+                'div',
+                { className: 'w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs flex-shrink-0' },
+                selectedFile.type
+              ),
+              React.createElement(
+                'div',
+                { className: 'truncate text-left' },
+                React.createElement('p', { className: 'text-xs font-bold text-white truncate' }, selectedFile.name),
+                React.createElement('p', { className: 'text-[10px] text-emerald-400 font-medium' }, `✓ Selected • ${selectedFile.size}`)
+              )
+            ),
+            React.createElement(
+              'button',
+              {
+                type: 'button',
+                onClick: handleClear,
+                className: 'p-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 text-xs font-semibold flex-shrink-0 transition'
+              },
+              'Change File'
+            )
+          )
+        : React.createElement(
+            React.Fragment,
+            null,
+            React.createElement(
+              'div',
+              { className: 'w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform' },
+              React.createElement(Icons.Upload || Icons.FileText, { className: 'w-5 h-5' })
+            ),
+            React.createElement('p', { className: 'text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition' }, label),
+            React.createElement('p', { className: 'text-[10px] text-slate-500' }, helperText)
+          )
+    )
+  );
+};
+
 if (typeof window !== 'undefined') {
-  window.UIComponents = { StatCard, Modal, Topbar, Sidebar, ToastContainer, AIAssistant };
+  window.UIComponents = { ...(window.UIComponents || {}), StatCard, Modal, Topbar, Sidebar, ToastContainer, AIAssistant, FileUploader };
 }
 })();
 

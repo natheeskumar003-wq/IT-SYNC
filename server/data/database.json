@@ -1,0 +1,3344 @@
+{
+  "credentials": {
+    "student": {
+      "id": "25IT001",
+      "pass": "1234",
+      "name": "Naveen Kumar R",
+      "role": "student"
+    },
+    "staff": {
+      "id": "ITSTAFF01",
+      "pass": "1234",
+      "name": "Prof. B. V. Prakash",
+      "role": "staff"
+    },
+    "hod": {
+      "id": "ITHOD02",
+      "name": "Dr. S. K. Murugesan",
+      "pass": "1234",
+      "role": "hod",
+      "designation": "Professor & Head of Department",
+      "qualification": "B.E., M.Tech., Ph.D. (IIT Madras)",
+      "experience": "20+ Years",
+      "specialization": "Computer Science & IT",
+      "email": "ithod02@gceerode.ac.in",
+      "phone": "+91 94433 11223",
+      "cabin": "HOD Chamber, IT Block - Ground Floor",
+      "status": "Active",
+      "appointedDate": "2026-09-08"
+    },
+    "admin": {
+      "id": "ITADMIN01",
+      "pass": "1234",
+      "name": "Er. M. Senthil Kumar",
+      "role": "admin",
+      "email": "admin.it@gceerode.ac.in"
+    }
+  },
+  "hodList": [
+    {
+      "id": "ITHOD01",
+      "name": "Dr. S. K. Murugesan",
+      "pass": "1234",
+      "role": "hod",
+      "designation": "Professor & Head of Department",
+      "qualification": "B.E., M.Tech., Ph.D. (IIT Madras)",
+      "experience": "24 Years",
+      "specialization": "Cloud Computing, Distributed Systems, Big Data",
+      "email": "ibw@gcee.ac.in",
+      "phone": "+91-9442689006",
+      "cabin": "HOD Chamber, IT Block - Ground Floor",
+      "status": "Active",
+      "appointedDate": "2026-09-07"
+    },
+    {
+      "id": "ITHOD02",
+      "name": "Dr. S. K. Murugesan",
+      "pass": "1234",
+      "role": "hod",
+      "designation": "Professor & Head of Department",
+      "qualification": "B.E., M.Tech., Ph.D. (IIT Madras)",
+      "experience": "20+ Years",
+      "specialization": "Computer Science & IT",
+      "email": "ithod02@gceerode.ac.in",
+      "phone": "+91 94433 11223",
+      "cabin": "HOD Chamber, IT Block - Ground Floor",
+      "status": "Active",
+      "appointedDate": "2026-09-08"
+    }
+  ],
+  "studentProfile": {
+    "rollNo": "25IT001",
+    "regNo": "730425205001",
+    "name": "Naveen Kumar R",
+    "year": 2,
+    "sem": 4,
+    "sec": "A",
+    "batch": "2025 - 2029",
+    "degree": "B.Tech Information Technology",
+    "regulations": "Autonomous R2021",
+    "tneaCode": "7304",
+    "dob": "2006-05-14",
+    "bloodGroup": "O+ve",
+    "mentor": "Dr. Mohanasundaram (Assoc. Prof)",
+    "mentorContact": "mohanasundaram.it@gceerode.ac.in",
+    "cgpa": 8.74,
+    "rank": "4th in Department",
+    "standingArrears": 0,
+    "historyOfArrears": 0,
+    "creditsEarned": 68,
+    "totalCredits": 165,
+    "pendingAssignments": 2,
+    "hostelResident": true,
+    "roomNo": "Kaveri Hostel - Room 214",
+    "parentName": "Mr. K. Ramasamy",
+    "parentPhone": "+91 94432 10987",
+    "studentPhone": "+91 98421 54321",
+    "email": "25it001@gceerode.ac.in",
+    "address": "14/2, Anna Nagar, Perundurai Road, Erode - 638011"
+  },
+  "students": [
+    {
+      "rollNo": "24IMT18",
+      "regNo": "731124205018",
+      "name": "Gopinath.R",
+      "year": 3,
+      "sem": 6,
+      "sec": "A",
+      "attendance": 90,
+      "cgpa": 10,
+      "arrears": 0,
+      "mentor": "Dr.M.Sathyakala",
+      "phone": "7806971164",
+      "email": "natheeskumar003@gmail.com",
+      "status": "Active",
+      "pass": "1234",
+      "enrolledAt": "2026-09-08T08:26:55.754Z"
+    },
+    {
+      "rollNo": "24IMT30",
+      "regNo": "731124205030",
+      "name": "Nathees Kumar T",
+      "year": 2,
+      "sem": 6,
+      "sec": "A",
+      "attendance": 85,
+      "cgpa": 7.5,
+      "arrears": 0,
+      "mentor": "Prof. Sathyakala",
+      "phone": "9655561053",
+      "email": "natheeskumar003@gmail.com",
+      "status": "Active",
+      "pass": "1234"
+    },
+    {
+      "rollNo": "26IT001",
+      "regNo": "730426205001",
+      "name": "K. Ananya",
+      "year": 1,
+      "sem": 2,
+      "sec": "A",
+      "attendance": 94.5,
+      "cgpa": 8.9,
+      "arrears": 0,
+      "mentor": "Prof. B. V. Prakash",
+      "phone": "+91 98421 54321",
+      "email": "26it001@gceerode.ac.in",
+      "status": "Active",
+      "pass": "1234"
+    },
+    {
+      "rollNo": "25IT001",
+      "regNo": "730425205001",
+      "name": "Naveen Kumar R",
+      "year": 2,
+      "sem": 4,
+      "sec": "A",
+      "attendance": 90.5,
+      "cgpa": 8.74,
+      "arrears": 0,
+      "mentor": "Dr. Mohanasundaram",
+      "phone": "+91 98421 54322",
+      "email": "25it001@gceerode.ac.in",
+      "status": "Active",
+      "pass": "1234"
+    },
+    {
+      "rollNo": "24IT001",
+      "regNo": "730424205001",
+      "name": "S. Priya",
+      "year": 3,
+      "sem": 6,
+      "sec": "A",
+      "attendance": 92,
+      "cgpa": 8.85,
+      "arrears": 0,
+      "mentor": "Prof. Sathyakala",
+      "phone": "+91 98421 54323",
+      "email": "24it001@gceerode.ac.in",
+      "status": "Active",
+      "pass": "1234"
+    },
+    {
+      "rollNo": "23IT001",
+      "regNo": "730423205001",
+      "name": "M. Vignesh",
+      "year": 4,
+      "sem": 8,
+      "sec": "A",
+      "attendance": 88,
+      "cgpa": 8.6,
+      "arrears": 0,
+      "mentor": "Prof. Murugan",
+      "phone": "+91 98421 54324",
+      "email": "23it001@gceerode.ac.in",
+      "status": "Active",
+      "pass": "1234"
+    }
+  ],
+  "facultyList": [
+    {
+      "id": "ITSTAFF01",
+      "name": "Prof. B. V. Prakash",
+      "designation": "Associate Professor",
+      "qualification": "M.E., Ph.D.",
+      "experience": "16 Years",
+      "specialization": "Cloud Computing, Distributed DB & High-Performance Systems",
+      "email": "prakash.it@gceerode.ac.in",
+      "phone": "+91 98421 99999",
+      "cabin": "Room 306, IT Block",
+      "subjects": [
+        "Database Management Systems",
+        "DBMS Laboratory"
+      ],
+      "classAdvisorFor": 1,
+      "classAdvisorLabel": "Class Advisor - Year 1",
+      "publications": 26
+    },
+    {
+      "id": "ITSTAFF02",
+      "name": "Dr. Mohanasundaram",
+      "designation": "Associate Professor",
+      "qualification": "M.E., Ph.D.",
+      "experience": "15 Years",
+      "specialization": "Network Security & Cryptography",
+      "email": "mohanasundaram.it@gceerode.ac.in",
+      "phone": "+91 98422 33445",
+      "cabin": "Room 305, IT Block - 2nd Floor",
+      "subjects": [
+        "Computer Networks",
+        "Network Security Lab"
+      ],
+      "classAdvisorFor": 2,
+      "classAdvisorLabel": "Class Advisor - Year 2",
+      "publications": 19
+    },
+    {
+      "id": "ITSTAFF03",
+      "name": "Prof. Sathyakala",
+      "designation": "Assistant Professor (Sr. Gr)",
+      "qualification": "M.Tech., (Ph.D.)",
+      "experience": "12 Years",
+      "specialization": "Design & Analysis of Algorithms",
+      "email": "sathyakala.it@gceerode.ac.in",
+      "phone": "+91 98423 44556",
+      "cabin": "Room 306, IT Block - 2nd Floor",
+      "subjects": [
+        "Design & Analysis of Algorithms"
+      ],
+      "classAdvisorFor": 3,
+      "classAdvisorLabel": "Class Advisor - Year 3",
+      "publications": 12
+    },
+    {
+      "id": "ITSTAFF04",
+      "name": "Prof. Murugan",
+      "designation": "Assistant Professor",
+      "qualification": "M.E.",
+      "experience": "10 Years",
+      "specialization": "Full Stack Web Technologies & React",
+      "email": "murugan.it@gceerode.ac.in",
+      "phone": "+91 98424 55667",
+      "cabin": "Room 307, IT Block - 2nd Floor",
+      "subjects": [
+        "Web Technologies",
+        "Web Technologies Laboratory"
+      ],
+      "classAdvisorFor": 4,
+      "classAdvisorLabel": "Class Advisor - Year 4",
+      "publications": 11
+    }
+  ],
+  "subjects": [
+    {
+      "code": "IT8401",
+      "name": "Database Management Systems",
+      "type": "Theory",
+      "credits": 3,
+      "faculty": "Prof. B. V. Prakash",
+      "syllabusUnits": 5,
+      "completedUnits": 3.5,
+      "attended": 47,
+      "total": 51,
+      "internalMarks": 47.5,
+      "attendancePct": 92.2
+    },
+    {
+      "code": "IT8402",
+      "name": "Design & Analysis of Algorithms",
+      "type": "Theory",
+      "credits": 4,
+      "faculty": "Prof. Sathyakala",
+      "syllabusUnits": 5,
+      "completedUnits": 4,
+      "attended": 50,
+      "total": 54,
+      "internalMarks": 42,
+      "attendancePct": 92.5
+    },
+    {
+      "code": "IT8403",
+      "name": "Operating Systems",
+      "type": "Theory",
+      "credits": 3,
+      "faculty": "Prof. R. Saravanan",
+      "syllabusUnits": 5,
+      "completedUnits": 3,
+      "attended": 38,
+      "total": 45,
+      "internalMarks": 40,
+      "attendancePct": 84.4
+    },
+    {
+      "code": "IT8404",
+      "name": "Computer Networks",
+      "type": "Theory",
+      "credits": 3,
+      "faculty": "Dr. Mohanasundaram",
+      "syllabusUnits": 5,
+      "completedUnits": 3.5,
+      "attended": 41,
+      "total": 46,
+      "internalMarks": 45,
+      "attendancePct": 89.1
+    },
+    {
+      "code": "IT8405",
+      "name": "Web Technologies",
+      "type": "Theory",
+      "credits": 3,
+      "faculty": "Prof. Murugan",
+      "syllabusUnits": 5,
+      "completedUnits": 4,
+      "attended": 40,
+      "total": 44,
+      "internalMarks": 46,
+      "attendancePct": 90.9
+    },
+    {
+      "code": "IT8411",
+      "name": "Database Management Systems Lab",
+      "type": "Practical",
+      "credits": 2,
+      "faculty": "Prof. B. V. Prakash",
+      "syllabusUnits": 12,
+      "completedUnits": 10,
+      "attended": 28,
+      "total": 30,
+      "internalMarks": 48,
+      "attendancePct": 93.3
+    },
+    {
+      "code": "IT8412",
+      "name": "Web Technologies Laboratory",
+      "type": "Practical",
+      "credits": 2,
+      "faculty": "Prof. Murugan",
+      "syllabusUnits": 12,
+      "completedUnits": 9,
+      "attended": 26,
+      "total": 30,
+      "internalMarks": 47,
+      "attendancePct": 86.6
+    }
+  ],
+  "assignments": [
+    {
+      "id": "ASN-001",
+      "title": "Normalization & Complex SQL Query Optimization",
+      "subjectCode": "IT8401",
+      "subjectName": "Database Management Systems",
+      "faculty": "Prof. B. V. Prakash",
+      "assignedDate": "2026-08-20",
+      "dueDate": "2026-09-05",
+      "maxMarks": 20,
+      "status": "Submitted",
+      "submissionFile": "25IT001_DBMS_Assignment1.pdf",
+      "submittedDate": "2026-08-28",
+      "score": 19,
+      "remarks": "Excellent BCNF decompositions and query execution plans."
+    },
+    {
+      "id": "ASN-002",
+      "title": "Dynamic Programming: Traveling Salesperson Problem",
+      "subjectCode": "IT8402",
+      "subjectName": "Design & Analysis of Algorithms",
+      "faculty": "Prof. Sathyakala",
+      "assignedDate": "2026-08-24",
+      "dueDate": "2026-09-08",
+      "maxMarks": 20,
+      "status": "Pending",
+      "submissionFile": null,
+      "submittedDate": null,
+      "score": null,
+      "remarks": null
+    },
+    {
+      "id": "ASN-003",
+      "title": "React State Management & REST API CRUD Project",
+      "subjectCode": "IT8405",
+      "subjectName": "Web Technologies",
+      "faculty": "Prof. Murugan",
+      "assignedDate": "2026-08-26",
+      "dueDate": "2026-09-10",
+      "maxMarks": 25,
+      "status": "Pending",
+      "submissionFile": null,
+      "submittedDate": null,
+      "score": null,
+      "remarks": null
+    }
+  ],
+  "studyMaterials": [
+    {
+      "id": "MAT-0334",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "uploadDate": "2026-09-08",
+      "teacherName": "Prof. B. V. Prakash",
+      "faculty": "Prof. B. V. Prakash",
+      "teacher": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "Semester 4",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "subjectName": "Database Management Systems",
+      "code": "IT8401",
+      "subjectCode": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788864040302-274269.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
+    {
+      "id": "MAT-4756",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "uploadDate": "2026-09-08",
+      "teacherName": "Prof. B. V. Prakash",
+      "faculty": "Prof. B. V. Prakash",
+      "teacher": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "Semester 4",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "subjectName": "Database Management Systems",
+      "code": "IT8401",
+      "subjectCode": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788860814748-557527.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
+    {
+      "id": "MAT-2847",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "uploadDate": "2026-09-08",
+      "teacherName": "Prof. B. V. Prakash",
+      "faculty": "Prof. B. V. Prakash",
+      "teacher": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "Semester 4",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "subjectName": "Database Management Systems",
+      "code": "IT8401",
+      "subjectCode": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788860702839-815584.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
+    {
+      "id": "MAT-1166",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "code": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "5",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788860591158-536575.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
+    {
+      "id": "MAT-8355",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "code": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "5",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788860508347-272111.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
+    {
+      "id": "MAT-101",
+      "title": "Unit III: Transaction Processing & Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "subjectCode": "IT8401",
+      "subjectName": "Database Management Systems",
+      "teacherName": "Prof. B. V. Prakash",
+      "faculty": "Prof. B. V. Prakash",
+      "uploadedBy": "Prof. B. V. Prakash",
+      "semester": "Semester 4",
+      "department": "Information Technology",
+      "uploadDate": "2026-08-25",
+      "date": "2026-08-25",
+      "category": "Lecture Notes",
+      "fileSize": "4.2 MB",
+      "fileType": "PDF",
+      "downloads": 142
+    },
+    {
+      "id": "MAT-102",
+      "title": "Design & Analysis of Algorithms - Unit IV Dynamic Programming PPT",
+      "subject": "Design & Analysis of Algorithms",
+      "subjectCode": "IT8402",
+      "subjectName": "Design & Analysis of Algorithms",
+      "teacherName": "Prof. Sathyakala",
+      "faculty": "Prof. Sathyakala",
+      "uploadedBy": "Prof. Sathyakala",
+      "semester": "Semester 4",
+      "department": "Information Technology",
+      "uploadDate": "2026-08-22",
+      "date": "2026-08-22",
+      "category": "Lecture PPT",
+      "fileSize": "8.5 MB",
+      "fileType": "PPTX",
+      "downloads": 118
+    },
+    {
+      "id": "MAT-103",
+      "title": "Autonomous R2021 End Semester Model Question Paper with Keys",
+      "subject": "Computer Networks",
+      "subjectCode": "IT8404",
+      "subjectName": "Computer Networks",
+      "teacherName": "Dr. Mohanasundaram",
+      "faculty": "Dr. Mohanasundaram",
+      "uploadedBy": "Dr. Mohanasundaram",
+      "semester": "Semester 4",
+      "department": "Information Technology",
+      "uploadDate": "2026-08-18",
+      "date": "2026-08-18",
+      "category": "Question Bank",
+      "fileSize": "1.8 MB",
+      "fileType": "PDF",
+      "downloads": 204
+    }
+  ],
+  "leaveRequests": [
+    {
+      "id": "LEV-101",
+      "rollNo": "25IT001",
+      "studentName": "Naveen Kumar R",
+      "type": "Medical Leave",
+      "fromDate": "2026-08-12",
+      "toDate": "2026-08-14",
+      "reason": "Viral fever and doctor consultation",
+      "status": "Approved",
+      "proof": "Medical_Certificate.pdf"
+    },
+    {
+      "id": "LEV-102",
+      "rollNo": "25IT001",
+      "studentName": "Naveen Kumar R",
+      "type": "On-Duty (Symposium)",
+      "fromDate": "2026-09-14",
+      "toDate": "2026-09-14",
+      "reason": "Paper Presentation at National Symposium",
+      "status": "Pending",
+      "proof": "Event_Invite.pdf"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ANN-384",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
+      "id": "ANN-774",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
+      "id": "ANN-866",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
+      "id": "ANN-186",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
+      "id": "ANN-376",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
+      "id": "ANN-01",
+      "title": "Autonomous Continuous Internal Assessment (CIA-1) Schedule Announced",
+      "category": "Academic",
+      "priority": "Urgent",
+      "date": "2026-08-28",
+      "author": "Dr. S. K. Murugesan (HOD)",
+      "content": "CIA-1 for all 2nd, 3rd, and 4th Year B.Tech IT students will commence from September 18, 2026. Detailed seating and timetable available in department notice board."
+    },
+    {
+      "id": "ANN-02",
+      "title": "Zoho Campus Recruitment Drive - Batch 2025 & 2026 Registrations Open",
+      "category": "Placement",
+      "priority": "High",
+      "date": "2026-08-25",
+      "author": "Placement Cell / IT Dept",
+      "content": "Zoho Corporation drive scheduled for Software Development Engineer (₹8.5 LPA). Eligible students (CGPA >= 7.5 with 0 arrears) must register before Sep 05."
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ACH-001",
+      "title": "1st Prize - Smart India Hackathon (SIH) 2025 Internal Round",
+      "description": "Developed an IoT & AI based crop disease detector using edge computation and real-time inference.",
+      "uploadDate": "2025-10-14",
+      "date": "2025-10-14",
+      "category": "Hackathon",
+      "issuedBy": "Ministry of Education & GCE Erode",
+      "studentName": "Nathees Kumar T",
+      "studentRoll": "24IMT30",
+      "fileUrl": "",
+      "fileType": "image/png"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "CERT-0899",
+      "uploadDate": "2026-09-08",
+      "title": "sample login pageQWERT",
+      "name": "sample login pageQWERT",
+      "issuer": "qdwerfg",
+      "credentialId": "wefqrgtegn",
+      "fileName": "sample_login_page.jpeg",
+      "fileUrl": "/uploads/certificates/cert_1788856190883_sample_login_page.jpeg",
+      "fileType": "image",
+      "rollNo": "24IMT18"
+    },
+    {
+      "id": "CERT-001",
+      "name": "AWS Certified Solutions Architect - Associate",
+      "issuer": "Amazon Web Services (AWS)",
+      "issueDate": "2025-12-10",
+      "validTill": "2028-12-10",
+      "credentialId": "AWS-SAA-849204"
+    }
+  ],
+  "classAdvisors": {
+    "1": {
+      "year": 1,
+      "batch": "2026 - 2030",
+      "staffId": "ITSTAFF01",
+      "staffName": "Prof. B. V. Prakash"
+    },
+    "2": {
+      "year": 2,
+      "batch": "2025 - 2029",
+      "staffId": "ITSTAFF02",
+      "staffName": "Dr. Mohanasundaram"
+    },
+    "3": {
+      "year": 3,
+      "batch": "2024 - 2028",
+      "staffId": "ITSTAFF03",
+      "staffName": "Prof. Sathyakala"
+    },
+    "4": {
+      "year": 4,
+      "batch": "2023 - 2027",
+      "staffId": "ITSTAFF04",
+      "staffName": "Prof. Murugan"
+    }
+  },
+  "messages": [
+    {
+      "id": "MSG-0365",
+      "timestamp": "04:10 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
+      "id": "MSG-4766",
+      "timestamp": "03:16 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
+      "id": "MSG-2857",
+      "timestamp": "03:15 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
+      "id": "MSG-1177",
+      "timestamp": "03:13 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
+      "id": "MSG-8366",
+      "timestamp": "03:11 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
+      "id": "MSG-01",
+      "fromId": "25IT001",
+      "fromName": "Naveen Kumar R",
+      "fromRole": "student",
+      "toId": "ITSTAFF02",
+      "toName": "Dr. Mohanasundaram (Class Advisor)",
+      "toRole": "staff",
+      "type": "Request",
+      "subject": "Permission for National Symposium On-Duty",
+      "content": "Respected Sir, I request you to kindly grant me On-Duty permission for presenting a research paper at PSG Tech on 14-Sep-2026.",
+      "timestamp": "Yesterday, 04:30 PM",
+      "read": false,
+      "status": "Pending"
+    },
+    {
+      "id": "MSG-02",
+      "fromId": "ITSTAFF02",
+      "fromName": "Dr. Mohanasundaram",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R (25IT001)",
+      "toRole": "student",
+      "type": "DM",
+      "subject": "DBMS Mini-Project Review Feedback",
+      "content": "Naveen, your ER diagram and 3NF decomposition for the Hospital Management module look solid. Proceed with MongoDB indexing and FastAPI backend integration.",
+      "timestamp": "Yesterday, 06:15 PM",
+      "read": true,
+      "status": "Delivered"
+    },
+    {
+      "id": "MSG-03",
+      "fromId": "ITHOD01",
+      "fromName": "Dr.I. Bhuvaneshwarri (HOD)",
+      "fromRole": "hod",
+      "toId": "ALL",
+      "toName": "All IT Staff & Students",
+      "toRole": "all",
+      "type": "Broadcast",
+      "subject": "NBA Accreditation Review Meeting",
+      "content": "All faculty members and student class representatives are requested to assemble in the Department Seminar Hall at 4:00 PM today.",
+      "timestamp": "Today at 09:00 AM",
+      "read": false,
+      "status": "Active"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "LOG-6751",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr. S. K. Murugesan)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5902",
+      "action": "User Login",
+      "user": "24IMT30 (ITHOD01)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4816",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr. S. K. Murugesan)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9952",
+      "action": "User Login",
+      "user": "ITHOD02 (Dr. S. K. Murugesan)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4044",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8940",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3178",
+      "action": "User Login",
+      "user": "ITHOD02 (Dr. S. K. Murugesan)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7551",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6940",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-6913",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6928",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-6896",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0371",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0195",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4768",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4715",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5263",
+      "action": "New HOD Appointed",
+      "user": "ITHOD02 (Dr. S. K. Murugesan)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5256",
+      "action": "HOD Profile Updated",
+      "user": "ITHOD01 (Dr. S. K. Murugesan)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5244",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5239",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5220",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5216",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5211",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5206",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5201",
+      "action": "User Login",
+      "user": "22IT001 (22IT001)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5197",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5190",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5182",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6764",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-6752",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6758",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-6742",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2859",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2808",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8553",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-8537",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8546",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-8527",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1180",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1126",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8369",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8316",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5489",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7106",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-7094",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7100",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-7085",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0062",
+      "action": "User Login",
+      "user": "24IMT18 (Gopinath.R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3470",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3751",
+      "action": "User Login",
+      "user": "24IMT30 (ITSTAFF02)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1963",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2297",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-2284",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2291",
+      "action": "Achievement Upload Removed",
+      "user": "ID: ACH-2273",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6209",
+      "action": "User Login",
+      "user": "24IMT18 (Gopinath.R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5558",
+      "action": "User Login",
+      "user": "24IMT18 (Gopinath.R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2402",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4193",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8052",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0608",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0598",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0584",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9763",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9672",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7416",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1612",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5954",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6799",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6795",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6790",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6785",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6781",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6777",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6773",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6769",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6765",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6761",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6757",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8743",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9807",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7714",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9835",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9829",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9820",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9810",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9802",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9795",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9782",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9769",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9754",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9740",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9723",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1293",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6033",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4962",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3524",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0152",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3569",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3557",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3542",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3525",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3510",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3496",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3482",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3467",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3453",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3439",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3421",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9218",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9213",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9206",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9199",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9191",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9185",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9179",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9172",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9166",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9160",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9153",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7670",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7928",
+      "action": "User Login",
+      "user": "ITSTAFF04 (Prof. Murugan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7919",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7911",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7904",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7896",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7888",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7881",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7873",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7863",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4045",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0499",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-0366",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7592",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9418",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9409",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9400",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9392",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9381",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4085",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4076",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4067",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4057",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-3180",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2537",
+      "action": "User Login",
+      "user": "23IT001 (M. Vignesh)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2516",
+      "action": "User Login",
+      "user": "24IT001 (S. Priya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2490",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2468",
+      "action": "User Login",
+      "user": "26IT001 (K. Ananya)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2420",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-5304",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-6856",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7115",
+      "action": "User Login",
+      "user": "ITSTAFF05 (Prof. R. Saravanan)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2022",
+      "action": "User Login",
+      "user": "24IMT30 (Nathees Kumar T)",
+      "role": "STUDENT",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9184",
+      "action": "User Login",
+      "user": "ITSTAFF02 (Dr. Mohanasundaram)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7594",
+      "action": "User Login",
+      "user": "ITHOD02 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7758",
+      "action": "User Login",
+      "user": "ITSTAFF03 (Prof. Sathyakala)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-2403",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-4607",
+      "action": "User Login",
+      "user": "ITHOD02 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-9654",
+      "action": "HOD Removed",
+      "user": "ITHOD01",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1411",
+      "action": "HOD Profile Updated",
+      "user": "ITHOD01 (Dr. S. K. Muruge)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1003",
+      "action": "HOD Profile Updated",
+      "user": "ITHOD01 (Dr. S. K. Murugesan)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-8043",
+      "action": "New HOD Registered",
+      "user": "ITHOD02 (Dr.I. Bhuvaneshwarri)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1260",
+      "action": "User Login",
+      "user": "ITADMIN01 (Er. M. Senthil Kumar)",
+      "role": "ADMIN",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1001",
+      "action": "User Login",
+      "user": "25IT001 (Naveen Kumar R)",
+      "role": "STUDENT",
+      "ip": "192.168.1.100",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1002",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-1003",
+      "action": "User Login",
+      "user": "ITHOD01 (Dr.I. Bhuvaneshwarri)",
+      "role": "HOD",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "GAL-811302",
+      "title": "hais",
+      "description": "dhjsd",
+      "section": "department",
+      "category": "qdh",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "/uploads/gallery/department/sample_login_page-1788850811298-369865686.jpeg",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\department\\sample_login_page-1788850811298-369865686.jpeg",
+      "fileSize": 163977,
+      "mimeType": "image/jpeg",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "24IT001",
+        "name": "S. Priya",
+        "role": "student"
+      },
+      "status": "Pending Approval",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-403249",
+      "title": "Zoho Recruitment Drive 2026",
+      "description": "Selected students offer letter distribution.",
+      "section": "placement",
+      "category": "Recruitment Drive",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Zoho",
+      "url": "/uploads/gallery/placement/zoho_offers-1788850403246-105403731.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\placement\\zoho_offers-1788850403246-105403731.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "ITSTAFF01",
+        "name": "Prof. B. V. Prakash",
+        "role": "staff"
+      },
+      "status": "Approved",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-403240",
+      "title": "TARANG Cultural Inauguration",
+      "description": "Annual cultural stage ceremony.",
+      "section": "event",
+      "category": "Cultural Programs",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "/uploads/gallery/events/tarang_stage-1788850403236-182683866.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\events\\tarang_stage-1788850403236-182683866.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "Pending Approval",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-403230",
+      "title": "INFOBIT 2026 Hackathon Finals",
+      "description": "First prize presentation at annual national symposium.",
+      "section": "symposium",
+      "category": "Hackathon",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "/uploads/gallery/symposium/infobit_team-1788850403228-654457956.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\symposium\\infobit_team-1788850403228-654457956.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "Rejected",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-333700",
+      "title": "Zoho Recruitment Drive 2026",
+      "description": "Selected students offer letter distribution.",
+      "section": "placement",
+      "category": "Recruitment Drive",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Zoho",
+      "url": "/uploads/gallery/placement/zoho_offers-1788850333697-448563827.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\placement\\zoho_offers-1788850333697-448563827.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "ITSTAFF01",
+        "name": "Prof. B. V. Prakash",
+        "role": "staff"
+      },
+      "status": "Approved",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-333692",
+      "title": "TARANG Cultural Inauguration",
+      "description": "Annual cultural stage ceremony.",
+      "section": "event",
+      "category": "Cultural Programs",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "/uploads/gallery/events/tarang_stage-1788850333684-570802329.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\events\\tarang_stage-1788850333684-570802329.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "Pending Approval",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-333678",
+      "title": "INFOBIT 2026 Hackathon Finals",
+      "description": "First prize presentation at annual national symposium.",
+      "section": "symposium",
+      "category": "Hackathon",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "/uploads/gallery/symposium/infobit_team-1788850333676-983691574.png",
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\symposium\\infobit_team-1788850333676-983691574.png",
+      "fileSize": 70,
+      "mimeType": "image/png",
+      "date": "2026-09-08",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "Rejected",
+      "likes": 0,
+      "likedBy": [],
+      "comments": [],
+      "views": 1
+    },
+    {
+      "id": "GAL-101",
+      "title": "High-Performance Cloud & AI Computing Laboratory",
+      "description": "State-of-the-art server racks and GPU workstations installed in the IT Department for student research in Distributed Systems and Deep Learning.",
+      "section": "department",
+      "category": "Labs & Infrastructure",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-20",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 42,
+      "likedBy": [
+        "25IT001",
+        "24IMT30"
+      ],
+      "comments": [
+        {
+          "id": "CMT-1",
+          "userId": "25IT001",
+          "userName": "Naveen Kumar R",
+          "userRole": "student",
+          "text": "The new Nvidia GPU nodes are blazing fast for our CNN training!",
+          "timestamp": "2 days ago"
+        },
+        {
+          "id": "CMT-1b",
+          "userId": "ITSTAFF01",
+          "userName": "Prof. B. V. Prakash",
+          "userRole": "staff",
+          "text": "Students can reserve 4-hour slots through the department portal.",
+          "timestamp": "1 day ago"
+        }
+      ],
+      "views": 310
+    },
+    {
+      "id": "GAL-102",
+      "title": "Interactive Full-Stack Web Development Lab",
+      "description": "Final and pre-final year students actively coding responsive web applications during their practical laboratory examination.",
+      "section": "department",
+      "category": "Academic Sessions",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-14",
+      "uploadedBy": {
+        "id": "ITSTAFF04",
+        "name": "Prof. Murugan",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 29,
+      "likedBy": [
+        "24IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-2",
+          "userId": "24IT001",
+          "userName": "S. Priya",
+          "userRole": "student",
+          "text": "Great hands-on experience building full-stack applications.",
+          "timestamp": "3 days ago"
+        }
+      ],
+      "views": 245
+    },
+    {
+      "id": "GAL-103",
+      "title": "AI Research & Robotics Demonstration Hub",
+      "description": "Department students demonstrating autonomous obstacle-avoiding edge AI rover during the Board of Studies meeting.",
+      "section": "department",
+      "category": "Innovation & Projects",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-07-28",
+      "uploadedBy": {
+        "id": "ITSTAFF02",
+        "name": "Dr. Mohanasundaram",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 56,
+      "likedBy": [
+        "26IT001",
+        "23IT001"
+      ],
+      "comments": [],
+      "views": 420
+    },
+    {
+      "id": "GAL-104",
+      "title": "Computer Science & Engineering Data Structures Workshop",
+      "description": "Inter-department collaborative coding workshop between IT and CSE faculty on Advanced Graph Algorithms.",
+      "section": "department",
+      "category": "Inter-Department",
+      "department": "Computer Science",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-07-15",
+      "uploadedBy": {
+        "id": "ITADMIN01",
+        "name": "Er. M. Senthil Kumar",
+        "role": "admin"
+      },
+      "status": "approved",
+      "likes": 38,
+      "likedBy": [],
+      "comments": [],
+      "views": 180
+    },
+    {
+      "id": "GAL-105",
+      "title": "Electronics & Microcontroller IoT Hardware Setup",
+      "description": "Smart agriculture IoT sensor arrays and ESP32 nodes configured by IT students in collaboration with ECE lab.",
+      "section": "department",
+      "category": "Hardware & IoT",
+      "department": "Electronics & Comm",
+      "eventYear": "2025",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+      "date": "2025-11-10",
+      "uploadedBy": {
+        "id": "ITSTAFF03",
+        "name": "Prof. Sathyakala",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 24,
+      "likedBy": [],
+      "comments": [],
+      "views": 160
+    },
+    {
+      "id": "GAL-106",
+      "title": "Department Faculty Strategic Academic Review",
+      "description": "HOD Dr.I. Bhuvaneshwarri presiding over the department curriculum restructuring and NBA accreditation readiness meet.",
+      "section": "department",
+      "category": "Department Meetings",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-01",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 47,
+      "likedBy": [],
+      "comments": [],
+      "views": 290
+    },
+    {
+      "id": "GAL-107",
+      "title": "Smart Classroom Lecture on Cloud Microservices",
+      "description": "Student clicker-assisted interactive session on Kubernetes clusters and Docker containers.",
+      "section": "department",
+      "category": "Smart Classrooms",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-18",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "Approved",
+      "likes": 12,
+      "likedBy": [
+        "24IMT30"
+      ],
+      "comments": [
+        {
+          "id": "CMT-3",
+          "userId": "24IMT30",
+          "userName": "Nathees Kumar T",
+          "userRole": "student",
+          "text": "Submitted for department photo gallery update!",
+          "timestamp": "Yesterday"
+        }
+      ],
+      "views": 85
+    },
+    {
+      "id": "GAL-201",
+      "title": "INFOBIT 2026 - Grand Inaugural Ceremony & Keynote",
+      "description": "National Level Technical Symposium INFOBIT 2026 inaugurated by Chief Guest from Microsoft India in the GCE Main Auditorium.",
+      "section": "symposium",
+      "category": "Keynote & Inauguration",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-03-12",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 88,
+      "likedBy": [
+        "25IT001",
+        "24IT001",
+        "23IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-4",
+          "userId": "23IT001",
+          "userName": "M. Vignesh",
+          "userRole": "student",
+          "text": "Unforgettable keynote on generative AI architectures!",
+          "timestamp": "Mar 13, 2026"
+        }
+      ],
+      "views": 650
+    },
+    {
+      "id": "GAL-202",
+      "title": "24-Hour National Hackathon Code Sprint",
+      "description": "Over 60 collegiate teams battling all night in the IT Department Lab solving real-world smart city and fintech challenges.",
+      "section": "symposium",
+      "category": "Hackathon",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-03-13",
+      "uploadedBy": {
+        "id": "ITSTAFF01",
+        "name": "Prof. B. V. Prakash",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 112,
+      "likedBy": [
+        "25IT001",
+        "24IMT30"
+      ],
+      "comments": [
+        {
+          "id": "CMT-5",
+          "userId": "24IMT30",
+          "userName": "Nathees Kumar T",
+          "userRole": "student",
+          "text": "We bagged 2nd place in the IoT track!",
+          "timestamp": "Mar 14, 2026"
+        }
+      ],
+      "views": 890
+    },
+    {
+      "id": "GAL-203",
+      "title": "National Technical Paper Presentation Session",
+      "description": "Scholars from over 35 engineering colleges presenting research papers on Cryptography, Quantum Computing, and Natural Language Processing.",
+      "section": "symposium",
+      "category": "Paper Presentation",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-03-12",
+      "uploadedBy": {
+        "id": "ITSTAFF03",
+        "name": "Prof. Sathyakala",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 45,
+      "likedBy": [],
+      "comments": [],
+      "views": 310
+    },
+    {
+      "id": "GAL-204",
+      "title": "INFOBIT 2026 Overall Championship Trophy Distribution",
+      "description": "The Principal and HOD presenting the prestigious Rolling Trophy and cash prizes to the winning team at the valedictory ceremony.",
+      "section": "symposium",
+      "category": "Valedictory & Awards",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-03-13",
+      "uploadedBy": {
+        "id": "ITADMIN01",
+        "name": "Er. M. Senthil Kumar",
+        "role": "admin"
+      },
+      "status": "approved",
+      "likes": 74,
+      "likedBy": [
+        "26IT001"
+      ],
+      "comments": [],
+      "views": 520
+    },
+    {
+      "id": "GAL-205",
+      "title": "TECHFEST 2025 - Autonomous Drone Racing Arena",
+      "description": "Custom-built FPV quadcopters navigating high-speed obstacles in the college indoor sports complex.",
+      "section": "symposium",
+      "category": "Drone & Robotics",
+      "department": "Information Technology",
+      "eventYear": "2025",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=1200&auto=format&fit=crop&q=80",
+      "date": "2025-04-18",
+      "uploadedBy": {
+        "id": "ITSTAFF02",
+        "name": "Dr. Mohanasundaram",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 63,
+      "likedBy": [],
+      "comments": [],
+      "views": 430
+    },
+    {
+      "id": "GAL-206",
+      "title": "CYBERHACK 2024 - Live Capture The Flag Arena",
+      "description": "Teams engaged in real-time ethical hacking, reverse engineering, and web vulnerability exploitation challenges.",
+      "section": "symposium",
+      "category": "Capture The Flag",
+      "department": "Information Technology",
+      "eventYear": "2024",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80",
+      "date": "2024-03-22",
+      "uploadedBy": {
+        "id": "ITSTAFF04",
+        "name": "Prof. Murugan",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 51,
+      "likedBy": [],
+      "comments": [],
+      "views": 380
+    },
+    {
+      "id": "GAL-301",
+      "title": "TARANG 2026 - Annual Inter-College Cultural Fiesta",
+      "description": "Spectacular laser show and band performance during the grand opening night of the annual cultural extravaganza.",
+      "section": "event",
+      "category": "Cultural Programs",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-02-27",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 135,
+      "likedBy": [
+        "25IT001",
+        "24IMT30",
+        "24IT001",
+        "26IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-6",
+          "userId": "26IT001",
+          "userName": "K. Ananya",
+          "userRole": "student",
+          "text": "Best cultural night of the entire semester!",
+          "timestamp": "Feb 28, 2026"
+        }
+      ],
+      "views": 940
+    },
+    {
+      "id": "GAL-302",
+      "title": "College Music & Dance Troupe Classical Performance",
+      "description": "IT Department students performing fusion Bharatanatyam and Western instrumental symphony.",
+      "section": "event",
+      "category": "Cultural Programs",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-02-28",
+      "uploadedBy": {
+        "id": "ITSTAFF03",
+        "name": "Prof. Sathyakala",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 82,
+      "likedBy": [
+        "24IT001"
+      ],
+      "comments": [],
+      "views": 610
+    },
+    {
+      "id": "GAL-303",
+      "title": "Annual Sports Day 2026 - 100m Sprint Finals",
+      "description": "High-octane track and field competition at the college athletics stadium. IT Department clinched Gold and Bronze.",
+      "section": "event",
+      "category": "Sports Day",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-02-14",
+      "uploadedBy": {
+        "id": "ITSTAFF01",
+        "name": "Prof. B. V. Prakash",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 95,
+      "likedBy": [
+        "23IT001",
+        "25IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-7",
+          "userId": "23IT001",
+          "userName": "M. Vignesh",
+          "userRole": "student",
+          "text": "Hearty congratulations to the department relay team!",
+          "timestamp": "Feb 15, 2026"
+        }
+      ],
+      "views": 720
+    },
+    {
+      "id": "GAL-304",
+      "title": "Inter-Department Cricket Tournament Championship Match",
+      "description": "IT Department batting lineup leading the team to a dramatic last-over victory against Mechanical Department.",
+      "section": "event",
+      "category": "Sports Day",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-02-10",
+      "uploadedBy": {
+        "id": "25IT001",
+        "name": "Naveen Kumar R",
+        "role": "student"
+      },
+      "status": "approved",
+      "likes": 67,
+      "likedBy": [],
+      "comments": [],
+      "views": 480
+    },
+    {
+      "id": "GAL-305",
+      "title": "Hands-on AWS Cloud Architecture & DevOps Seminar",
+      "description": "Industry expert technical masterclass covering multi-region AWS high availability and serverless pipelines.",
+      "section": "event",
+      "category": "Workshops & Seminars",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-01-24",
+      "uploadedBy": {
+        "id": "ITSTAFF02",
+        "name": "Dr. Mohanasundaram",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 58,
+      "likedBy": [],
+      "comments": [],
+      "views": 390
+    },
+    {
+      "id": "GAL-306",
+      "title": "NSS Mega Clean Campus & Sapling Plantation Drive",
+      "description": "Over 200 student volunteers planting 500 indigenous trees across the college campus periphery.",
+      "section": "event",
+      "category": "NSS & NCC",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-01-18",
+      "uploadedBy": {
+        "id": "ITSTAFF04",
+        "name": "Prof. Murugan",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 72,
+      "likedBy": [
+        "24IMT30"
+      ],
+      "comments": [],
+      "views": 450
+    },
+    {
+      "id": "GAL-307",
+      "title": "Class of 2026 Senior Batch Farewell Banquet",
+      "description": "Emotional send-off and memories presentation for the graduating 4th year B.Tech IT engineers.",
+      "section": "event",
+      "category": "Farewell & Freshers",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-04-20",
+      "uploadedBy": {
+        "id": "23IT001",
+        "name": "M. Vignesh",
+        "role": "student"
+      },
+      "status": "approved",
+      "likes": 120,
+      "likedBy": [
+        "25IT001",
+        "24IT001"
+      ],
+      "comments": [],
+      "views": 820
+    },
+    {
+      "id": "GAL-308",
+      "title": "67th College Annual Day Celebrations",
+      "description": "Academic excellence medals and best outgoing student awards conferred by the Chief Secretary of Higher Education.",
+      "section": "event",
+      "category": "Annual Day",
+      "department": "College Level",
+      "eventYear": "2026",
+      "company": null,
+      "url": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-04-05",
+      "uploadedBy": {
+        "id": "ITADMIN01",
+        "name": "Er. M. Senthil Kumar",
+        "role": "admin"
+      },
+      "status": "approved",
+      "likes": 91,
+      "likedBy": [],
+      "comments": [],
+      "views": 570
+    },
+    {
+      "id": "GAL-401",
+      "title": "Zoho Corporation - Campus Recruitment Drive (₹8.5 LPA)",
+      "description": "Technical interview panel conducting problem-solving rounds and live code design interviews in the Department Conference Hall.",
+      "section": "placement",
+      "category": "Recruitment Drives",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Zoho",
+      "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-25",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 148,
+      "likedBy": [
+        "25IT001",
+        "24IMT30",
+        "23IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-8",
+          "userId": "23IT001",
+          "userName": "M. Vignesh",
+          "userRole": "student",
+          "text": "Thrilled to receive the Software Developer offer from Zoho!",
+          "timestamp": "Aug 26, 2026"
+        },
+        {
+          "id": "CMT-9",
+          "userId": "ITSTAFF02",
+          "userName": "Dr. Mohanasundaram",
+          "userRole": "staff",
+          "text": "Proud of all 14 IT students selected!",
+          "timestamp": "Aug 26, 2026"
+        }
+      ],
+      "views": 1100
+    },
+    {
+      "id": "GAL-402",
+      "title": "TCS Digital & Ninja - Technical HR Interview Rounds",
+      "description": "Final rounds for Tata Consultancy Services Digital cadre with candidates demonstrating system architecture and algorithms.",
+      "section": "placement",
+      "category": "Recruitment Drives",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "TCS",
+      "url": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-10",
+      "uploadedBy": {
+        "id": "ITSTAFF01",
+        "name": "Prof. B. V. Prakash",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 85,
+      "likedBy": [
+        "24IT001"
+      ],
+      "comments": [],
+      "views": 640
+    },
+    {
+      "id": "GAL-403",
+      "title": "Infosys Springboard Campus Selection Day",
+      "description": "Infosys talent acquisition team conducting on-campus recruitment tests and issuing Letters of Intent to 22 selected students.",
+      "section": "placement",
+      "category": "Recruitment Drives",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Infosys",
+      "url": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-07-30",
+      "uploadedBy": {
+        "id": "ITSTAFF03",
+        "name": "Prof. Sathyakala",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 92,
+      "likedBy": [],
+      "comments": [],
+      "views": 710
+    },
+    {
+      "id": "GAL-404",
+      "title": "Cognizant GenC Next On-Campus Selection Panel",
+      "description": "Cognizant senior technical leads evaluating students on Cloud, Spring Boot, and React projects.",
+      "section": "placement",
+      "category": "Recruitment Drives",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Cognizant",
+      "url": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-07-22",
+      "uploadedBy": {
+        "id": "ITSTAFF04",
+        "name": "Prof. Murugan",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 77,
+      "likedBy": [],
+      "comments": [],
+      "views": 590
+    },
+    {
+      "id": "GAL-405",
+      "title": "Wipro & HCL National Aptitude & Coding Assessment",
+      "description": "Over 180 department students appearing for automated proctored coding assessments in the central computing labs.",
+      "section": "placement",
+      "category": "Recruitment Drives",
+      "department": "Information Technology",
+      "eventYear": "2025",
+      "company": "Wipro",
+      "url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&auto=format&fit=crop&q=80",
+      "date": "2025-10-15",
+      "uploadedBy": {
+        "id": "ITSTAFF02",
+        "name": "Dr. Mohanasundaram",
+        "role": "staff"
+      },
+      "status": "approved",
+      "likes": 64,
+      "likedBy": [],
+      "comments": [],
+      "views": 460
+    },
+    {
+      "id": "GAL-406",
+      "title": "Accenture Mock Interview & Soft Skills Boot Camp",
+      "description": "Comprehensive 5-day placement training covering GD etiquette, algorithmic coding, and behavioural interview drills.",
+      "section": "placement",
+      "category": "Placement Training",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Accenture",
+      "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-06-15",
+      "uploadedBy": {
+        "id": "ITADMIN01",
+        "name": "Er. M. Senthil Kumar",
+        "role": "admin"
+      },
+      "status": "approved",
+      "likes": 89,
+      "likedBy": [
+        "25IT001",
+        "24IMT30"
+      ],
+      "comments": [],
+      "views": 680
+    },
+    {
+      "id": "GAL-407",
+      "title": "100% Placement Offer Letter Distribution Ceremony",
+      "description": "Principal, HOD, and Placement Officers handing over formal appointment orders to 78 placed students with celebratory cake cutting.",
+      "section": "placement",
+      "category": "Offer Letter Celebrations",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "Zoho",
+      "url": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-08-28",
+      "uploadedBy": {
+        "id": "ITHOD01",
+        "name": "Dr.I. Bhuvaneshwarri",
+        "role": "hod"
+      },
+      "status": "approved",
+      "likes": 195,
+      "likedBy": [
+        "25IT001",
+        "24IMT30",
+        "26IT001",
+        "24IT001",
+        "23IT001"
+      ],
+      "comments": [
+        {
+          "id": "CMT-10",
+          "userId": "ITHOD01",
+          "userName": "Dr.I. Bhuvaneshwarri",
+          "userRole": "hod",
+          "text": "Heartiest congratulations to our shining stars! May you scale great heights in the tech industry.",
+          "timestamp": "Aug 29, 2026"
+        }
+      ],
+      "views": 1450
+    },
+    {
+      "id": "GAL-408",
+      "title": "HCL Technologies Offer Acceptance Group Snapshot",
+      "description": "Selected IT department students holding their offer letters outside the Placement Cell.",
+      "section": "placement",
+      "category": "Offer Letter Celebrations",
+      "department": "Information Technology",
+      "eventYear": "2026",
+      "company": "HCL",
+      "url": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&auto=format&fit=crop&q=80",
+      "date": "2026-07-18",
+      "uploadedBy": {
+        "id": "24IMT30",
+        "name": "Nathees Kumar T",
+        "role": "student"
+      },
+      "status": "pending",
+      "likes": 18,
+      "likedBy": [
+        "24IMT30"
+      ],
+      "comments": [],
+      "views": 95
+    }
+  ],
+  "internalMarks": [
+    {
+      "id": "MARK-1788864040220",
+      "subjectCode": "IT8401",
+      "examType": "CIA-1",
+      "marks": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "score": 48,
+          "maxScore": 50
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "score": 47,
+          "maxScore": 50
+        }
+      ],
+      "publishedDate": "2026-09-08",
+      "recordedAt": "2026-09-08T10:40:40.220Z"
+    }
+  ],
+  "attendanceRecords": [
+    {
+      "id": "ATT-1788860508334",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T09:41:48.334Z"
+    },
+    {
+      "id": "ATT-1788860591146",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T09:43:11.146Z"
+    },
+    {
+      "id": "ATT-1788860702825",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T09:45:02.825Z"
+    },
+    {
+      "id": "ATT-1788860814733",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T09:46:54.733Z"
+    },
+    {
+      "id": "ATT-1788864040257",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T10:40:40.257Z"
+    }
+  ]
+}

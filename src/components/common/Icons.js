@@ -26,7 +26,7 @@ const createSvg = (pathD, viewBox = "0 0 24 24", extraProps = {}) => {
   };
 };
 
-export const Icons = {
+const Icons = {
   // Navigation & Core
   Dashboard: createSvg([
     "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
@@ -188,9 +188,41 @@ export const Icons = {
     "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z",
     "M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
   ]),
-  Menu: createSvg(["M3 12h18", "M3 6h18", "M3 18h18"])
+  Menu: createSvg(["M3 12h18", "M3 6h18", "M3 18h18"]),
+  Image: createSvg([
+    "M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z",
+    "M8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z",
+    "M21 15l-5-5L5 21"
+  ]),
+  Heart: createSvg([
+    "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+  ]),
+  Camera: createSvg([
+    "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z",
+    "M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
+  ]),
+  MessageCircle: createSvg([
+    "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+  ]),
+  Maximize2: createSvg([
+    "M15 3h6v6",
+    "M9 21H3v-6",
+    "M21 3l-7 7",
+    "M3 21l7-7"
+  ]),
+  Folder: createSvg([
+    "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+  ]),
+  RefreshCw: createSvg([
+    "M23 4v6h-6",
+    "M1 20v-6h6",
+    "M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+  ])
 };
 
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { Icons, createSvg };
+}
 if (typeof window !== 'undefined') {
   window.Icons = Icons;
 }

@@ -13,12 +13,21 @@
  *    without requiring ANY changes to the UI components or state handlers!
  */
 
+function getResolvedApiBaseUrl() {
+  if (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin.startsWith('http')) {
+    return `${window.location.origin}/api`;
+  }
+  return 'http://localhost:5000/api';
+}
+
 const API_CONFIG = {
   // Toggle to true to connect to Node.js Express REST API server
   USE_BACKEND_API: true,
   
-  // Base URL for backend Node.js Express REST API endpoints
-  API_BASE_URL: 'http://localhost:5000/api',
+  // Base URL for backend Node.js Express REST API endpoints (dynamically synced to single port)
+  get API_BASE_URL() {
+    return getResolvedApiBaseUrl();
+  },
   
   // Timeout for network requests (in milliseconds)
   TIMEOUT_MS: 3000
@@ -31,8 +40,9 @@ async function apiRequest(endpoint, options = {}) {
   }
 
   const url = `${API_CONFIG.API_BASE_URL}${endpoint}`;
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
   const headers = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...(options.headers || {})
   };
 
@@ -70,7 +80,7 @@ async function apiRequest(endpoint, options = {}) {
 /* ==========================================================================
  * 1. AUTHENTICATION API
  * ========================================================================== */
-export const authApi = {
+const authApi = {
   // Login with credentials
   async login(role, userId, password) {
     try {
@@ -106,7 +116,7 @@ export const authApi = {
 /* ==========================================================================
  * 2. STUDENT API
  * ========================================================================== */
-export const studentApi = {
+const studentApi = {
   // Fetch complete student profile
   async getProfile(rollNo) {
     try {
@@ -152,27 +162,78 @@ export const studentApi = {
     }
   },
 
-  // Record student achievement
+  // Get all achievements
+  async getAchievements() {
+    try {
+      return await apiRequest('/students/achievements');
+    } catch (err) {
+      return { success: false, data: [] };
+    }
+  },
+
+  // Record student achievement (supports FormData or JSON)
   async addAchievement(achievementData) {
     try {
+      const isFormData = typeof FormData !== 'undefined' && achievementData instanceof FormData;
       return await apiRequest('/students/achievements', {
         method: 'POST',
-        body: JSON.stringify(achievementData)
+        body: isFormData ? achievementData : JSON.stringify(achievementData)
       });
     } catch (err) {
       return { success: true, data: achievementData };
     }
   },
 
-  // Upload verified certification
+  // Delete achievement
+  async deleteAchievement(id) {
+    try {
+      return await apiRequest(`/students/achievements/${id}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      return { success: true, id };
+    }
+  },
+
+  // Get all certificates
+  async getCertificates() {
+    try {
+      return await apiRequest('/students/certificates');
+    } catch (err) {
+      return { success: false, data: [] };
+    }
+  },
+
+  // Get study materials
+  async getStudyMaterials() {
+    try {
+      return await apiRequest('/materials');
+    } catch (err) {
+      return { success: false, data: [] };
+    }
+  },
+
+  // Upload verified certification (supports FormData or JSON)
   async addCertificate(certificateData) {
     try {
+      const isFormData = typeof FormData !== 'undefined' && certificateData instanceof FormData;
       return await apiRequest('/students/certificates', {
         method: 'POST',
-        body: JSON.stringify(certificateData)
+        body: isFormData ? certificateData : JSON.stringify(certificateData)
       });
     } catch (err) {
       return { success: true, data: certificateData };
+    }
+  },
+
+  // Delete certification
+  async deleteCertificate(id) {
+    try {
+      return await apiRequest(`/students/certificates/${id}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      return { success: true };
     }
   },
 
@@ -193,7 +254,7 @@ export const studentApi = {
 /* ==========================================================================
  * 3. STAFF / FACULTY API
  * ========================================================================== */
-export const staffApi = {
+const staffApi = {
   // Batch mark attendance
   async submitAttendanceBatch(subjectCode, date, attendanceRecords) {
     try {
@@ -230,12 +291,22 @@ export const staffApi = {
     }
   },
 
-  // Upload study material
+  // Get study materials
+  async getStudyMaterials() {
+    try {
+      return await apiRequest('/materials');
+    } catch (err) {
+      return { success: false, data: [] };
+    }
+  },
+
+  // Upload study material (supports FormData file upload and JSON object)
   async uploadStudyMaterial(materialData) {
     try {
+      const isFormData = typeof FormData !== 'undefined' && materialData instanceof FormData;
       return await apiRequest('/materials', {
         method: 'POST',
-        body: JSON.stringify(materialData)
+        body: isFormData ? materialData : JSON.stringify(materialData)
       });
     } catch (err) {
       return { success: true, data: materialData };
@@ -264,13 +335,25 @@ export const staffApi = {
     } catch (err) {
       return { success: true };
     }
+  },
+
+  // Update faculty profile
+  async updateFacultyProfile(facultyId, profileData) {
+    try {
+      return await apiRequest(`/auth/faculty/${facultyId}`, {
+        method: 'PUT',
+        body: JSON.stringify(profileData)
+      });
+    } catch (err) {
+      return { success: true, data: profileData };
+    }
   }
 };
 
 /* ==========================================================================
  * 4. HOD EXECUTIVE API
  * ========================================================================== */
-export const hodApi = {
+const hodApi = {
   // Fetch department analytics & NIRF/NAAC metrics
   async getDepartmentAnalytics() {
     try {
@@ -304,6 +387,67 @@ export const hodApi = {
     }
   },
 
+  // Faculty Staff CRUD (Exclusively governed by HOD)
+  async getFaculty() {
+    try {
+      return await apiRequest('/hod/faculty');
+    } catch (err) {
+      return null;
+    }
+  },
+
+  async createFaculty(facultyData) {
+    try {
+      return await apiRequest('/hod/faculty', {
+        method: 'POST',
+        body: JSON.stringify(facultyData)
+      });
+    } catch (err) {
+      return { success: true, data: facultyData };
+    }
+  },
+
+  async updateFaculty(facultyId, facultyData) {
+    try {
+      return await apiRequest(`/hod/faculty/${facultyId}`, {
+        method: 'PUT',
+        body: JSON.stringify(facultyData)
+      });
+    } catch (err) {
+      return { success: true, data: facultyData };
+    }
+  },
+
+  async deleteFaculty(facultyId) {
+    try {
+      return await apiRequest(`/hod/faculty/${facultyId}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      return { success: true, facultyId };
+    }
+  },
+
+  // Class Advisor Appointments (Exclusively assigned by HOD)
+  async getClassAdvisors() {
+    try {
+      return await apiRequest('/hod/class-advisors');
+    } catch (err) {
+      return null;
+    }
+  },
+
+  async updateClassAdvisor(year, staffId) {
+    try {
+      return await apiRequest(`/hod/class-advisors/${year}`, {
+        method: 'PUT',
+        body: JSON.stringify({ staffId })
+      });
+    } catch (err) {
+      return { success: true, year, staffId };
+    }
+  },
+
   // Broadcast low attendance warning SMS to parents
   async broadcastAttendanceWarning(studentRollNos) {
     try {
@@ -320,7 +464,7 @@ export const hodApi = {
 /* ==========================================================================
  * 5. ADMINISTRATOR API
  * ========================================================================== */
-export const adminApi = {
+const adminApi = {
   // Add new student record
   async createStudent(studentData) {
     try {
@@ -356,11 +500,34 @@ export const adminApi = {
     }
   },
 
+  // Delete student achievement
+  async deleteAchievement(id) {
+    try {
+      return await apiRequest(`/admin/achievements/${id}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      return { success: true, id };
+    }
+  },
+
   // Add faculty member
   async createFaculty(facultyData) {
     try {
       return await apiRequest('/admin/faculty', {
         method: 'POST',
+        body: JSON.stringify(facultyData)
+      });
+    } catch (err) {
+      return { success: true, data: facultyData };
+    }
+  },
+
+  // Update faculty member
+  async updateFaculty(facultyId, facultyData) {
+    try {
+      return await apiRequest(`/admin/faculty/${facultyId}`, {
+        method: 'PUT',
         body: JSON.stringify(facultyData)
       });
     } catch (err) {
@@ -402,6 +569,198 @@ export const adminApi = {
         timestamp: new Date().toISOString()
       };
     }
+  },
+
+  // HOD Governance (Admin Feature - Sole authority to add, view, and edit HODs)
+  async getHODList() {
+    try {
+      return await apiRequest('/admin/hods');
+    } catch (err) {
+      return { success: true, data: [] };
+    }
+  },
+
+  async getHOD() {
+    try {
+      return await apiRequest('/admin/hod');
+    } catch (err) {
+      return { success: true };
+    }
+  },
+
+  async createHOD(hodData) {
+    try {
+      return await apiRequest('/admin/hods', {
+        method: 'POST',
+        body: JSON.stringify(hodData)
+      });
+    } catch (err) {
+      return { success: true, data: hodData };
+    }
+  },
+
+  async updateHOD(hodData, id) {
+    try {
+      const targetId = id || hodData.id || 'ITHOD01';
+      return await apiRequest(`/admin/hods/${targetId}`, {
+        method: 'PUT',
+        body: JSON.stringify(hodData)
+      });
+    } catch (err) {
+      return { success: true, data: hodData };
+    }
+  },
+
+  async deleteHOD(id) {
+    try {
+      return await apiRequest(`/admin/hods/${id}`, {
+        method: 'DELETE'
+      });
+    } catch (err) {
+      return { success: true, id };
+    }
+  },
+
+  async changeHOD(newHOD) {
+    try {
+      return await apiRequest('/admin/hod/change', {
+        method: 'POST',
+        body: JSON.stringify(newHOD)
+      });
+    } catch (err) {
+      return { success: true, data: newHOD };
+    }
+  }
+};
+
+/* ==========================================================================
+ * 6. MESSAGING & CLASS ADVISORS API (Student / Staff / HOD)
+ * ========================================================================== */
+const messagingApi = {
+  async getMessages(userId, role) {
+    try {
+      const q = new URLSearchParams();
+      if (userId) q.append('userId', userId);
+      if (role) q.append('role', role);
+      return await apiRequest(`/messages?${q.toString()}`);
+    } catch (err) {
+      return { success: true, data: [] };
+    }
+  },
+
+  async sendMessage(messageData) {
+    try {
+      return await apiRequest('/messages', {
+        method: 'POST',
+        body: JSON.stringify(messageData)
+      });
+    } catch (err) {
+      return { success: true, data: messageData };
+    }
+  },
+
+  async updateMessageStatus(messageId, status) {
+    try {
+      return await apiRequest(`/messages/${messageId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status })
+      });
+    } catch (err) {
+      return { success: true };
+    }
+  },
+
+  async getClassAdvisors() {
+    try {
+      return await apiRequest('/messages/class-advisors');
+    } catch (err) {
+      return { success: true, data: {} };
+    }
+  },
+
+  async updateClassAdvisor(year, staffId) {
+    try {
+      return await apiRequest(`/messages/class-advisors/${year}`, {
+        method: 'PUT',
+        body: JSON.stringify({ staffId })
+      });
+    } catch (err) {
+      return { success: true };
+    }
+  }
+};
+
+/* ==========================================================================
+ * 7. GALLERY API (Department, Symposium, Event, Placement)
+ * ========================================================================== */
+const galleryApi = {
+  async getPhotos(filters = {}) {
+    try {
+      const q = new URLSearchParams();
+      Object.keys(filters).forEach(k => {
+        if (filters[k] !== undefined && filters[k] !== null && filters[k] !== '') {
+          q.append(k, filters[k]);
+        }
+      });
+      return await apiRequest(`/gallery?${q.toString()}`);
+    } catch (err) {
+      return { success: true, count: 0, data: [] };
+    }
+  },
+
+  async uploadPhoto(photoData) {
+    if (typeof FormData !== 'undefined' && photoData instanceof FormData) {
+      return await apiRequest('/gallery/upload', {
+        method: 'POST',
+        body: photoData
+      });
+    }
+    return await apiRequest('/gallery/upload', {
+      method: 'POST',
+      body: JSON.stringify(photoData)
+    });
+  },
+
+  async updatePhoto(photoId, updateData) {
+    return await apiRequest(`/gallery/${photoId}`, {
+      method: 'PUT',
+      body: JSON.stringify(updateData)
+    });
+  },
+
+  async toggleLike(photoId, userId) {
+    return await apiRequest(`/gallery/${photoId}/like`, {
+      method: 'POST',
+      body: JSON.stringify({ userId })
+    });
+  },
+
+  async addComment(photoId, commentData) {
+    return await apiRequest(`/gallery/${photoId}/comment`, {
+      method: 'POST',
+      body: JSON.stringify(commentData)
+    });
+  },
+
+  async updateStatus(photoId, status) {
+    return await apiRequest(`/gallery/${photoId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status })
+    });
+  },
+
+  async deletePhoto(photoId) {
+    return await apiRequest(`/gallery/${photoId}`, {
+      method: 'DELETE'
+    });
+  },
+
+  async getAnalytics() {
+    try {
+      return await apiRequest('/gallery/analytics');
+    } catch (err) {
+      return { success: true, data: {} };
+    }
   }
 };
 
@@ -414,11 +773,26 @@ const ITDepartmentApi = {
   student: studentApi,
   staff: staffApi,
   hod: hodApi,
-  admin: adminApi
+  admin: adminApi,
+  messages: messagingApi,
+  gallery: galleryApi
 };
 
 if (typeof window !== 'undefined') {
   window.ITDepartmentApi = ITDepartmentApi;
 }
 
-export default ITDepartmentApi;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    ...ITDepartmentApi,
+    authApi,
+    studentApi,
+    staffApi,
+    hodApi,
+    adminApi,
+    messagingApi,
+    galleryApi,
+    default: ITDepartmentApi
+  };
+}
+
