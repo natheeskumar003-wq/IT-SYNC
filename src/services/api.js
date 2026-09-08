@@ -755,6 +755,26 @@ const galleryApi = {
     });
   },
 
+  async editPhoto(photoId, editedData) {
+    if (typeof FormData !== 'undefined' && editedData instanceof FormData) {
+      return await apiRequest(`/gallery/${photoId}/edit-photo`, {
+        method: 'POST',
+        body: editedData
+      });
+    }
+    return await apiRequest(`/gallery/${photoId}/edit-photo`, {
+      method: 'POST',
+      body: JSON.stringify(editedData)
+    });
+  },
+
+  async rotateVideo(photoId, rotation) {
+    return await apiRequest(`/gallery/${photoId}/rotate`, {
+      method: 'PATCH',
+      body: JSON.stringify({ rotation })
+    });
+  },
+
   async getAnalytics() {
     try {
       return await apiRequest('/gallery/analytics');

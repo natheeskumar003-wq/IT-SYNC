@@ -969,6 +969,15 @@
   ],
   "auditLogs": [
     {
+      "id": "LOG-7545",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
       "id": "LOG-5396",
       "action": "User Login",
       "user": "24IMT18 (Gopinath.R)",
@@ -2512,12 +2521,25 @@
         "role": "student"
       },
       "status": "Approved",
-      "likes": 1,
+      "likes": 2,
       "likedBy": [
-        "24IMT18"
+        "24IMT18",
+        "ITSTAFF01"
       ],
-      "comments": [],
-      "views": 1
+      "comments": [
+        {
+          "id": "CMT-34924",
+          "userId": "24IMT18",
+          "userName": "Gopinath.R",
+          "userRole": "student",
+          "text": "super brooo",
+          "timestamp": "Just now"
+        }
+      ],
+      "views": 1,
+      "originalRotation": 0,
+      "rotation": 0,
+      "lastModified": "2026-09-08T14:32:48.304Z"
     },
     {
       "id": "GAL-658880",
@@ -2530,8 +2552,8 @@
       "eventYear": "2026",
       "company": null,
       "url": "/uploads/gallery/department/irtt_pro2-1788874658857-345027547.jpeg",
-      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\department\\irtt_pro2-1788874658857-345027547.jpeg",
-      "fileSize": 64355,
+      "localFilePath": "C:\\Users\\nathe\\.gemini\\antigravity\\scratch\\IT-Department-Digital-Hub\\uploads\\gallery\\department\\edited-1788877922884-283893131.jpg",
+      "fileSize": 134,
       "mimeType": "image/jpeg",
       "date": "2026-09-08",
       "uploadedBy": {
@@ -2545,7 +2567,25 @@
         "ITHOD01"
       ],
       "comments": [],
-      "views": 1
+      "views": 1,
+      "originalUrl": "/uploads/gallery/department/irtt_pro2-1788874658857-345027547.jpeg",
+      "editMeta": {
+        "aspectPreset": "1:1",
+        "zoom": 1.25,
+        "panX": 5,
+        "panY": -10,
+        "rotation": 90,
+        "flipH": false,
+        "flipV": true,
+        "brightness": 15,
+        "contrast": 20,
+        "saturation": 30,
+        "sharpness": 25,
+        "width": 600,
+        "height": 600,
+        "editedAt": "2026-09-08T14:32:02.885Z"
+      },
+      "lastModified": "2026-09-08T14:32:48.301Z"
     }
   ],
   "internalMarks": [

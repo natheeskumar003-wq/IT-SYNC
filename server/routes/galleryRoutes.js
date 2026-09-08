@@ -244,6 +244,7 @@ router.post('/upload', handleMulterUpload, async (req, res) => {
       mimeType,
       date: req.body.date || new Date().toISOString().split('T')[0],
       uploadedBy: uploader,
+      rotation: req.body.rotation !== undefined ? Number(req.body.rotation) : 0,
       status
     };
 
@@ -429,6 +430,96 @@ router.get('/:id/stream', async (req, res) => {
       });
       fs.createReadStream(filePath).pipe(res);
     }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// POST /api/gallery/:id/edit-photo - Save edited photo (Crop, Rotate, Flip, Filters, Resize)
+router.post('/:id/edit-photo', handleMulterUpload, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const photo = await store.getGalleryPhotoById(id);
+    if (!photo) {
+      return res.status(404).json({ success: false, message: 'Photo not found' });
+    }
+
+    const rawSec = (photo.section || 'department').toLowerCase();
+    const subfolder = rawSec === 'symposium' ? 'symposium' : (rawSec === 'event' || rawSec === 'events') ? 'events' : rawSec === 'placement' ? 'placement' : 'department';
+    const targetDir = path.join(UPLOADS_ROOT, subfolder);
+    fs.mkdirSync(targetDir, { recursive: true });
+
+    let mediaUrl = '';
+    let localFilePath = '';
+    let fileSize = 0;
+    let mimeType = 'image/jpeg';
+
+    if (req.file) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      const filename = `edited-${uniqueSuffix}${path.extname(req.file.originalname) || '.jpg'}`;
+      const destPath = path.join(targetDir, filename);
+
+      fs.copyFileSync(req.file.path, destPath);
+      localFilePath = destPath;
+      mediaUrl = `/uploads/gallery/${subfolder}/${filename}`;
+      fileSize = fs.statSync(destPath).size;
+      mimeType = req.file.mimetype || 'image/jpeg';
+    } else if (req.body.dataUrl) {
+      const matches = req.body.dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res.status(400).json({ success: false, message: 'Invalid dataUrl format' });
+      }
+      mimeType = matches[1];
+      const buffer = Buffer.from(matches[2], 'base64');
+      const ext = mimeType === 'image/png' ? '.png' : '.jpg';
+      const filename = `edited-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+      const destPath = path.join(targetDir, filename);
+
+      fs.writeFileSync(destPath, buffer);
+      localFilePath = destPath;
+      mediaUrl = `/uploads/gallery/${subfolder}/${filename}`;
+      fileSize = buffer.length;
+    } else {
+      return res.status(400).json({ success: false, message: 'No edited image file or dataUrl provided' });
+    }
+
+    const updated = await store.editGalleryPhoto(id, {
+      url: mediaUrl,
+      localFilePath,
+      fileSize,
+      mimeType,
+      editMeta: req.body.editMeta ? (typeof req.body.editMeta === 'string' ? JSON.parse(req.body.editMeta) : req.body.editMeta) : null
+    });
+
+    res.json({
+      success: true,
+      message: 'Photo edited and saved successfully! Original version preserved.',
+      data: updated
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PATCH /api/gallery/:id/rotate - Rotate video or photo (90° Left, 90° Right, 180°)
+router.patch('/:id/rotate', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rotation } = req.body;
+    if (rotation === undefined || rotation === null) {
+      return res.status(400).json({ success: false, message: 'Rotation angle is required' });
+    }
+
+    const updated = await store.rotateGalleryVideo(id, rotation);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Media item not found' });
+    }
+
+    res.json({
+      success: true,
+      message: `Media rotation set to ${updated.rotation}° and saved successfully!`,
+      data: updated
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -1030,6 +1030,9 @@ const store = {
       date: photoData.date || new Date().toISOString().split('T')[0],
       uploadedBy: photoData.uploadedBy || { id: 'GUEST', name: 'Anonymous', role: 'student' },
       status: finalStatus,
+      rotation: photoData.rotation !== undefined ? Number(photoData.rotation) : 0,
+      originalRotation: photoData.rotation !== undefined ? Number(photoData.rotation) : 0,
+      originalUrl: photoData.url || '',
       likes: 0,
       likedBy: [],
       comments: [],
@@ -1053,6 +1056,53 @@ const store = {
     const photo = dataStore.gallery.find(p => p.id === photoId);
     if (!photo) return null;
     Object.assign(photo, updateData);
+    saveToDisk();
+    return photo;
+  },
+
+  async editGalleryPhoto(photoId, editData) {
+    loadFromDisk();
+    if (!dataStore.gallery) return null;
+    const photo = dataStore.gallery.find(p => p.id === photoId);
+    if (!photo) return null;
+
+    // Preserve original URL if not previously saved
+    if (!photo.originalUrl) {
+      photo.originalUrl = photo.url;
+    }
+
+    if (editData.url) photo.url = editData.url;
+    if (editData.localFilePath) photo.localFilePath = editData.localFilePath;
+    if (editData.fileSize) photo.fileSize = editData.fileSize;
+    if (editData.mimeType) photo.mimeType = editData.mimeType;
+    if (editData.editMeta) {
+      photo.editMeta = {
+        ...photo.editMeta,
+        ...editData.editMeta,
+        editedAt: new Date().toISOString()
+      };
+    }
+    photo.lastModified = new Date().toISOString();
+
+    saveToDisk();
+    return photo;
+  },
+
+  async rotateGalleryVideo(photoId, rotation) {
+    loadFromDisk();
+    if (!dataStore.gallery) return null;
+    const photo = dataStore.gallery.find(p => p.id === photoId);
+    if (!photo) return null;
+
+    const normAngle = ((Number(rotation) % 360) + 360) % 360;
+
+    if (photo.originalRotation === undefined) {
+      photo.originalRotation = photo.rotation !== undefined ? photo.rotation : 0;
+    }
+
+    photo.rotation = normAngle;
+    photo.lastModified = new Date().toISOString();
+
     saveToDisk();
     return photo;
   },
