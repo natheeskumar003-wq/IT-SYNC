@@ -154,7 +154,7 @@
       "year": 2,
       "sem": 4,
       "sec": "A",
-      "attendance": 90.5,
+      "attendance": 90.7,
       "cgpa": 8.74,
       "arrears": 0,
       "mentor": "Dr. Mohanasundaram",
@@ -278,10 +278,10 @@
       "faculty": "Prof. B. V. Prakash",
       "syllabusUnits": 5,
       "completedUnits": 3.5,
-      "attended": 47,
-      "total": 51,
+      "attended": 48,
+      "total": 52,
       "internalMarks": 47.5,
-      "attendancePct": 92.2
+      "attendancePct": 92.3
     },
     {
       "code": "IT8402",
@@ -410,6 +410,28 @@
     }
   ],
   "studyMaterials": [
+    {
+      "id": "MAT-7993",
+      "downloads": 0,
+      "date": "2026-09-08",
+      "uploadDate": "2026-09-08",
+      "teacherName": "Prof. B. V. Prakash",
+      "faculty": "Prof. B. V. Prakash",
+      "teacher": "Prof. B. V. Prakash",
+      "department": "Information Technology",
+      "semester": "Semester 4",
+      "title": "Unit 4 Concurrency Control Notes",
+      "subject": "Database Management Systems",
+      "subjectName": "Database Management Systems",
+      "code": "IT8401",
+      "subjectCode": "IT8401",
+      "unit": "Unit 1",
+      "author": "Prof. B. V. Prakash",
+      "type": "PDF",
+      "size": "120 Bytes",
+      "fileUrl": "/uploads/study_materials/Unit4_Concurrency_Control-1788865347976-991954.pdf",
+      "fileName": "Unit4_Concurrency_Control.pdf"
+    },
     {
       "id": "MAT-0334",
       "downloads": 0,
@@ -589,6 +611,15 @@
   ],
   "announcements": [
     {
+      "id": "ANN-021",
+      "date": "2026-09-08",
+      "title": "Practical Laboratory CIA-2 Revision Sessions",
+      "category": "Examinations",
+      "priority": "High",
+      "content": "Hands-on practice sessions for DBMS Laboratory scheduled for Thursday 2 PM in Computing Lab-2.",
+      "author": "Prof. B. V. Prakash"
+    },
+    {
       "id": "ANN-384",
       "date": "2026-09-08",
       "title": "Practical Laboratory CIA-2 Revision Sessions",
@@ -717,6 +748,20 @@
   },
   "messages": [
     {
+      "id": "MSG-8009",
+      "timestamp": "04:32 pm",
+      "read": false,
+      "status": "Delivered",
+      "fromId": "ITSTAFF01",
+      "fromName": "Prof. B. V. Prakash",
+      "fromRole": "staff",
+      "toId": "25IT001",
+      "toName": "Naveen Kumar R",
+      "type": "Direct",
+      "subject": "CIA-1 Review Feedback",
+      "content": "Excellent performance in DBMS CIA-1 exam. Keep up the high standard."
+    },
+    {
       "id": "MSG-0365",
       "timestamp": "04:10 pm",
       "read": false,
@@ -833,6 +878,24 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "LOG-8012",
+      "action": "Message Sent (Direct)",
+      "user": "ITSTAFF01",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
+    {
+      "id": "LOG-7910",
+      "action": "User Login",
+      "user": "ITSTAFF01 (Prof. B. V. Prakash)",
+      "role": "STAFF",
+      "ip": "127.0.0.1",
+      "timestamp": "Just now",
+      "status": "Success"
+    },
     {
       "id": "LOG-6751",
       "action": "User Login",
@@ -3203,7 +3266,7 @@
   ],
   "internalMarks": [
     {
-      "id": "MARK-1788864040220",
+      "id": "MARK-1788865347930",
       "subjectCode": "IT8401",
       "examType": "CIA-1",
       "marks": [
@@ -3221,7 +3284,7 @@
         }
       ],
       "publishedDate": "2026-09-08",
-      "recordedAt": "2026-09-08T10:40:40.220Z"
+      "recordedAt": "2026-09-08T11:02:27.930Z"
     }
   ],
   "attendanceRecords": [
@@ -3339,6 +3402,29 @@
         }
       ],
       "recordedAt": "2026-09-08T10:40:40.257Z"
+    },
+    {
+      "id": "ATT-1788865347956",
+      "subjectCode": "IT8401",
+      "date": "2026-09-08",
+      "records": [
+        {
+          "rollNo": "25IT001",
+          "name": "Naveen Kumar R",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT002",
+          "name": "Kavitha S",
+          "status": "P"
+        },
+        {
+          "rollNo": "25IT003",
+          "name": "Deepak M",
+          "status": "OD"
+        }
+      ],
+      "recordedAt": "2026-09-08T11:02:27.956Z"
     }
   ]
 }
