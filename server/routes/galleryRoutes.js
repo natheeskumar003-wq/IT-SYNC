@@ -45,41 +45,55 @@ const storage = multer.diskStorage({
   }
 });
 
-// Strict File Format Filter (JPG, JPEG, PNG, WEBP)
+// Strict File Format Filter: Images (JPG, JPEG, PNG, WEBP) & Videos (MP4, MOV, AVI, WEBM)
 const fileFilter = (req, file, cb) => {
-  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
-  const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  const allowedImageExts = ['.jpg', '.jpeg', '.png', '.webp'];
+  const allowedVideoExts = ['.mp4', '.mov', '.avi', '.webm'];
   const ext = path.extname(file.originalname).toLowerCase();
+  const mime = (file.mimetype || '').toLowerCase();
 
-  if (allowedExtensions.includes(ext) && allowedMimeTypes.includes(file.mimetype)) {
+  const isImage = allowedImageExts.includes(ext) || mime.startsWith('image/');
+  const isVideo = allowedVideoExts.includes(ext) || mime.startsWith('video/');
+
+  if ((allowedImageExts.includes(ext) && isImage) || (allowedVideoExts.includes(ext) && isVideo)) {
     cb(null, true);
   } else {
-    cb(new Error('Invalid image format! Only JPG, JPEG, PNG, and WEBP image files are accepted.'));
+    cb(new Error('Invalid file format! Allowed: Photos (JPG, JPEG, PNG, WEBP) and Videos (MP4, MOV, AVI, WEBM).'));
   }
 };
 
-// Max Upload Size Limit: 10 MB
+// Max Upload Size Limit: 100 MB (To comfortably support short and HD video clips)
 const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10 MB maximum
+    fileSize: 100 * 1024 * 1024 // 100 MB maximum
   }
 });
 
-// Helper: Handle Multer Errors Gracefully
+// Helper: Handle Multer Errors Gracefully (Supports fields: 'file', 'image', or 'media')
+const uploadFields = upload.fields([
+  { name: 'file', maxCount: 1 },
+  { name: 'image', maxCount: 1 },
+  { name: 'media', maxCount: 1 }
+]);
+
 const handleMulterUpload = (req, res, next) => {
-  upload.single('image')(req, res, (err) => {
+  uploadFields(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({
           success: false,
-          message: 'Upload failed: File size exceeds the maximum limit of 10 MB.'
+          message: 'Upload failed: File size exceeds the maximum limit of 100 MB.'
         });
       }
       return res.status(400).json({ success: false, message: `Upload error: ${err.message}` });
     } else if (err) {
       return res.status(400).json({ success: false, message: err.message });
+    }
+
+    if (req.files) {
+      req.file = req.files['file']?.[0] || req.files['image']?.[0] || req.files['media']?.[0];
     }
     next();
   });
@@ -104,6 +118,8 @@ router.get('/', async (req, res) => {
   try {
     const {
       section,
+      mediaType,
+      view,
       category,
       department,
       eventYear,
@@ -116,6 +132,8 @@ router.get('/', async (req, res) => {
 
     const photos = await store.getGalleryPhotos({
       section,
+      mediaType,
+      view,
       category,
       department,
       eventYear,
@@ -132,13 +150,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/gallery/upload - Real Multer File Upload & Metadata Persistence
+// POST /api/gallery/upload - Real Multer File Upload & Metadata Persistence (Photos & Videos)
 router.post('/upload', handleMulterUpload, async (req, res) => {
   try {
     const { title, description, section, category, department, eventYear, company } = req.body;
 
     if (!title || !title.trim()) {
-      return res.status(400).json({ success: false, message: 'Photo title is required' });
+      return res.status(400).json({ success: false, message: 'Media title is required' });
     }
 
     // Determine uploader info
@@ -162,38 +180,65 @@ router.post('/upload', handleMulterUpload, async (req, res) => {
     else if (rawSection === 'event' || rawSection === 'events') subfolder = 'events';
     else if (rawSection === 'placement') subfolder = 'placement';
 
-    let imageUrl = '';
+    let mediaUrl = '';
     let localFilePath = null;
     let fileSize = null;
     let mimeType = null;
+    let mediaType = 'photo';
 
     if (req.file) {
-      imageUrl = `/uploads/gallery/${subfolder}/${req.file.filename}`;
+      const targetDir = path.join(UPLOADS_ROOT, subfolder);
+      fs.mkdirSync(targetDir, { recursive: true });
+      const targetPath = path.join(targetDir, req.file.filename);
+
+      if (req.file.path !== targetPath && fs.existsSync(req.file.path)) {
+        try {
+          fs.renameSync(req.file.path, targetPath);
+          req.file.path = targetPath;
+        } catch (e) {
+          console.warn('Could not relocate uploaded file to target section folder:', e);
+        }
+      }
+
+      mediaUrl = `/uploads/gallery/${subfolder}/${req.file.filename}`;
       localFilePath = req.file.path;
       fileSize = req.file.size;
       mimeType = req.file.mimetype;
+
+      const ext = path.extname(req.file.originalname).toLowerCase();
+      const mime = (mimeType || '').toLowerCase();
+      if (['.mp4', '.mov', '.avi', '.webm'].includes(ext) || mime.startsWith('video/')) {
+        mediaType = 'video';
+      }
     } else if (req.body.url && req.body.url.trim()) {
-      imageUrl = req.body.url.trim();
+      mediaUrl = req.body.url.trim();
+      if (req.body.mediaType) {
+        mediaType = req.body.mediaType.toLowerCase();
+      } else if (mediaUrl.match(/\.(mp4|mov|avi|webm)($|\?)/i)) {
+        mediaType = 'video';
+      }
     } else {
       return res.status(400).json({
         success: false,
-        message: 'No image file uploaded! Please select a valid JPG, JPEG, PNG, or WEBP image file.'
+        message: 'No media file uploaded! Please select a valid photo (JPG, JPEG, PNG, WEBP) or video (MP4, MOV, AVI, WEBM).'
       });
     }
 
     // Role-based Status Workflow
+    // Students must go through "Pending Teacher Approval"; Faculty / HOD / Admin are Approved automatically
     const isStudent = (uploader.role || 'student').toLowerCase() === 'student';
-    const status = isStudent ? 'Pending Approval' : 'Approved';
+    const status = isStudent ? 'Pending Teacher Approval' : 'Approved';
 
     const photoData = {
       title: title.trim(),
       description: (description || '').trim(),
+      mediaType, // 'photo' or 'video'
       section: rawSection === 'events' ? 'event' : rawSection,
-      category: (category || 'Campus Event').trim(),
+      category: (category || 'General').trim(),
       department: department || 'Information Technology',
       eventYear: eventYear || new Date().getFullYear().toString(),
       company: rawSection === 'placement' ? (company || null) : null,
-      url: imageUrl,
+      url: mediaUrl,
       localFilePath,
       fileSize,
       mimeType,
@@ -203,10 +248,11 @@ router.post('/upload', handleMulterUpload, async (req, res) => {
     };
 
     const newPhoto = await store.addGalleryPhoto(photoData);
+    const mediaLabel = mediaType === 'video' ? 'Video' : 'Photo';
 
     const message = isStudent
-      ? 'Photograph uploaded successfully! Status: Pending Approval. Sent to faculty for review.'
-      : 'Photograph uploaded and published live to the gallery!';
+      ? `${mediaLabel} uploaded successfully! Status: Pending Teacher Approval. Sent to faculty for review.`
+      : `${mediaLabel} uploaded and published live to the gallery!`;
 
     res.status(201).json({
       success: true,
@@ -274,8 +320,8 @@ router.patch('/:id/status', async (req, res) => {
 
     const isApproved = (status || '').toLowerCase() === 'approved';
     const message = isApproved
-      ? 'Photograph approved! It is now visible in the Gallery.'
-      : 'Photograph rejected and hidden from the Gallery.';
+      ? 'Media approved! It is now visible in the Gallery.'
+      : 'Media rejected and hidden from the Gallery.';
 
     res.json({
       success: true,
@@ -315,7 +361,74 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Photograph not found or already deleted' });
     }
 
-    res.json({ success: true, message: 'Photograph and file removed successfully from gallery' });
+    res.json({ success: true, message: 'Media item and file removed successfully from gallery' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/gallery/:id/stream - Direct HTTP 206 Partial Content Video Streaming Route
+router.get('/:id/stream', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const photo = await store.getGalleryPhotoById(id);
+    if (!photo) {
+      return res.status(404).json({ success: false, message: 'Media file not found' });
+    }
+
+    let filePath = photo.localFilePath;
+    if (!filePath || !fs.existsSync(filePath)) {
+      // Fallback path resolution from url
+      const relPath = photo.url.startsWith('/') ? photo.url.slice(1) : photo.url;
+      filePath = path.resolve(__dirname, '../../', relPath);
+    }
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ success: false, message: 'Video file missing or deleted from disk' });
+    }
+
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    const ext = path.extname(filePath).toLowerCase();
+    let contentType = 'video/mp4';
+    if (ext === '.webm') contentType = 'video/webm';
+    else if (ext === '.mov') contentType = 'video/quicktime';
+    else if (ext === '.avi') contentType = 'video/x-msvideo';
+    else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
+    else if (ext === '.png') contentType = 'image/png';
+    else if (ext === '.webp') contentType = 'image/webp';
+
+    if (range) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+      if (start >= fileSize) {
+        res.status(416).send('Requested range not satisfiable\n' + start + ' >= ' + fileSize);
+        return;
+      }
+
+      const chunkSize = (end - start) + 1;
+      const file = fs.createReadStream(filePath, { start, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunkSize,
+        'Content-Type': contentType,
+        'Access-Control-Allow-Origin': '*'
+      });
+      file.pipe(res);
+    } else {
+      res.writeHead(200, {
+        'Content-Length': fileSize,
+        'Content-Type': contentType,
+        'Accept-Ranges': 'bytes',
+        'Access-Control-Allow-Origin': '*'
+      });
+      fs.createReadStream(filePath).pipe(res);
+    }
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

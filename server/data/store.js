@@ -208,8 +208,8 @@ function loadFromDisk(force = false) {
         dataStore.hodList = JSON.parse(JSON.stringify(initialSeedData.hodList));
         saveToDisk();
       }
-      if (!dataStore.gallery || !Array.isArray(dataStore.gallery) || dataStore.gallery.length === 0) {
-        dataStore.gallery = JSON.parse(JSON.stringify(defaultGallerySeed));
+      if (!dataStore.gallery || !Array.isArray(dataStore.gallery)) {
+        dataStore.gallery = [];
         saveToDisk();
       }
     } else {
@@ -911,7 +911,7 @@ const store = {
     saveToDisk();
   },
 
-  // Gallery Management
+  // Gallery Management (Photos & Videos with Teacher Approval Workflow)
   async getGalleryPhotos(filters = {}) {
     loadFromDisk();
     let photos = dataStore.gallery || [];
@@ -928,6 +928,12 @@ const store = {
       } else {
         photos = photos.filter(p => (p.section || '').toLowerCase() === sec);
       }
+    }
+
+    // Media Type Filter (photo or video)
+    if (filters.mediaType && filters.mediaType !== 'all') {
+      const mt = filters.mediaType.toLowerCase();
+      photos = photos.filter(p => (p.mediaType || 'photo').toLowerCase() === mt);
     }
 
     // Category Filter
@@ -950,12 +956,29 @@ const store = {
       photos = photos.filter(p => (p.company || '').toLowerCase() === filters.company.toLowerCase());
     }
 
-    // Status / Permissions
-    if (filters.userRole === 'student') {
-      const uId = (filters.userId || '').toLowerCase();
-      photos = photos.filter(p => isApproved(p.status) || (isPending(p.status) && (p.uploadedBy?.id || '').toLowerCase() === uId));
-    } else if (filters.status && filters.status !== 'all') {
-      const st = filters.status.toLowerCase();
+    // Status / Permissions Workflow
+    const uId = (filters.userId || '').toLowerCase();
+    const st = (filters.status || '').toLowerCase();
+    const isMyUploads = filters.view === 'my-uploads' || st === 'my-uploads';
+
+    if (isMyUploads) {
+      // Return student's own uploads with status (Pending Teacher Approval, Approved, Rejected)
+      photos = photos.filter(p => (p.uploadedBy?.id || '').toLowerCase() === uId);
+    } else if (filters.userRole === 'student') {
+      if (st && st !== 'all') {
+        if (st === 'approved') {
+          photos = photos.filter(p => isApproved(p.status));
+        } else if (st.includes('pending')) {
+          photos = photos.filter(p => isPending(p.status) && (p.uploadedBy?.id || '').toLowerCase() === uId);
+        } else if (st === 'rejected') {
+          photos = photos.filter(p => isRejected(p.status) && (p.uploadedBy?.id || '').toLowerCase() === uId);
+        }
+      } else {
+        // Students browsing public gallery only see Approved media
+        photos = photos.filter(p => isApproved(p.status));
+      }
+    } else if (st && st !== 'all') {
+      // Teachers / HOD / Admin filtering by status
       if (st === 'approved') {
         photos = photos.filter(p => isApproved(p.status));
       } else if (st.includes('pending')) {
@@ -974,7 +997,8 @@ const store = {
         (p.category || '').toLowerCase().includes(q) ||
         (p.department || '').toLowerCase().includes(q) ||
         (p.company || '').toLowerCase().includes(q) ||
-        (p.uploadedBy?.name || '').toLowerCase().includes(q)
+        (p.uploadedBy?.name || '').toLowerCase().includes(q) ||
+        (p.uploadedBy?.id || '').toLowerCase().includes(q)
       );
     }
 
@@ -987,18 +1011,19 @@ const store = {
 
     const role = (photoData.uploadedBy?.role || 'student').toLowerCase();
     const isApprovedByDefault = role === 'staff' || role === 'hod' || role === 'admin';
-    const finalStatus = photoData.status || (isApprovedByDefault ? 'Approved' : 'Pending Approval');
+    const finalStatus = photoData.status || (isApprovedByDefault ? 'Approved' : 'Pending Teacher Approval');
 
     const newPhoto = {
       id: `GAL-${Date.now().toString().slice(-6)}`,
-      title: photoData.title || 'Untitled Photograph',
+      title: photoData.title || 'Untitled Media',
       description: photoData.description || '',
+      mediaType: photoData.mediaType || 'photo', // 'photo' or 'video'
       section: photoData.section === 'events' ? 'event' : (photoData.section || 'department'),
       category: photoData.category || 'General',
       department: photoData.department || 'Information Technology',
       eventYear: photoData.eventYear || new Date().getFullYear().toString(),
       company: photoData.company || null,
-      url: photoData.url || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80',
+      url: photoData.url || '',
       localFilePath: photoData.localFilePath || null,
       fileSize: photoData.fileSize || null,
       mimeType: photoData.mimeType || null,
@@ -1014,6 +1039,12 @@ const store = {
     dataStore.gallery.unshift(newPhoto);
     saveToDisk();
     return newPhoto;
+  },
+
+  async getGalleryPhotoById(photoId) {
+    loadFromDisk();
+    if (!dataStore.gallery) return null;
+    return dataStore.gallery.find(p => p.id === photoId) || null;
   },
 
   async updateGalleryPhoto(photoId, updateData) {
@@ -1080,7 +1111,7 @@ const store = {
     // Normalize status string
     let normalized = status;
     if (status.toLowerCase() === 'approved') normalized = 'Approved';
-    else if (status.toLowerCase().includes('pending')) normalized = 'Pending Approval';
+    else if (status.toLowerCase().includes('pending')) normalized = 'Pending Teacher Approval';
     else if (status.toLowerCase() === 'rejected') normalized = 'Rejected';
 
     photo.status = normalized;

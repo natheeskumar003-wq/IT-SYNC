@@ -54,16 +54,7 @@
     'Accenture'
   ];
 
-  const SAMPLE_PRESET_IMAGES = [
-    { title: 'Tech Lab Station', url: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Cloud Data Center', url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Hackathon Sprint', url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Auditorium Keynote', url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Cultural Stage', url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Recruitment Panel', url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Offer Letter Toast', url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop&q=80' },
-    { title: 'Student Team', url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80' }
-  ];
+  const SAMPLE_PRESET_IMAGES = [];
 
   // =========================================================================
   // MAIN GALLERY VIEW COMPONENT
@@ -86,13 +77,15 @@
     const [yearFilter, setYearFilter] = useState('All Years');
     const [eventCatFilter, setEventCatFilter] = useState('All');
     const [companyFilter, setCompanyFilter] = useState('All Companies');
-    const [statusFilter, setStatusFilter] = useState('all'); // all, approved, pending, rejected
+    const [statusFilter, setStatusFilter] = useState('all'); // all, Pending Teacher Approval, Approved, Rejected
+    const [mediaTypeFilter, setMediaTypeFilter] = useState('all'); // all, photo, video
+    const [studentTab, setStudentTab] = useState('approved'); // approved (public gallery) or my-uploads
     const [viewMode, setViewMode] = useState('grid'); // grid or masonry
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
 
     // Modals
-    const [selectedPhoto, setSelectedPhoto] = useState(null); // Lightbox
+    const [selectedPhoto, setSelectedPhoto] = useState(null); // Lightbox / Video Player
     const [isUploadOpen, setIsUploadOpen] = useState(false);
     const [photoToDelete, setPhotoToDelete] = useState(null);
     const [photoToEdit, setPhotoToEdit] = useState(null);
@@ -113,7 +106,7 @@
       }
     };
 
-    // Fetch Photos from Backend API
+    // Fetch Photos/Videos from Backend API
     const fetchPhotos = async () => {
       setLoading(true);
       try {
@@ -123,6 +116,10 @@
           userRole: role,
           userId: currentUser?.id || currentUser?.rollNo || ''
         };
+
+        if (mediaTypeFilter !== 'all') {
+          filters.mediaType = mediaTypeFilter;
+        }
 
         if (activeSection === 'department' && deptFilter !== 'All Departments') {
           filters.department = deptFilter;
@@ -136,7 +133,15 @@
         if (activeSection === 'placement' && companyFilter !== 'All Companies') {
           filters.company = companyFilter;
         }
-        if (statusFilter !== 'all') {
+
+        // Student Workflow vs Staff Approval Workflow
+        if (isStudent) {
+          if (studentTab === 'my-uploads') {
+            filters.view = 'my-uploads';
+          } else {
+            filters.status = 'approved';
+          }
+        } else if (statusFilter !== 'all') {
           filters.status = statusFilter;
         }
 
@@ -150,7 +155,7 @@
         }
       } catch (err) {
         console.error('Error fetching gallery:', err);
-        addToast?.('Failed to load gallery photos from server', 'error');
+        addToast?.('Failed to load gallery from server', 'error');
       } finally {
         setLoading(false);
       }
@@ -163,7 +168,7 @@
       if (canManageApprovals) {
         loadAnalytics();
       }
-    }, [activeSection, searchQuery, deptFilter, yearFilter, eventCatFilter, companyFilter, statusFilter]);
+    }, [activeSection, searchQuery, deptFilter, yearFilter, eventCatFilter, companyFilter, statusFilter, mediaTypeFilter, studentTab]);
 
     // Likes Toggle
     const handleToggleLike = async (photo) => {
@@ -284,17 +289,19 @@
       }
     };
 
-    // Download Image
-    const handleDownload = (url, title) => {
+    // Download Media (Photo or Video)
+    const handleDownload = (url, title, mediaType) => {
       try {
+        const isVideo = mediaType === 'video' || (url && url.match(/\.(mp4|mov|avi|webm)($|\?)/i));
+        const ext = isVideo ? 'mp4' : 'jpg';
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${(title || 'gallery-image').replace(/[^a-zA-Z0-9]/g, '_')}.jpg`;
+        link.download = `${(title || 'gallery-media').replace(/[^a-zA-Z0-9_-]/g, '_')}.${ext}`;
         link.target = '_blank';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        addToast?.('Downloading high-resolution image...', 'info');
+        addToast?.(`Downloading ${isVideo ? 'video' : 'photo'}...`, 'info');
       } catch (e) {
         window.open(url, '_blank');
       }
@@ -345,24 +352,52 @@
               canManageApprovals && totalPendingCount > 0 && h(
                 'span',
                 {
-                  onClick: () => setStatusFilter(statusFilter === 'pending' ? 'all' : 'pending'),
+                  onClick: () => setStatusFilter(statusFilter === 'Pending Teacher Approval' ? 'all' : 'Pending Teacher Approval'),
                   className: `cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition ${
-                    statusFilter === 'pending'
+                    statusFilter === 'Pending Teacher Approval'
                       ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30'
                       : 'bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30'
                   }`
                 },
-                `⏳ ${totalPendingCount} Awaiting Review`
+                `⏳ ${totalPendingCount} Pending Teacher Approval`
               )
             ),
             h('h1', { className: 'text-2xl sm:text-4xl font-extrabold text-white tracking-tight' }, 'Department & Campus Gallery'),
             h('p', { className: 'text-xs sm:text-sm text-slate-400 max-w-2xl' }, currentSectionInfo.desc)
           ),
 
-          // Upload Photo Glowing Button
+          // Actions Bar: Student Views, Stats Toggle, and Upload Button
           h(
             'div',
             { className: 'flex items-center gap-3 flex-wrap' },
+            isStudent && h(
+              'div',
+              { className: 'flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800' },
+              h(
+                'button',
+                {
+                  onClick: () => setStudentTab('approved'),
+                  className: `px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    studentTab === 'approved'
+                      ? 'bg-cyan-500 text-slate-950 shadow'
+                      : 'text-slate-400 hover:text-white'
+                  }`
+                },
+                'Approved Gallery'
+              ),
+              h(
+                'button',
+                {
+                  onClick: () => setStudentTab('my-uploads'),
+                  className: `px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    studentTab === 'my-uploads'
+                      ? 'bg-cyan-500 text-slate-950 shadow'
+                      : 'text-slate-400 hover:text-white'
+                  }`
+                },
+                'My Uploads'
+              )
+            ),
             (isHOD || isAdmin) && h(
               'button',
               {
@@ -380,10 +415,10 @@
               'button',
               {
                 onClick: () => setIsUploadOpen(true),
-                className: 'px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0'
+                className: 'px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer'
               },
-              renderIcon(Icons.Camera || Icons.Plus, { className: 'w-4 h-4' }),
-              isStudent ? 'Upload Photo (For Review)' : 'Upload New Photo'
+              renderIcon(Icons.Upload || Icons.Camera || Icons.Plus, { className: 'w-4 h-4' }),
+              isStudent ? '+ Upload Photo / Video (For Approval)' : '+ Upload Photo / Video'
             )
           )
         )
@@ -538,21 +573,20 @@
             PLACEMENT_COMPANIES.map(comp => h('option', { key: comp, value: comp }, comp === 'All Companies' ? 'All Recruiters' : comp))
           ),
 
-          // Status Filter for Staff / HOD / Admin
-          canManageApprovals && h(
-            'button',
+          // Media Type Filter: Photos & Videos
+          h(
+            'select',
             {
-              onClick: () => setStatusFilter(statusFilter === 'pending' ? 'all' : 'pending'),
-              className: `px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                statusFilter === 'pending'
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
-                  : 'bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
-              }`
+              value: mediaTypeFilter,
+              onChange: (e) => setMediaTypeFilter(e.target.value),
+              className: 'px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-200 focus:outline-none focus:border-cyan-500'
             },
-            renderIcon(Icons.Clock || Icons.AlertTriangle, { className: 'w-3.5 h-3.5' }),
-            `Pending (${totalPendingCount})`
+            h('option', { value: 'all' }, 'All Media Types'),
+            h('option', { value: 'photo' }, '📷 Photos Only'),
+            h('option', { value: 'video' }, '🎥 Videos Only')
           ),
 
+          // Status Filter for Staff / HOD / Admin
           canManageApprovals && h(
             'select',
             {
@@ -561,9 +595,9 @@
               className: 'px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-200 focus:outline-none focus:border-cyan-500'
             },
             h('option', { value: 'all' }, 'Status: All'),
-            h('option', { value: 'approved' }, 'Status: Approved Only'),
-            h('option', { value: 'pending' }, 'Status: Pending Review'),
-            h('option', { value: 'rejected' }, 'Status: Rejected Only')
+            h('option', { value: 'Approved' }, 'Status: Approved Only'),
+            h('option', { value: 'Pending Teacher Approval' }, `Status: Pending (${totalPendingCount})`),
+            h('option', { value: 'Rejected' }, 'Status: Rejected Only')
           ),
 
           // Refresh Button
@@ -600,26 +634,39 @@
         h(
           'div',
           { className: 'w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 mx-auto flex items-center justify-center' },
-          renderIcon(Icons.Image, { className: 'w-8 h-8' })
+          renderIcon(Icons.Image || Icons.Folder, { className: 'w-8 h-8' })
         ),
-        h('h3', { className: 'text-lg font-bold text-white' }, 'No Photographs Found'),
-        h('p', { className: 'text-xs sm:text-sm text-slate-400 max-w-md mx-auto' },
-          'No images match your current filter or search criteria. Try switching sections or upload a new photo.'
+        h('h3', { className: 'text-xl font-bold text-white' }, 'Gallery is Currently Empty'),
+        h('p', { className: 'text-xs sm:text-sm text-slate-400 max-w-md mx-auto leading-relaxed' },
+          'No photos or videos uploaded yet in this category. Students and faculty can upload media using the "+ Upload Photo / Video" button.'
         ),
         h(
-          'button',
-          {
-            onClick: () => {
-              setSearchQuery('');
-              setDeptFilter('All Departments');
-              setYearFilter('All Years');
-              setEventCatFilter('All');
-              setCompanyFilter('All Companies');
-              setStatusFilter('all');
+          'div',
+          { className: 'flex items-center justify-center gap-3 pt-2' },
+          h(
+            'button',
+            {
+              onClick: () => setIsUploadOpen(true),
+              className: 'px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-500/20 transition cursor-pointer'
             },
-            className: 'px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition'
-          },
-          'Reset Filters'
+            isStudent ? '+ Upload Photo / Video (For Approval)' : '+ Upload Photo / Video'
+          ),
+          (searchQuery || statusFilter !== 'all' || mediaTypeFilter !== 'all') && h(
+            'button',
+            {
+              onClick: () => {
+                setSearchQuery('');
+                setDeptFilter('All Departments');
+                setYearFilter('All Years');
+                setEventCatFilter('All');
+                setCompanyFilter('All Companies');
+                setStatusFilter('all');
+                setMediaTypeFilter('all');
+              },
+              className: 'px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition'
+            },
+            'Reset Filters'
+          )
         )
       ) : h(
         'div',
@@ -632,6 +679,7 @@
           const isRejected = pStatus === 'rejected';
           const canDelete = isAdmin || isHOD || isTeacher || (isStudent && photo.uploadedBy?.id === uId);
           const canEdit = isAdmin;
+          const isVideo = photo.mediaType === 'video' || (photo.url && photo.url.match(/\.(mp4|mov|avi|webm)($|\?)/i)) || (photo.mimeType && photo.mimeType.startsWith('video/'));
 
           return h(
             'div',
@@ -640,55 +688,86 @@
               className: 'group relative rounded-2xl border border-slate-800/80 bg-slate-900/60 hover:bg-slate-900/90 hover:border-cyan-500/40 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1 flex flex-col justify-between'
             },
 
-            // Image Container with Hover Actions
+            // Media Container (Photo or Video with Play Overlay)
             h(
               'div',
-              { className: 'relative aspect-[4/3] overflow-hidden bg-slate-950 cursor-pointer', onClick: () => setSelectedPhoto(photo) },
-              h('img', {
-                src: photo.url,
-                alt: photo.title,
-                loading: 'lazy',
-                className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
-                onError: (e) => {
-                  e.target.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80';
-                }
-              }),
-              h('div', { className: 'absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/30 opacity-60 group-hover:opacity-80 transition-opacity' }),
+              {
+                className: 'relative aspect-[4/3] overflow-hidden bg-slate-950 cursor-pointer',
+                onClick: () => setSelectedPhoto(photo)
+              },
+              isVideo
+                ? h(
+                    'div',
+                    { className: 'relative w-full h-full bg-slate-950 flex items-center justify-center' },
+                    h('video', {
+                      src: photo.url ? `${photo.url}#t=0.5` : '',
+                      preload: 'metadata',
+                      muted: true,
+                      playsInline: true,
+                      className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none',
+                      onError: (e) => { e.target.style.display = 'none'; }
+                    }),
+                    // Play Button Overlay for Video
+                    h(
+                      'div',
+                      { className: 'absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all' },
+                      h(
+                        'div',
+                        {
+                          className: 'w-14 h-14 rounded-full bg-cyan-500/90 hover:bg-cyan-400 text-slate-950 flex items-center justify-center shadow-xl shadow-cyan-500/40 group-hover:scale-110 transition-transform pl-1'
+                        },
+                        h('span', { className: 'text-2xl font-black' }, '▶')
+                      )
+                    )
+                  )
+                : h('img', {
+                    src: photo.url,
+                    alt: photo.title,
+                    loading: 'lazy',
+                    className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500',
+                    onError: (e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80';
+                    }
+                  }),
+              h('div', { className: 'absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/30 opacity-60 group-hover:opacity-80 transition-opacity pointer-events-none' }),
 
-              // Status Badge
+              // Status & Type Badges
               h(
                 'div',
-                { className: 'absolute top-3 left-3 flex items-center gap-1.5 flex-wrap' },
+                { className: 'absolute top-3 left-3 flex items-center gap-1.5 flex-wrap z-10' },
+                isVideo
+                  ? h('span', { className: 'px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-md flex items-center gap-1' }, '▶ VIDEO')
+                  : h('span', { className: 'px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-cyan-600 text-white shadow-md flex items-center gap-1' }, '📷 PHOTO'),
                 isPending && h(
                   'span',
-                  { className: 'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md backdrop-blur-md flex items-center gap-1' },
-                  '⏳ Pending Review'
+                  { className: 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md backdrop-blur-md flex items-center gap-1' },
+                  '⏳ Pending Teacher Approval'
                 ),
                 isRejected && h(
                   'span',
-                  { className: 'px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-rose-500 text-white shadow-md' },
+                  { className: 'px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-rose-500 text-white shadow-md' },
                   'Rejected'
                 ),
                 photo.category && h(
                   'span',
-                  { className: 'px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-950/80 text-cyan-300 border border-cyan-500/30 backdrop-blur-md' },
+                  { className: 'px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-950/80 text-cyan-300 border border-cyan-500/30 backdrop-blur-md' },
                   photo.category
                 )
               ),
 
-              // Quick Actions Overlay on Hover
+              // Quick Hover Action Buttons
               h(
                 'div',
-                { className: 'absolute top-3 right-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity' },
+                { className: 'absolute top-3 right-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10' },
                 h(
                   'button',
                   {
                     onClick: (e) => {
                       e.stopPropagation();
-                      handleDownload(photo.url, photo.title);
+                      handleDownload(photo.url, photo.title, photo.mediaType);
                     },
-                    title: 'Download photo',
-                    className: 'p-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 text-white border border-slate-700/80 backdrop-blur-md transition'
+                    title: `Download ${isVideo ? 'video' : 'photo'}`,
+                    className: 'p-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 text-white border border-slate-700/80 backdrop-blur-md transition cursor-pointer'
                   },
                   renderIcon(Icons.Download, { className: 'w-3.5 h-3.5' })
                 ),
@@ -699,8 +778,8 @@
                       e.stopPropagation();
                       setPhotoToEdit(photo);
                     },
-                    title: 'Edit photo metadata',
-                    className: 'p-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 backdrop-blur-md transition'
+                    title: 'Edit metadata',
+                    className: 'p-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 backdrop-blur-md transition cursor-pointer'
                   },
                   renderIcon(Icons.Edit || Icons.FileText, { className: 'w-3.5 h-3.5' })
                 ),
@@ -711,70 +790,102 @@
                       e.stopPropagation();
                       setPhotoToDelete(photo);
                     },
-                    title: 'Delete photo',
-                    className: 'p-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-500/40 backdrop-blur-md transition'
+                    title: 'Delete media',
+                    className: 'p-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-500/40 backdrop-blur-md transition cursor-pointer'
                   },
                   renderIcon(Icons.Trash, { className: 'w-3.5 h-3.5' })
                 )
               )
             ),
 
-            // Card Body Details
+            // Card Body: Details on Each Card (Title, Uploaded By, Department, Category, Upload Date)
             h(
               'div',
-              { className: 'p-4 space-y-2 flex-1 flex flex-col justify-between' },
+              { className: 'p-4 space-y-3 flex-1 flex flex-col justify-between' },
               h(
                 'div',
-                { className: 'space-y-1' },
+                { className: 'space-y-1.5' },
+                // 1. Title
                 h(
                   'h4',
                   {
                     onClick: () => setSelectedPhoto(photo),
-                    className: 'font-bold text-sm text-white group-hover:text-cyan-400 transition-colors line-clamp-1 cursor-pointer'
+                    className: 'font-bold text-sm text-white group-hover:text-cyan-400 transition-colors line-clamp-1 cursor-pointer flex items-center gap-1.5'
                   },
+                  isVideo && h('span', { className: 'text-rose-400 text-xs' }, '▶'),
                   photo.title
                 ),
-                h('p', { className: 'text-xs text-slate-400 line-clamp-2 leading-relaxed' }, photo.description || 'No description provided.')
+                // 2. Department & 3. Category Tags
+                h(
+                  'div',
+                  { className: 'flex items-center gap-1.5 flex-wrap text-[11px]' },
+                  h('span', { className: 'px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 font-medium' },
+                    photo.department || 'Information Technology'
+                  ),
+                  h('span', { className: 'px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-medium' },
+                    photo.category || 'General'
+                  )
+                ),
+                // Description (if available)
+                photo.description && h('p', { className: 'text-xs text-slate-400 line-clamp-2 leading-relaxed pt-0.5' }, photo.description)
               ),
 
               // Metadata & Interactions Footer
               h(
                 'div',
-                { className: 'pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400' },
+                { className: 'pt-3 border-t border-slate-800/80 flex flex-col gap-2 text-xs text-slate-400' },
                 
-                // Uploader info
+                // 4. Uploaded By & 5. Upload Date
                 h(
                   'div',
-                  { className: 'flex items-center gap-1.5 truncate max-w-[140px]' },
-                  h('div', { className: 'w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 text-white font-bold text-[9px] flex items-center justify-center flex-shrink-0' },
-                    photo.uploadedBy?.name ? photo.uploadedBy.name.charAt(0) : 'U'
+                  { className: 'flex items-center justify-between text-[11px] text-slate-400' },
+                  h(
+                    'div',
+                    { className: 'flex items-center gap-1.5 truncate max-w-[150px]' },
+                    h('div', { className: 'w-4 h-4 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 text-white font-bold text-[8px] flex items-center justify-center flex-shrink-0' },
+                      photo.uploadedBy?.name ? photo.uploadedBy.name.charAt(0) : 'U'
+                    ),
+                    h('span', { className: 'truncate text-slate-300' }, `By: ${photo.uploadedBy?.name || 'Anonymous'}`)
                   ),
-                  h('span', { className: 'truncate text-[11px] text-slate-300' }, photo.uploadedBy?.name || 'Anonymous')
+                  h('span', { className: 'text-slate-500 font-mono text-[10px]' }, photo.date || 'Recent')
                 ),
 
-                // Likes & Comments
+                // Download Button & Social Actions
                 h(
                   'div',
-                  { className: 'flex items-center gap-3' },
+                  { className: 'flex items-center justify-between pt-1' },
                   h(
                     'button',
                     {
-                      onClick: () => handleToggleLike(photo),
-                      className: `flex items-center gap-1 font-semibold text-xs transition ${
-                        isLiked ? 'text-rose-400' : 'text-slate-400 hover:text-rose-400'
-                      }`
+                      onClick: () => handleDownload(photo.url, photo.title, photo.mediaType),
+                      className: 'px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 hover:text-cyan-200 border border-slate-700 hover:border-cyan-500/40 text-[11px] font-semibold flex items-center gap-1.5 transition cursor-pointer'
                     },
-                    renderIcon(Icons.Heart, { className: `w-4 h-4 ${isLiked ? 'fill-current text-rose-500' : ''}` }),
-                    photo.likes || 0
+                    renderIcon(Icons.Download, { className: 'w-3 h-3 text-cyan-400' }),
+                    isVideo ? 'Download Video' : 'Download Photo'
                   ),
                   h(
-                    'button',
-                    {
-                      onClick: () => setSelectedPhoto(photo),
-                      className: 'flex items-center gap-1 text-slate-400 hover:text-cyan-400 transition text-xs font-semibold'
-                    },
-                    renderIcon(Icons.MessageCircle, { className: 'w-4 h-4' }),
-                    (photo.comments || []).length
+                    'div',
+                    { className: 'flex items-center gap-2.5' },
+                    h(
+                      'button',
+                      {
+                        onClick: () => handleToggleLike(photo),
+                        className: `flex items-center gap-1 font-semibold text-xs transition ${
+                          isLiked ? 'text-rose-400' : 'text-slate-400 hover:text-rose-400'
+                        }`
+                      },
+                      renderIcon(Icons.Heart, { className: `w-3.5 h-3.5 ${isLiked ? 'fill-current text-rose-500' : ''}` }),
+                      photo.likes || 0
+                    ),
+                    h(
+                      'button',
+                      {
+                        onClick: () => setSelectedPhoto(photo),
+                        className: 'flex items-center gap-1 text-slate-400 hover:text-cyan-400 transition text-xs font-semibold'
+                      },
+                      renderIcon(Icons.MessageCircle, { className: 'w-3.5 h-3.5' }),
+                      (photo.comments || []).length
+                    )
                   )
                 )
               ),
@@ -976,6 +1087,390 @@
   };
 
   // =========================================================================
+  // RESPONSIVE HTML5 VIDEO PLAYER COMPONENT
+  // Includes: Play/Pause, Progress Bar, Volume, Fullscreen, PiP, Playback Speed,
+  // Direct Streaming, and Error Notification for Missing/Corrupted Media
+  // =========================================================================
+  const ResponsiveVideoPlayer = ({ url, title }) => {
+    const videoRef = React.useRef(null);
+    const containerRef = React.useRef(null);
+    const hideTimerRef = React.useRef(null);
+
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [volume, setVolume] = useState(1);
+    const [isMuted, setIsMuted] = useState(false);
+    const [playbackRate, setPlaybackRate] = useState(1);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isPiP, setIsPiP] = useState(false);
+    const [isBuffering, setIsBuffering] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showControls, setShowControls] = useState(true);
+
+    // Sanitize URL for direct streaming from uploads folder
+    let videoSrc = url || '';
+    if (videoSrc && !videoSrc.startsWith('http://') && !videoSrc.startsWith('https://') && !videoSrc.startsWith('/')) {
+      videoSrc = '/' + videoSrc;
+    }
+    videoSrc = videoSrc.replace(/\\/g, '/');
+
+    const formatTime = (secs) => {
+      if (isNaN(secs) || secs === Infinity || secs < 0) return '0:00';
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = Math.floor(secs % 60);
+      if (h > 0) {
+        return `${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    };
+
+    const resetControlsTimer = () => {
+      setShowControls(true);
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      if (isPlaying) {
+        hideTimerRef.current = setTimeout(() => setShowControls(false), 3500);
+      }
+    };
+
+    React.useEffect(() => {
+      const handleFullscreenChange = () => {
+        setIsFullscreen(!!document.fullscreenElement);
+      };
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      return () => {
+        document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      };
+    }, []);
+
+    const togglePlay = (e) => {
+      if (e) e.stopPropagation();
+      if (!videoRef.current) return;
+      if (videoRef.current.paused || videoRef.current.ended) {
+        videoRef.current.play().catch(err => {
+          console.warn('Play interrupted:', err);
+        });
+      } else {
+        videoRef.current.pause();
+      }
+      resetControlsTimer();
+    };
+
+    const handleSeek = (e) => {
+      const targetTime = parseFloat(e.target.value);
+      setCurrentTime(targetTime);
+      if (videoRef.current) {
+        videoRef.current.currentTime = targetTime;
+      }
+      resetControlsTimer();
+    };
+
+    const handleVolume = (e) => {
+      const val = parseFloat(e.target.value);
+      setVolume(val);
+      setIsMuted(val === 0);
+      if (videoRef.current) {
+        videoRef.current.volume = val;
+        videoRef.current.muted = val === 0;
+      }
+      resetControlsTimer();
+    };
+
+    const toggleMute = (e) => {
+      if (e) e.stopPropagation();
+      if (!videoRef.current) return;
+      const nextMute = !isMuted;
+      setIsMuted(nextMute);
+      videoRef.current.muted = nextMute;
+      if (!nextMute && volume === 0) {
+        setVolume(0.5);
+        videoRef.current.volume = 0.5;
+      }
+      resetControlsTimer();
+    };
+
+    const SPEED_LIST = [0.5, 0.75, 1, 1.25, 1.5, 2];
+    const cycleSpeed = (e) => {
+      if (e) e.stopPropagation();
+      const currentIdx = SPEED_LIST.indexOf(playbackRate);
+      const nextIdx = (currentIdx + 1) % SPEED_LIST.length;
+      const nextSpeed = SPEED_LIST[nextIdx];
+      setPlaybackRate(nextSpeed);
+      if (videoRef.current) {
+        videoRef.current.playbackRate = nextSpeed;
+      }
+      resetControlsTimer();
+    };
+
+    const togglePiP = async (e) => {
+      if (e) e.stopPropagation();
+      if (!videoRef.current) return;
+      try {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+          setIsPiP(false);
+        } else if (document.pictureInPictureEnabled) {
+          await videoRef.current.requestPictureInPicture();
+          setIsPiP(true);
+        }
+      } catch (err) {
+        console.warn('PiP error:', err);
+      }
+      resetControlsTimer();
+    };
+
+    const toggleFullscreen = (e) => {
+      if (e) e.stopPropagation();
+      if (!containerRef.current) return;
+      if (!document.fullscreenElement) {
+        containerRef.current.requestFullscreen().catch(err => {
+          console.warn('Fullscreen error:', err);
+        });
+      } else {
+        document.exitFullscreen().catch(err => {
+          console.warn('Exit fullscreen error:', err);
+        });
+      }
+      resetControlsTimer();
+    };
+
+    const handleRetry = (e) => {
+      if (e) e.stopPropagation();
+      setHasError(false);
+      setErrorMessage('');
+      setIsBuffering(true);
+      if (videoRef.current) {
+        videoRef.current.load();
+        videoRef.current.play().catch(err => console.warn(err));
+      }
+    };
+
+    const isPiPSupported = typeof document !== 'undefined' && 'pictureInPictureEnabled' in document;
+
+    return h(
+      'div',
+      {
+        ref: containerRef,
+        onMouseMove: resetControlsTimer,
+        onClick: resetControlsTimer,
+        className: 'relative w-full h-full max-h-[85vh] bg-black rounded-2xl overflow-hidden flex items-center justify-center select-none group'
+      },
+
+      // HTML5 Video Element (Streams directly from uploads without download)
+      h('video', {
+        ref: videoRef,
+        src: videoSrc,
+        playsInline: true,
+        autoPlay: true,
+        preload: 'metadata',
+        onClick: togglePlay,
+        onTimeUpdate: () => {
+          if (videoRef.current) {
+            setCurrentTime(videoRef.current.currentTime);
+          }
+        },
+        onLoadedMetadata: () => {
+          if (videoRef.current) {
+            setDuration(videoRef.current.duration);
+            videoRef.current.playbackRate = playbackRate;
+            videoRef.current.volume = isMuted ? 0 : volume;
+          }
+        },
+        onPlay: () => {
+          setIsPlaying(true);
+          resetControlsTimer();
+        },
+        onPause: () => {
+          setIsPlaying(false);
+          setShowControls(true);
+        },
+        onEnded: () => {
+          setIsPlaying(false);
+          setShowControls(true);
+        },
+        onWaiting: () => setIsBuffering(true),
+        onPlaying: () => setIsBuffering(false),
+        onError: () => {
+          setIsBuffering(false);
+          setHasError(true);
+          const err = videoRef.current?.error;
+          let msg = 'The video file is missing or corrupted and cannot be played.';
+          if (err) {
+            if (err.code === 1) msg = 'Video playback was aborted.';
+            else if (err.code === 2) msg = 'Network error while streaming video from server.';
+            else if (err.code === 3) msg = 'Video decoding failed. The video file may be corrupted.';
+            else if (err.code === 4) msg = 'Video format not supported or file missing on server.';
+          }
+          setErrorMessage(msg);
+        },
+        className: 'w-full h-full object-contain cursor-pointer'
+      }),
+
+      // Center Buffering Spinner
+      isBuffering && !hasError && h(
+        'div',
+        { className: 'absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none z-10 animate-fade-in' },
+        h('div', { className: 'w-12 h-12 rounded-full border-4 border-cyan-500/20 border-t-cyan-400 animate-spin' })
+      ),
+
+      // Center Big Play Button (when paused and not buffering)
+      !isPlaying && !isBuffering && !hasError && h(
+        'div',
+        {
+          onClick: togglePlay,
+          className: 'absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-all cursor-pointer z-10'
+        },
+        h(
+          'div',
+          { className: 'w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-cyan-500/90 hover:bg-cyan-400 text-slate-950 flex items-center justify-center shadow-2xl shadow-cyan-500/50 hover:scale-110 transition-transform pl-1' },
+          h('span', { className: 'text-2xl sm:text-3xl font-black' }, '▶')
+        )
+      ),
+
+      // Error Display Overlay (Shown ONLY if video file is missing or corrupted - Requirement 10)
+      hasError && h(
+        'div',
+        { className: 'absolute inset-0 z-30 flex flex-col items-center justify-center p-6 bg-slate-950/95 text-center space-y-3 animate-fade-in' },
+        h('div', { className: 'w-14 h-14 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/40 flex items-center justify-center text-2xl mb-1' }, '⚠️'),
+        h('h3', { className: 'text-base font-bold text-white' }, 'Video Playback Error'),
+        h('p', { className: 'text-xs text-slate-300 max-w-md leading-relaxed' }, errorMessage || 'The video file is missing or corrupted and cannot be played.'),
+        h('p', { className: 'text-[11px] text-slate-500 font-mono' }, 'Supported video formats: MP4, WEBM, MOV'),
+        h(
+          'button',
+          {
+            type: 'button',
+            onClick: handleRetry,
+            className: 'px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg transition cursor-pointer flex items-center gap-1.5'
+          },
+          '🔄 Retry Video Playback'
+        )
+      ),
+
+      // Responsive HTML5 Controls Bar (Bottom Overlay)
+      !hasError && h(
+        'div',
+        {
+          className: `absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent px-4 pt-10 pb-3 transition-opacity duration-300 z-20 flex flex-col gap-2 ${
+            showControls || !isPlaying ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`
+        },
+        // Progress Bar / Timeline Scrubber
+        h(
+          'div',
+          { className: 'flex items-center gap-2' },
+          h('input', {
+            type: 'range',
+            min: 0,
+            max: duration > 0 ? duration : 100,
+            step: 0.1,
+            value: currentTime,
+            onChange: handleSeek,
+            className: 'w-full h-1.5 bg-slate-700/80 rounded-lg appearance-none cursor-pointer accent-cyan-400 hover:h-2 transition-all'
+          })
+        ),
+
+        // Controls Row
+        h(
+          'div',
+          { className: 'flex items-center justify-between text-white text-xs' },
+
+          // Left Controls: Play/Pause, Volume, Time Display
+          h(
+            'div',
+            { className: 'flex items-center gap-3' },
+            h(
+              'button',
+              {
+                type: 'button',
+                onClick: togglePlay,
+                title: isPlaying ? 'Pause (Space)' : 'Play (Space)',
+                className: 'p-1.5 rounded-lg hover:bg-white/10 text-white transition cursor-pointer text-sm font-bold flex items-center justify-center'
+              },
+              isPlaying ? '⏸' : '▶'
+            ),
+
+            // Volume Control
+            h(
+              'div',
+              { className: 'flex items-center gap-1.5' },
+              h(
+                'button',
+                {
+                  type: 'button',
+                  onClick: toggleMute,
+                  title: isMuted ? 'Unmute' : 'Mute',
+                  className: 'p-1 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition cursor-pointer'
+                },
+                isMuted || volume === 0 ? '🔇' : volume < 0.5 ? '🔉' : '🔊'
+              ),
+              h('input', {
+                type: 'range',
+                min: 0,
+                max: 1,
+                step: 0.05,
+                value: isMuted ? 0 : volume,
+                onChange: handleVolume,
+                className: 'w-16 sm:w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400'
+              })
+            ),
+
+            // Time Display
+            h(
+              'span',
+              { className: 'text-[11px] font-mono text-slate-300 tracking-wider' },
+              `${formatTime(currentTime)} / ${formatTime(duration)}`
+            )
+          ),
+
+          // Right Controls: Playback Speed, Picture-in-Picture, Full Screen
+          h(
+            'div',
+            { className: 'flex items-center gap-2' },
+            // Playback Speed Button
+            h(
+              'button',
+              {
+                type: 'button',
+                onClick: cycleSpeed,
+                title: 'Playback Speed',
+                className: 'px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-cyan-300 font-mono text-[11px] font-bold transition cursor-pointer'
+              },
+              `${playbackRate}x`
+            ),
+
+            // Picture-in-Picture Button (if supported)
+            isPiPSupported && h(
+              'button',
+              {
+                type: 'button',
+                onClick: togglePiP,
+                title: isPiP ? 'Exit Picture-in-Picture' : 'Picture-in-Picture',
+                className: `p-1.5 rounded-lg hover:bg-white/10 transition cursor-pointer ${isPiP ? 'text-cyan-400' : 'text-slate-300 hover:text-white'}`
+              },
+              '📺'
+            ),
+
+            // Fullscreen Button
+            h(
+              'button',
+              {
+                type: 'button',
+                onClick: toggleFullscreen,
+                title: isFullscreen ? 'Exit Full Screen' : 'Full Screen',
+                className: 'p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition cursor-pointer text-sm'
+              },
+              isFullscreen ? '⤓' : '⤢'
+            )
+          )
+        )
+      )
+    );
+  };
+
+  // =========================================================================
   // LIGHTBOX MODAL COMPONENT
   // =========================================================================
   const LightboxModal = ({
@@ -999,6 +1494,7 @@
     const pStatus = (photo.status || 'Approved').toLowerCase();
     const isPending = pStatus.includes('pending');
     const isRejected = pStatus === 'rejected';
+    const isVideo = photo.mediaType === 'video' || (photo.url && photo.url.match(/\.(mp4|mov|avi|webm)($|\?)/i)) || (photo.mimeType && photo.mimeType.startsWith('video/'));
 
     const handleCommentSubmit = (e) => {
       e.preventDefault();
@@ -1019,20 +1515,22 @@
           'button',
           {
             onClick: onClose,
-            className: 'absolute top-4 right-4 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white border border-slate-700 backdrop-blur-md transition'
+            className: 'absolute top-4 right-4 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white border border-slate-700 backdrop-blur-md transition cursor-pointer'
           },
           renderIcon(Icons.X, { className: 'w-5 h-5' })
         ),
 
-        // Left Side: Full Resolution Image & Slideshow Nav
+        // Left Side: Full Resolution Image or Built-in Responsive Video Player & Slideshow Nav
         h(
           'div',
-          { className: 'relative flex-1 bg-black flex items-center justify-center min-h-[350px] lg:min-h-[550px] overflow-hidden' },
-          h('img', {
-            src: photo.url,
-            alt: photo.title,
-            className: 'max-w-full max-h-[85vh] object-contain select-none'
-          }),
+          { className: 'relative flex-1 bg-black flex items-center justify-center min-h-[350px] lg:min-h-[550px] overflow-hidden p-2' },
+          isVideo
+            ? h(ResponsiveVideoPlayer, { url: photo.url, title: photo.title })
+            : h('img', {
+                src: photo.url,
+                alt: photo.title,
+                className: 'max-w-full max-h-[85vh] object-contain select-none'
+              }),
 
           // Previous / Next Buttons
           h(
@@ -1433,6 +1931,9 @@
   // =========================================================================
   // UPLOAD PHOTO MODAL COMPONENT (WITH ANIMATED PROGRESS BAR & REAL MULTIPART UPLOAD)
   // =========================================================================
+  // =========================================================================
+  // UPLOAD PHOTO / VIDEO MODAL COMPONENT (SUPPORT PHOTOS & VIDEOS UP TO 100MB)
+  // =========================================================================
   const UploadPhotoModal = ({ activeSection, role, currentUser, onClose, onUploaded }) => {
     const { addToast } = useAuth();
     const [title, setTitle] = useState('');
@@ -1446,31 +1947,38 @@
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileName, setSelectedFileName] = useState('');
     const [fileSizeText, setFileSizeText] = useState('');
+    const [mediaType, setMediaType] = useState('photo'); // 'photo' or 'video'
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
-    // Handle Local File Reading & Strict Format / Size Validation
+    // Handle Local File Reading & Format / Size Validation (100MB Limit)
     const handleFileChange = (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
 
-      const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+      const allowedImageExts = ['.jpg', '.jpeg', '.png', '.webp'];
+      const allowedVideoExts = ['.mp4', '.mov', '.avi', '.webm'];
       const ext = '.' + file.name.split('.').pop().toLowerCase();
-      const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const mime = (file.type || '').toLowerCase();
 
-      if (!allowedExtensions.includes(ext) || (file.type && !allowedMimes.includes(file.type))) {
-        addToast?.('Invalid image format! Only JPG, JPEG, PNG, and WEBP image files are accepted.', 'error');
+      const isImage = allowedImageExts.includes(ext) || mime.startsWith('image/');
+      const isVideo = allowedVideoExts.includes(ext) || mime.startsWith('video/');
+
+      if (!isImage && !isVideo) {
+        addToast?.('Invalid format! Allowed: Photos (JPG, JPEG, PNG, WEBP) and Videos (MP4, MOV, AVI, WEBM).', 'error');
         e.target.value = '';
         return;
       }
 
-      const maxSizeBytes = 10 * 1024 * 1024; // 10 MB maximum
+      const maxSizeBytes = 100 * 1024 * 1024; // 100 MB maximum
       if (file.size > maxSizeBytes) {
-        addToast?.('Upload failed: File size exceeds the maximum limit of 10 MB.', 'error');
+        addToast?.('Upload failed: File size exceeds the maximum limit of 100 MB.', 'error');
         e.target.value = '';
         return;
       }
 
+      const detectedType = isVideo ? 'video' : 'photo';
+      setMediaType(detectedType);
       setSelectedFile(file);
       setSelectedFileName(file.name);
       setFileSizeText((file.size / (1024 * 1024)).toFixed(2) + ' MB');
@@ -1490,17 +1998,17 @@
     const handleSubmit = async (e) => {
       e.preventDefault();
       if (!title.trim()) {
-        addToast?.('Please enter a photo title', 'error');
+        addToast?.('Please enter a title', 'error');
         return;
       }
 
       if (!selectedFile && !imageUrl.trim()) {
-        addToast?.('Please select an image file to upload (JPG, JPEG, PNG, WEBP) or choose a preset.', 'error');
+        addToast?.('Please select a photo or video file to upload.', 'error');
         return;
       }
 
       setUploading(true);
-      setUploadProgress(15);
+      setUploadProgress(20);
 
       const interval = setInterval(() => {
         setUploadProgress(p => (p >= 85 ? 85 : p + 20));
@@ -1510,14 +2018,16 @@
         let res;
         if (selectedFile) {
           const formData = new FormData();
-          formData.append('image', selectedFile);
+          formData.append('section', section);
+          formData.append('mediaType', mediaType);
           formData.append('title', title.trim());
           formData.append('description', description.trim());
-          formData.append('section', section);
-          formData.append('category', category.trim() || 'Campus Event');
+          formData.append('category', category.trim() || 'General');
           formData.append('department', section === 'department' ? department : 'College Level');
           formData.append('eventYear', section === 'symposium' ? eventYear : '2026');
           if (section === 'placement') formData.append('company', company);
+          formData.append('file', selectedFile);
+          formData.append('image', selectedFile); // fallback support
           formData.append('uploadedBy', JSON.stringify({
             id: currentUser?.id || currentUser?.rollNo || 'ANON',
             name: currentUser?.name || 'Academic User',
@@ -1529,12 +2039,13 @@
           const payload = {
             title: title.trim(),
             description: description.trim(),
+            mediaType,
             section,
-            category: category.trim() || 'Campus Event',
+            category: category.trim() || 'General',
             department: section === 'department' ? department : 'College Level',
             eventYear: section === 'symposium' ? eventYear : '2026',
             company: section === 'placement' ? company : null,
-            url: imageUrl.trim() || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80',
+            url: imageUrl.trim(),
             uploadedBy: {
               id: currentUser?.id || currentUser?.rollNo || 'ANON',
               name: currentUser?.name || 'Academic User',
@@ -1549,7 +2060,7 @@
 
         if (res?.success) {
           setTimeout(() => {
-            addToast?.(res?.message || 'Photograph uploaded successfully!', 'success');
+            addToast?.(res?.message || (role === 'student' ? 'Media submitted for Teacher Approval!' : 'Media published live to gallery!'), 'success');
             onUploaded();
           }, 300);
         } else {
@@ -1576,18 +2087,26 @@
           h(
             'div',
             null,
-            h('h2', { className: 'text-xl font-bold text-white' }, 'Upload Photograph to Gallery'),
+            h('h2', { className: 'text-xl font-bold text-white' }, 'Upload Photo or Video to Gallery'),
             h('p', { className: 'text-xs text-slate-400 mt-0.5' },
               role === 'student'
-                ? 'Student uploads will be forwarded to Department Faculty for review (Pending Approval).'
+                ? 'Student uploads will be forwarded to Faculty for review (Status: Pending Teacher Approval).'
                 : 'Faculty and Admin uploads are published live to the Gallery immediately.'
             )
           ),
           h(
             'button',
-            { onClick: onClose, className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition' },
+            { onClick: onClose, className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer' },
             renderIcon(Icons.X, { className: 'w-5 h-5' })
           )
+        ),
+
+        // Notice Badge for Student Workflow
+        role === 'student' && h(
+          'div',
+          { className: 'p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2' },
+          renderIcon(Icons.AlertTriangle || Icons.Clock, { className: 'w-4 h-4 text-amber-400 flex-shrink-0' }),
+          'Note: After uploading, your media will have status "Pending Teacher Approval" and will appear in the public gallery once approved by faculty.'
         ),
 
         // Progress Bar (if uploading)
@@ -1597,7 +2116,7 @@
           h(
             'div',
             { className: 'flex items-center justify-between text-xs font-bold text-cyan-400' },
-            h('span', null, 'Uploading & Optimizing Photograph...'),
+            h('span', null, `Uploading & Processing ${mediaType === 'video' ? 'Video' : 'Photo'}...`),
             h('span', null, `${uploadProgress}%`)
           ),
           h(
@@ -1630,7 +2149,7 @@
                     type: 'button',
                     key: s.id,
                     onClick: () => setSection(s.id),
-                    className: `p-2.5 rounded-xl border text-xs font-bold transition ${
+                    className: `p-2.5 rounded-xl border text-xs font-bold transition cursor-pointer ${
                       section === s.id
                         ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300'
                         : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-850'
@@ -1646,12 +2165,12 @@
           h(
             'div',
             { className: 'space-y-1.5' },
-            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Photo Title *'),
+            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Media Title *'),
             h('input', {
               type: 'text',
               value: title,
               onChange: (e) => setTitle(e.target.value),
-              placeholder: 'e.g. AI Laboratory Neural Network Practical',
+              placeholder: 'e.g. INFOBIT 2026 Grand Finale or Cloud Computing Lab Demo',
               required: true,
               className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500'
             })
@@ -1719,7 +2238,7 @@
                 type: 'text',
                 value: category,
                 onChange: (e) => setCategory(e.target.value),
-                placeholder: 'e.g. Hackathon, Cultural, Interview Round',
+                placeholder: 'e.g. Labs, Cultural, Hackathon, Placement',
                 className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
               })
             )
@@ -1739,57 +2258,36 @@
             })
           ),
 
-          // Image File / URL Source Picker
+          // File / Video Picker
           h(
             'div',
             { className: 'space-y-2' },
-            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Photo Source (Upload File or URL)'),
+            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Upload File (Photo or Video)'),
             
             h(
-              'div',
-              { className: 'grid grid-cols-1 sm:grid-cols-2 gap-3' },
-              h(
-                'label',
-                { className: 'cursor-pointer flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-slate-700 hover:border-cyan-500 bg-slate-900/50 hover:bg-slate-900 transition' },
-                renderIcon(Icons.Upload, { className: 'w-6 h-6 text-cyan-400 mb-1' }),
-                h('span', { className: 'text-xs font-bold text-white' }, 'Choose from Device'),
-                h('span', { className: 'text-[10px] text-slate-500' }, 'PNG, JPG, JPEG, WEBP up to 10MB'),
-                h('input', {
-                  type: 'file',
-                  accept: '.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp',
-                  onChange: handleFileChange,
-                  className: 'hidden'
-                })
-              ),
-              h(
-                'div',
-                { className: 'flex flex-col justify-center gap-2' },
-                h('input', {
-                  type: 'text',
-                  value: imageUrl,
-                  onChange: (e) => {
-                    setImageUrl(e.target.value);
-                    if (selectedFile) {
-                      setSelectedFile(null);
-                      setSelectedFileName('');
-                      setFileSizeText('');
-                    }
-                  },
-                  placeholder: 'Or paste image URL...',
-                  className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
-                }),
-                h('span', { className: 'text-[10px] text-slate-500' }, 'Or select one of our curated high-res presets below:')
-              )
+              'label',
+              { className: 'cursor-pointer flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-slate-700 hover:border-cyan-500 bg-slate-900/50 hover:bg-slate-900 transition text-center' },
+              renderIcon(Icons.Upload, { className: 'w-8 h-8 text-cyan-400 mb-2' }),
+              h('span', { className: 'text-xs font-bold text-white' }, 'Choose Photo or Video from Device'),
+              h('span', { className: 'text-[11px] text-slate-400 mt-1' }, 'Photos: JPG, JPEG, PNG, WEBP • Videos: MP4, MOV, AVI, WEBM (Up to 100 MB)'),
+              h('input', {
+                type: 'file',
+                accept: '.jpg,.jpeg,.png,.webp,.mp4,.mov,.avi,.webm,image/*,video/*',
+                onChange: handleFileChange,
+                className: 'hidden'
+              })
             ),
 
-            // Selected file indicator
+            // Selected file indicator & Type badge
             selectedFileName && h(
               'div',
-              { className: 'flex items-center justify-between p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/40 text-xs text-cyan-300' },
+              { className: 'flex items-center justify-between p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/40 text-xs text-cyan-300' },
               h('div', { className: 'flex items-center gap-2 truncate' },
-                renderIcon(Icons.CheckCircle, { className: 'w-4 h-4 text-cyan-400 flex-shrink-0' }),
+                h('span', { className: `px-2 py-0.5 rounded text-[10px] font-black uppercase ${mediaType === 'video' ? 'bg-rose-600 text-white' : 'bg-cyan-600 text-white'}` },
+                  mediaType === 'video' ? '▶ Video' : '📷 Photo'
+                ),
                 h('span', { className: 'font-semibold truncate' }, selectedFileName),
-                h('span', { className: 'text-[10px] text-slate-400 flex-shrink-0' }, `(${fileSizeText})`)
+                h('span', { className: 'text-[11px] text-slate-400 flex-shrink-0' }, `(${fileSizeText})`)
               ),
               h(
                 'button',
@@ -1801,53 +2299,31 @@
                     setFileSizeText('');
                     setImageUrl('');
                   },
-                  className: 'text-slate-400 hover:text-white ml-2 text-xs font-bold'
+                  className: 'text-slate-400 hover:text-white ml-2 text-xs font-bold cursor-pointer'
                 },
                 '✕ Remove'
               )
             ),
 
-            // Presets
-            h(
-              'div',
-              { className: 'flex items-center gap-2 overflow-x-auto py-1' },
-              SAMPLE_PRESET_IMAGES.map((preset, idx) =>
-                h(
-                  'button',
-                  {
-                    type: 'button',
-                    key: idx,
-                    onClick: () => {
-                      setSelectedFile(null);
-                      setSelectedFileName('');
-                      setFileSizeText('');
-                      setImageUrl(preset.url);
-                      if (!title) setTitle(preset.title);
-                    },
-                    className: `flex-shrink-0 px-2.5 py-1 rounded-lg border text-[11px] font-semibold transition ${
-                      imageUrl === preset.url && !selectedFile
-                        ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
-                    }`
-                  },
-                  preset.title
-                )
-              )
-            ),
-
-            // Live Image Preview
+            // Live Media Preview (Photo or Video Player)
             imageUrl && h(
               'div',
-              { className: 'relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-black mt-2' },
-              h('img', {
-                src: imageUrl,
-                alt: 'Preview',
-                className: 'w-full h-full object-cover'
-              }),
+              { className: 'relative rounded-2xl overflow-hidden border border-slate-800 bg-black mt-3' },
+              mediaType === 'video'
+                ? h('video', {
+                    src: imageUrl,
+                    controls: true,
+                    className: 'w-full max-h-56 object-contain bg-black'
+                  })
+                : h('img', {
+                    src: imageUrl,
+                    alt: 'Preview',
+                    className: 'w-full max-h-56 object-contain bg-black'
+                  }),
               h(
                 'span',
-                { className: 'absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/70 text-cyan-300 backdrop-blur-md' },
-                selectedFile ? 'Device File Preview' : 'Live Preview'
+                { className: 'absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/80 text-cyan-300 backdrop-blur-md' },
+                mediaType === 'video' ? 'Video Preview' : 'Photo Preview'
               )
             )
           ),
@@ -1862,7 +2338,7 @@
                 type: 'button',
                 onClick: onClose,
                 disabled: uploading,
-                className: 'px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition'
+                className: 'px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition cursor-pointer'
               },
               'Cancel'
             ),
@@ -1871,9 +2347,9 @@
               {
                 type: 'submit',
                 disabled: uploading,
-                className: 'px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/30 transition'
+                className: 'px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/30 transition cursor-pointer'
               },
-              uploading ? 'Processing Upload...' : (role === 'student' ? 'Submit for Review' : 'Publish Photograph')
+              uploading ? 'Processing Upload...' : (role === 'student' ? 'Submit for Teacher Approval' : 'Publish Media to Gallery')
             )
           )
         )

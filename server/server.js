@@ -88,7 +88,58 @@ fs.mkdirSync(path.join(uploadsDir, 'study_materials'), { recursive: true });
 ['department', 'symposium', 'events', 'placement'].forEach(sub => {
   fs.mkdirSync(path.join(uploadsDir, 'gallery', sub), { recursive: true });
 });
-app.use('/uploads', express.static(uploadsDir));
+
+// Smart Cross-Folder Resolver for Gallery Media (Seamless playback regardless of section subfolder)
+app.get('/uploads/gallery/:section/:filename', (req, res, next) => {
+  const { section, filename } = req.params;
+  const directPath = path.join(uploadsDir, 'gallery', section, filename);
+  if (fs.existsSync(directPath)) {
+    return next();
+  }
+  const galleryFolders = ['department', 'symposium', 'events', 'placement'];
+  for (const folder of galleryFolders) {
+    const altPath = path.join(uploadsDir, 'gallery', folder, filename);
+    if (fs.existsSync(altPath)) {
+      const ext = path.extname(filename).toLowerCase();
+      let contentType = 'application/octet-stream';
+      if (ext === '.mp4') contentType = 'video/mp4';
+      else if (ext === '.webm') contentType = 'video/webm';
+      else if (ext === '.mov') contentType = 'video/quicktime';
+      else if (ext === '.avi') contentType = 'video/x-msvideo';
+      else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
+      else if (ext === '.png') contentType = 'image/png';
+      else if (ext === '.webp') contentType = 'image/webp';
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Accept-Ranges', 'bytes');
+      return res.sendFile(altPath);
+    }
+  }
+  next();
+});
+
+// Stream and serve uploaded media files with strict MIME types & Range request support
+app.use('/uploads', express.static(uploadsDir, {
+  setHeaders: (res, filePath) => {
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext === '.mp4') res.setHeader('Content-Type', 'video/mp4');
+    else if (ext === '.webm') res.setHeader('Content-Type', 'video/webm');
+    else if (ext === '.mov') res.setHeader('Content-Type', 'video/quicktime');
+    else if (ext === '.avi') res.setHeader('Content-Type', 'video/x-msvideo');
+    else if (ext === '.jpg' || ext === '.jpeg') res.setHeader('Content-Type', 'image/jpeg');
+    else if (ext === '.png') res.setHeader('Content-Type', 'image/png');
+    else if (ext === '.webp') res.setHeader('Content-Type', 'image/webp');
+    res.setHeader('Accept-Ranges', 'bytes');
+  }
+}));
+
+// Guard: Missing upload files must return 404 immediately (do NOT fall through to SPA index.html)
+app.all('/uploads/*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Media file ${req.originalUrl} not found on server`
+  });
+});
 
 // Serve static frontend files if hosted together
 app.use(express.static(path.join(__dirname, '..')));

@@ -232,6 +232,61 @@ const StaffViews = ({ currentTab, onNavigate }) => {
     }
   }, [activeFaculty.id]);
 
+  // Pending Gallery Uploads State & Approval Workflow
+  const [pendingGalleryUploads, setPendingGalleryUploads] = React.useState([]);
+  const [loadingPendingGallery, setLoadingPendingGallery] = React.useState(false);
+  const [galleryMediaPreview, setGalleryMediaPreview] = React.useState(null);
+
+  const fetchPendingGalleryUploads = async () => {
+    setLoadingPendingGallery(true);
+    try {
+      if (window.ITDepartmentApi?.gallery?.getPhotos) {
+        const res = await window.ITDepartmentApi.gallery.getPhotos({ status: 'Pending Teacher Approval' });
+        if (res?.success && Array.isArray(res.data)) {
+          setPendingGalleryUploads(res.data);
+        }
+      }
+    } catch (e) {
+      console.warn('Error fetching pending gallery uploads:', e);
+    } finally {
+      setLoadingPendingGallery(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchPendingGalleryUploads();
+  }, []);
+
+  const handleApproveGalleryUpload = async (photoId) => {
+    try {
+      if (window.ITDepartmentApi?.gallery?.updateStatus) {
+        const res = await window.ITDepartmentApi.gallery.updateStatus(photoId, 'Approved');
+        if (res?.success) {
+          showToast?.('Media approved! It is now published live in the Gallery.', 'success');
+          setPendingGalleryUploads(prev => prev.filter(p => p.id !== photoId));
+          if (galleryMediaPreview?.id === photoId) setGalleryMediaPreview(null);
+        }
+      }
+    } catch (e) {
+      showToast?.('Failed to approve media', 'error');
+    }
+  };
+
+  const handleRejectGalleryUpload = async (photoId) => {
+    try {
+      if (window.ITDepartmentApi?.gallery?.updateStatus) {
+        const res = await window.ITDepartmentApi.gallery.updateStatus(photoId, 'Rejected');
+        if (res?.success) {
+          showToast?.('Media rejected and hidden from public gallery.', 'info');
+          setPendingGalleryUploads(prev => prev.filter(p => p.id !== photoId));
+          if (galleryMediaPreview?.id === photoId) setGalleryMediaPreview(null);
+        }
+      }
+    } catch (e) {
+      showToast?.('Failed to reject media', 'error');
+    }
+  };
+
   // Announcement Form State
   const [announcementForm, setAnnouncementForm] = React.useState({
     title: '',
@@ -624,6 +679,127 @@ const StaffViews = ({ currentTab, onNavigate }) => {
     setStudentDmForm({ recipientRollNo: safeStudents[0]?.rollNo || '24IT001', subject: '', content: '' });
   };
 
+  // Dedicated Section: Pending Gallery Uploads Review Console for Teachers
+  const renderPendingGalleryUploadsSection = () => {
+    return React.createElement(
+      'div',
+      { className: 'glass-panel p-6 rounded-3xl border border-slate-700/60 space-y-4 shadow-xl animate-fade-in' },
+      React.createElement(
+        'div',
+        { className: 'flex items-center justify-between pb-3 border-b border-slate-800' },
+        React.createElement(
+          'div',
+          { className: 'flex items-center gap-2.5' },
+          React.createElement(Icons.Image || Icons.Camera, { className: 'w-5 h-5 text-amber-400' }),
+          React.createElement('h3', { className: 'text-base font-bold text-white' }, 'Pending Gallery Uploads'),
+          React.createElement(
+            'span',
+            { className: 'px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30' },
+            `${pendingGalleryUploads.length} Waiting Review`
+          )
+        ),
+        React.createElement(
+          'button',
+          {
+            onClick: () => onNavigate('gallery'),
+            className: 'text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 cursor-pointer transition'
+          },
+          'Open Full Gallery',
+          React.createElement(Icons.ChevronRight, { className: 'w-3.5 h-3.5' })
+        )
+      ),
+      pendingGalleryUploads.length === 0
+        ? React.createElement(
+            'div',
+            { className: 'py-8 text-center text-xs text-slate-400 space-y-1' },
+            React.createElement('p', { className: 'font-semibold text-slate-300' }, 'No pending gallery uploads from students.'),
+            React.createElement('p', { className: 'text-[11px] text-slate-500' }, 'When students upload photos or videos, they will appear here for faculty review and approval.')
+          )
+        : React.createElement(
+            'div',
+            { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' },
+            pendingGalleryUploads.map(item => {
+              const isItemVideo = item.mediaType === 'video' || (item.url && item.url.match(/\.(mp4|mov|avi|webm)($|\?)/i));
+              return React.createElement(
+                'div',
+                { key: item.id, className: 'p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between space-y-3' },
+                React.createElement(
+                  'div',
+                  { className: 'space-y-2' },
+                  // Media Preview
+                  React.createElement(
+                    'div',
+                    {
+                      onClick: () => setGalleryMediaPreview(item),
+                      className: 'relative aspect-video rounded-xl overflow-hidden bg-black cursor-pointer group'
+                    },
+                    isItemVideo
+                      ? React.createElement('video', {
+                          src: item.url ? `${item.url}#t=0.5` : '',
+                          preload: 'metadata',
+                          muted: true,
+                          playsInline: true,
+                          className: 'w-full h-full object-cover pointer-events-none',
+                          onError: (e) => { e.target.style.display = 'none'; }
+                        })
+                      : React.createElement('img', {
+                          src: item.url,
+                          alt: item.title,
+                          className: 'w-full h-full object-cover group-hover:scale-105 transition-transform'
+                        }),
+                    React.createElement(
+                      'div',
+                      { className: 'absolute inset-0 bg-black/40 flex items-center justify-center opacity-80 group-hover:opacity-100 transition' },
+                      React.createElement('span', { className: 'px-2.5 py-1 rounded-lg bg-black/80 text-cyan-300 text-[10px] font-bold border border-slate-700' },
+                        isItemVideo ? '▶ Preview Video' : '🔍 Preview Photo'
+                      )
+                    ),
+                    React.createElement(
+                      'span',
+                      { className: `absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-extrabold uppercase ${isItemVideo ? 'bg-rose-600 text-white' : 'bg-cyan-600 text-white'}` },
+                      isItemVideo ? 'Video' : 'Photo'
+                    )
+                  ),
+                  // Title & Metadata
+                  React.createElement('h4', { className: 'text-xs font-bold text-white line-clamp-1' }, item.title),
+                  React.createElement(
+                    'div',
+                    { className: 'text-[11px] text-slate-400 space-y-0.5' },
+                    React.createElement('p', null, `By: ${item.uploadedBy?.name || 'Student'} (${item.uploadedBy?.id || ''})`),
+                    React.createElement('p', { className: 'text-slate-500' }, `${item.section || 'department'} • ${item.category || 'General'} • ${item.date || 'Recent'}`)
+                  )
+                ),
+                // Action Buttons: Approve / Reject
+                React.createElement(
+                  'div',
+                  { className: 'flex items-center gap-2 pt-2 border-t border-slate-800/80' },
+                  React.createElement(
+                    'button',
+                    {
+                      type: 'button',
+                      onClick: () => handleApproveGalleryUpload(item.id),
+                      className: 'flex-1 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer'
+                    },
+                    React.createElement(Icons.CheckCircle, { className: 'w-3 h-3 text-emerald-400' }),
+                    'Approve'
+                  ),
+                  React.createElement(
+                    'button',
+                    {
+                      type: 'button',
+                      onClick: () => handleRejectGalleryUpload(item.id),
+                      className: 'flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer'
+                    },
+                    React.createElement(Icons.X, { className: 'w-3 h-3 text-rose-400' }),
+                    'Reject'
+                  )
+                )
+              );
+            })
+          )
+    );
+  };
+
   let tabContent = null;
 
   // ==========================================
@@ -856,7 +1032,10 @@ const StaffViews = ({ currentTab, onNavigate }) => {
               `⭐ Class Advisor Authority: You have exclusive institutional authorization to enroll students, modify records, and manage admissions for Year ${assignedAdvisorYear} (${advisorBatch}).`
             )
           )
-        )
+        ),
+
+        // Review Pending Gallery Uploads from Students
+        renderPendingGalleryUploadsSection()
       );
     } else {
       // ----------------------------------------------------
@@ -1061,7 +1240,10 @@ const StaffViews = ({ currentTab, onNavigate }) => {
               'ℹ️ Teaching Faculty Notice: You have full access to curriculum instruction, lecture attendance, and assignment grading. Student admissions, enrollment, and roster editing are administered exclusively by each year\'s designated Class Advisor.'
             )
           )
-        )
+        ),
+
+        // Review Pending Gallery Uploads from Students
+        renderPendingGalleryUploadsSection()
       );
     }
   }
@@ -2876,6 +3058,80 @@ const StaffViews = ({ currentTab, onNavigate }) => {
             type: 'submit',
             className: 'w-2/3 py-2.5 rounded-xl gradient-btn-primary text-white font-bold transition'
           }, 'Publish Announcement')
+        )
+      )
+    ),
+
+    // Modal: Preview Pending Gallery Media
+    React.createElement(
+      SafeModal,
+      {
+        isOpen: !!galleryMediaPreview,
+        onClose: () => setGalleryMediaPreview(null),
+        title: galleryMediaPreview ? `Preview Pending Media: ${galleryMediaPreview.title}` : 'Preview Media'
+      },
+      galleryMediaPreview && React.createElement(
+        'div',
+        { className: 'space-y-4' },
+        React.createElement(
+          'div',
+          { className: 'w-full rounded-2xl overflow-hidden bg-black flex items-center justify-center max-h-[420px]' },
+          galleryMediaPreview.mediaType === 'video' || (galleryMediaPreview.url && galleryMediaPreview.url.match(/\.(mp4|mov|avi|webm)($|\?)/i))
+            ? React.createElement('video', {
+                src: galleryMediaPreview.url,
+                controls: true,
+                autoPlay: true,
+                playsInline: true,
+                className: 'max-h-[400px] w-full object-contain'
+              })
+            : React.createElement('img', {
+                src: galleryMediaPreview.url,
+                alt: galleryMediaPreview.title,
+                className: 'max-h-[400px] w-auto object-contain'
+              })
+        ),
+        React.createElement(
+          'div',
+          { className: 'p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 text-xs' },
+          React.createElement('div', { className: 'flex justify-between items-start' },
+            React.createElement('div', null,
+              React.createElement('h4', { className: 'font-bold text-white text-sm' }, galleryMediaPreview.title),
+              React.createElement('p', { className: 'text-slate-400 text-[11px] mt-0.5' }, galleryMediaPreview.description || 'No description provided.')
+            ),
+            React.createElement('span', { className: `px-2 py-0.5 rounded text-[10px] font-bold uppercase ${galleryMediaPreview.mediaType === 'video' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'}` },
+              galleryMediaPreview.mediaType === 'video' ? 'Video File' : 'Photo File'
+            )
+          ),
+          React.createElement('div', { className: 'grid grid-cols-2 gap-2 text-[11px] text-slate-400 pt-2 border-t border-slate-800' },
+            React.createElement('div', null, React.createElement('span', { className: 'text-slate-500' }, 'Uploaded By: '), `${galleryMediaPreview.uploadedBy?.name || 'Student'} (${galleryMediaPreview.uploadedBy?.id || ''})`),
+            React.createElement('div', null, React.createElement('span', { className: 'text-slate-500' }, 'Category: '), `${galleryMediaPreview.section || 'department'} / ${galleryMediaPreview.category || 'General'}`),
+            React.createElement('div', null, React.createElement('span', { className: 'text-slate-500' }, 'Date: '), galleryMediaPreview.date || 'Recent'),
+            React.createElement('div', null, React.createElement('span', { className: 'text-slate-500' }, 'Current Status: '), React.createElement('span', { className: 'text-amber-400 font-bold' }, galleryMediaPreview.status || 'Pending Teacher Approval'))
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'flex items-center gap-3 pt-2' },
+          React.createElement(
+            'button',
+            {
+              type: 'button',
+              onClick: () => handleApproveGalleryUpload(galleryMediaPreview.id),
+              className: 'flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/30'
+            },
+            React.createElement(Icons.CheckCircle, { className: 'w-4 h-4' }),
+            'Approve & Publish to Gallery'
+          ),
+          React.createElement(
+            'button',
+            {
+              type: 'button',
+              onClick: () => handleRejectGalleryUpload(galleryMediaPreview.id),
+              className: 'flex-1 py-2.5 rounded-xl bg-rose-600/30 hover:bg-rose-600/40 text-rose-300 border border-rose-500/50 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer'
+            },
+            React.createElement(Icons.X, { className: 'w-4 h-4 text-rose-400' }),
+            'Reject Upload'
+          )
         )
       )
     )
