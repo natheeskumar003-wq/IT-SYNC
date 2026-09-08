@@ -88,9 +88,7 @@
     const [selectedPhoto, setSelectedPhoto] = useState(null); // Lightbox / Video Player
     const [isUploadOpen, setIsUploadOpen] = useState(false);
     const [photoToDelete, setPhotoToDelete] = useState(null);
-    const [photoToEdit, setPhotoToEdit] = useState(null);
-    const [mediaToEditPhoto, setMediaToEditPhoto] = useState(null);
-    const [mediaToRotateVideo, setMediaToRotateVideo] = useState(null);
+    const [photoToEditDetails, setPhotoToEditDetails] = useState(null);
     const [analytics, setAnalytics] = useState(null);
     const [showAnalytics, setShowAnalytics] = useState(isHOD || isAdmin);
 
@@ -291,47 +289,25 @@
       }
     };
 
-    // Save Edited Photo (Crop, Rotate, Flip, Filters, Resize)
-    const handleSavePhotoEdit = async (photoId, blob, dataUrl, editMeta) => {
+    // Update Media Details (Title, Description, Department, Category)
+    const handleSaveMediaDetails = async (photoId, updateData) => {
       try {
-        if (window.ITDepartmentApi?.gallery?.editPhoto) {
-          const res = await window.ITDepartmentApi.gallery.editPhoto(photoId, { dataUrl, editMeta });
-          if (res?.success && res.data) {
-            addToast?.('Photo updated and saved successfully! Original version preserved.', 'success');
-            const updatedPhoto = res.data;
-            setPhotos(photos.map(p => p.id === photoId ? updatedPhoto : p));
+        if (window.ITDepartmentApi?.gallery?.updatePhoto) {
+          const res = await window.ITDepartmentApi.gallery.updatePhoto(photoId, updateData);
+          if (res?.success) {
+            addToast?.('Media details updated successfully!', 'success');
+            const updated = res.data || updateData;
+            setPhotos(photos.map(p => p.id === photoId ? { ...p, ...updated } : p));
             if (selectedPhoto && selectedPhoto.id === photoId) {
-              setSelectedPhoto(updatedPhoto);
+              setSelectedPhoto(prev => ({ ...prev, ...updated }));
             }
-            setMediaToEditPhoto(null);
+            setPhotoToEditDetails(null);
           } else {
-            throw new Error(res?.message || 'Failed to save edited photo');
+            throw new Error(res?.message || 'Update failed');
           }
         }
       } catch (err) {
-        addToast?.('Failed to save edited photo: ' + (err.message || 'Server error'), 'error');
-      }
-    };
-
-    // Save Video Rotation (90° Left, 90° Right, 180°, 0°)
-    const handleSaveVideoRotation = async (photoId, newRotation) => {
-      try {
-        if (window.ITDepartmentApi?.gallery?.rotateVideo) {
-          const res = await window.ITDepartmentApi.gallery.rotateVideo(photoId, newRotation);
-          if (res?.success && res.data) {
-            addToast?.(`Video rotation set to ${res.data.rotation}° and saved successfully!`, 'success');
-            const updatedMedia = res.data;
-            setPhotos(photos.map(p => p.id === photoId ? updatedMedia : p));
-            if (selectedPhoto && selectedPhoto.id === photoId) {
-              setSelectedPhoto(updatedMedia);
-            }
-            setMediaToRotateVideo(null);
-          } else {
-            throw new Error(res?.message || 'Failed to rotate video');
-          }
-        }
-      } catch (err) {
-        addToast?.('Failed to rotate video: ' + (err.message || 'Server error'), 'error');
+        addToast?.('Failed to update media details: ' + (err.message || 'Server error'), 'error');
       }
     };
 
@@ -724,8 +700,7 @@
           const isPending = pStatus.includes('pending');
           const isRejected = pStatus === 'rejected';
           const canDelete = isAdmin || isHOD || isTeacher || (isStudent && photo.uploadedBy?.id === uId);
-          const canEdit = isAdmin;
-          const canEditMedia = isAdmin || isHOD || isTeacher || (isStudent && (photo.uploadedBy?.id === uId || !photo.uploadedBy?.id));
+          const canEditDetails = isAdmin || isHOD || isTeacher || (isStudent && (photo.uploadedBy?.id === uId || !photo.uploadedBy?.id));
           const isVideo = photo.mediaType === 'video' || (photo.url && photo.url.match(/\.(mp4|mov|avi|webm)($|\?)/i)) || (photo.mimeType && photo.mimeType.startsWith('video/'));
 
           return h(
@@ -751,10 +726,6 @@
                       preload: 'metadata',
                       muted: true,
                       playsInline: true,
-                      style: photo.rotation ? {
-                        transform: `rotate(${photo.rotation}deg) scale(${photo.rotation % 180 !== 0 ? 0.75 : 1})`,
-                        transition: 'transform 0.3s ease'
-                      } : undefined,
                       className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none',
                       onError: (e) => { e.target.style.display = 'none'; }
                     }),
@@ -810,22 +781,18 @@
               h(
                 'div',
                 { className: 'absolute top-3 right-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10' },
-                // Media Edit Quick Button
-                canEditMedia && h(
+                // Media Edit Details Quick Button
+                canEditDetails && h(
                   'button',
                   {
                     onClick: (e) => {
                       e.stopPropagation();
-                      if (isVideo) {
-                        setMediaToRotateVideo(photo);
-                      } else {
-                        setMediaToEditPhoto(photo);
-                      }
+                      setPhotoToEditDetails(photo);
                     },
-                    title: isVideo ? 'Rotate Video (90° Left, 90° Right, 180°)' : 'Edit Photo (Crop, Rotate, Filters, Sharpness, Resize)',
-                    className: 'p-2 rounded-xl bg-purple-950/80 hover:bg-purple-900 text-purple-300 border border-purple-500/40 backdrop-blur-md transition cursor-pointer'
+                    title: 'Edit Details (Title, Description, Department, Category)',
+                    className: 'p-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 backdrop-blur-md transition cursor-pointer'
                   },
-                  renderIcon(isVideo ? Icons.RefreshCw : (Icons.Sliders || Icons.Edit), { className: 'w-3.5 h-3.5' })
+                  renderIcon(Icons.Edit || Icons.FileText, { className: 'w-3.5 h-3.5' })
                 ),
                 h(
                   'button',
@@ -838,18 +805,6 @@
                     className: 'p-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 text-white border border-slate-700/80 backdrop-blur-md transition cursor-pointer'
                   },
                   renderIcon(Icons.Download, { className: 'w-3.5 h-3.5' })
-                ),
-                canEdit && h(
-                  'button',
-                  {
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      setPhotoToEdit(photo);
-                    },
-                    title: 'Edit metadata',
-                    className: 'p-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 backdrop-blur-md transition cursor-pointer'
-                  },
-                  renderIcon(Icons.Edit || Icons.FileText, { className: 'w-3.5 h-3.5' })
                 ),
                 canDelete && h(
                   'button',
@@ -1057,19 +1012,13 @@
         onClose: () => setSelectedPhoto(null),
         onToggleLike: () => handleToggleLike(selectedPhoto),
         onAddComment: (text) => handleAddComment(selectedPhoto.id, text),
-        onDownload: () => handleDownload(selectedPhoto.url, selectedPhoto.title),
+        onDownload: () => handleDownload(selectedPhoto.url, selectedPhoto.title, selectedPhoto.mediaType),
         onStatusUpdate: (status) => handleStatusUpdate(selectedPhoto.id, status),
-        onEdit: () => {
-          setPhotoToEdit(selectedPhoto);
+        onEditDetails: (p) => {
+          setPhotoToEditDetails(p || selectedPhoto);
         },
         onDelete: () => {
           setPhotoToDelete(selectedPhoto);
-        },
-        onEditPhoto: (p) => {
-          setMediaToEditPhoto(p || selectedPhoto);
-        },
-        onRotateVideo: (p) => {
-          setMediaToRotateVideo(p || selectedPhoto);
         },
         canManageApprovals,
         isAdmin,
@@ -1100,44 +1049,18 @@
       }),
 
       // =====================================================================
-      // 8B. EDIT PHOTO MODAL (ADMIN METADATA)
+      // 8B. EDIT MEDIA DETAILS MODAL (Title, Description, Department, Category)
       // =====================================================================
-      photoToEdit && h(EditPhotoModal, {
-        photo: photoToEdit,
-        onClose: () => setPhotoToEdit(null),
-        onUpdated: (updatedPhoto) => {
-          setPhotoToEdit(null);
+      photoToEditDetails && h(EditMediaDetailsModal, {
+        photo: photoToEditDetails,
+        onClose: () => setPhotoToEditDetails(null),
+        onUpdated: (updatedMedia) => {
+          setPhotoToEditDetails(null);
           fetchPhotos();
           loadAnalytics();
-          if (selectedPhoto && selectedPhoto.id === updatedPhoto.id) {
-            setSelectedPhoto(updatedPhoto);
+          if (selectedPhoto && selectedPhoto.id === updatedMedia.id) {
+            setSelectedPhoto(updatedMedia);
           }
-        }
-      }),
-
-      // =====================================================================
-      // 8C. PHOTO EDITOR MODAL (CROP, ROTATE, FLIP, FILTERS, SHARPNESS, RESIZE)
-      // =====================================================================
-      mediaToEditPhoto && h(PhotoEditorModal, {
-        photo: mediaToEditPhoto,
-        imageUrl: mediaToEditPhoto.url,
-        title: mediaToEditPhoto.title,
-        onClose: () => setMediaToEditPhoto(null),
-        onSave: (blob, dataUrl, editMeta) => {
-          handleSavePhotoEdit(mediaToEditPhoto.id, blob, dataUrl, editMeta);
-        }
-      }),
-
-      // =====================================================================
-      // 8D. ROTATE VIDEO MODAL (90° LEFT, 90° RIGHT, 180°, RESET 0°)
-      // =====================================================================
-      mediaToRotateVideo && h(RotateVideoModal, {
-        videoUrl: mediaToRotateVideo.url,
-        currentRotation: mediaToRotateVideo.rotation || 0,
-        title: mediaToRotateVideo.title,
-        onClose: () => setMediaToRotateVideo(null),
-        onSave: (newRotation) => {
-          handleSaveVideoRotation(mediaToRotateVideo.id, newRotation);
         }
       }),
 
@@ -1191,16 +1114,12 @@
   // Includes: Play/Pause, Progress Bar, Volume, Fullscreen, PiP, Playback Speed,
   // Direct Streaming, and Error Notification for Missing/Corrupted Media
   // =========================================================================
-  const ResponsiveVideoPlayer = ({ url, title, rotation: initialRotation = 0, onRotateChange }) => {
+  const ResponsiveVideoPlayer = ({ url, title }) => {
     const videoRef = React.useRef(null);
     const containerRef = React.useRef(null);
     const hideTimerRef = React.useRef(null);
 
-    const [currentRotation, setCurrentRotation] = useState(initialRotation || 0);
-
-    React.useEffect(() => {
-      setCurrentRotation(initialRotation || 0);
-    }, [initialRotation]);
+    const [zoomLevel, setZoomLevel] = useState(100); // 100, 125, 150, 200
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -1412,10 +1331,11 @@
           }
           setErrorMessage(msg);
         },
-        style: currentRotation ? {
-          transform: `rotate(${currentRotation}deg) scale(${currentRotation % 180 !== 0 ? 0.75 : 1})`,
+        style: {
+          transform: `scale(${zoomLevel / 100})`,
+          transformOrigin: 'center center',
           transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-        } : undefined,
+        },
         className: 'w-full h-full object-contain cursor-pointer'
       }),
 
@@ -1563,22 +1483,31 @@
               '📺'
             ),
 
-            // Quick Video Rotate Button
+            // Zoom Controls (100%, 125%, 150%, 200%)
             h(
-              'button',
-              {
-                type: 'button',
-                onClick: (e) => {
-                  e.stopPropagation();
-                  const nextRot = (currentRotation + 90) % 360;
-                  setCurrentRotation(nextRot);
-                  if (onRotateChange) onRotateChange(nextRot);
-                },
-                title: `Rotate Video (Current: ${currentRotation}°)`,
-                className: 'px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 text-purple-300 font-mono text-[11px] font-bold transition cursor-pointer flex items-center gap-1'
-              },
-              '🔄',
-              `${currentRotation}°`
+              'div',
+              { className: 'flex items-center gap-1 bg-white/10 rounded-lg p-0.5 border border-white/10' },
+              h('span', { className: 'text-[10px] text-slate-400 font-semibold px-1 hidden sm:inline' }, '🔍 Zoom:'),
+              [100, 125, 150, 200].map(z =>
+                h(
+                  'button',
+                  {
+                    key: z,
+                    type: 'button',
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      setZoomLevel(z);
+                    },
+                    title: `Zoom ${z}%`,
+                    className: `px-1.5 py-0.5 rounded text-[10px] font-bold font-mono transition cursor-pointer ${
+                      zoomLevel === z
+                        ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                        : 'text-slate-300 hover:text-white hover:bg-white/10'
+                    }`
+                  },
+                  `${z}%`
+                )
+              )
             ),
 
             // Fullscreen Button
@@ -1608,10 +1537,8 @@
     onAddComment,
     onDownload,
     onStatusUpdate,
-    onEdit,
+    onEditDetails,
     onDelete,
-    onEditPhoto,
-    onRotateVideo,
     canManageApprovals,
     isAdmin,
     currentUser,
@@ -1624,7 +1551,7 @@
     const pStatus = (photo.status || 'Approved').toLowerCase();
     const isPending = pStatus.includes('pending');
     const isRejected = pStatus === 'rejected';
-    const canEditMedia = isAdmin || canManageApprovals || (photo.uploadedBy?.id === uId || !photo.uploadedBy?.id);
+    const canEditDetails = isAdmin || canManageApprovals || (currentUser?.role === 'student' && (photo.uploadedBy?.id === uId || !photo.uploadedBy?.id));
     const isVideo = photo.mediaType === 'video' || (photo.url && photo.url.match(/\.(mp4|mov|avi|webm)($|\?)/i)) || (photo.mimeType && photo.mimeType.startsWith('video/'));
 
     const handleCommentSubmit = (e) => {
@@ -1658,9 +1585,7 @@
           isVideo
             ? h(ResponsiveVideoPlayer, {
                 url: photo.url,
-                title: photo.title,
-                rotation: photo.rotation || 0,
-                onRotateChange: (newRot) => onRotateVideo?.({ ...photo, rotation: newRot })
+                title: photo.title
               })
             : h('img', {
                 src: photo.url,
@@ -1732,48 +1657,31 @@
                 renderIcon(Icons.Heart, { className: `w-4 h-4 ${isLiked ? 'fill-current text-rose-500' : ''}` }),
                 `${photo.likes || 0} Likes`
               ),
-              canEditMedia && !isVideo && h(
+              canEditDetails && h(
                 'button',
                 {
-                  onClick: () => onEditPhoto?.(photo),
-                  title: 'Edit Photo (Crop, Rotate, Flip, Brightness, Contrast, Saturation, Sharpness, Resize)',
-                  className: 'px-3 py-2 rounded-xl bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 border border-purple-500/40 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer'
+                  onClick: () => onEditDetails?.(photo),
+                  title: 'Edit Details (Title, Description, Department, Category)',
+                  className: 'px-3 py-2 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer'
                 },
-                renderIcon(Icons.Sliders || Icons.Edit, { className: 'w-4 h-4' }),
-                'Edit Photo'
-              ),
-              canEditMedia && isVideo && h(
-                'button',
-                {
-                  onClick: () => onRotateVideo?.(photo),
-                  title: 'Rotate Video (90° Left, 90° Right, 180°)',
-                  className: 'px-3 py-2 rounded-xl bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer'
-                },
-                renderIcon(Icons.RefreshCw, { className: 'w-4 h-4' }),
-                'Rotate Video'
+                renderIcon(Icons.Edit || Icons.FileText, { className: 'w-4 h-4' }),
+                'Edit Details'
               ),
               h(
                 'button',
                 {
                   onClick: onDownload,
-                  className: 'p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition'
+                  title: `Download ${isVideo ? 'video' : 'photo'}`,
+                  className: 'p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition cursor-pointer'
                 },
                 renderIcon(Icons.Download, { className: 'w-4 h-4' })
               ),
-              isAdmin && h(
-                'button',
-                {
-                  onClick: onEdit,
-                  title: 'Edit metadata',
-                  className: 'p-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-500/30 transition'
-                },
-                renderIcon(Icons.Edit || Icons.FileText, { className: 'w-4 h-4' })
-              ),
-              (isAdmin || canManageApprovals) && h(
+              (isAdmin || canManageApprovals || (currentUser?.role === 'student' && (photo.uploadedBy?.id === uId || !photo.uploadedBy?.id))) && h(
                 'button',
                 {
                   onClick: onDelete,
-                  className: 'p-2 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-500/30 transition'
+                  title: 'Delete media',
+                  className: 'p-2 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-500/30 transition cursor-pointer'
                 },
                 renderIcon(Icons.Trash, { className: 'w-4 h-4' })
               )
@@ -1868,979 +1776,23 @@
   };
 
   // =========================================================================
-  // PHOTO EDITOR MODAL COMPONENT (PREMIUM MEDIA STUDIO)
-  // Features:
-  // 1. Crop (Free, 1:1, 4:3, 16:9, Zoom, Pan X & Y)
-  // 2. Rotate Left (-90°) & Rotate Right (+90°)
-  // 3. Flip Horizontal & Flip Vertical
-  // 4. Brightness (-100 to 100)
-  // 5. Contrast (-100 to 100)
-  // 6. Saturation (-100 to 100)
-  // 7. Sharpness (0 to 100 via real-time 3x3 convolution unsharp mask)
-  // 8. Resize (Width, Height, Lock Aspect Ratio, Quick Presets)
-  // Live Canvas Preview, Save Changes & Cancel, Preserves Original
+  // EDIT MEDIA DETAILS MODAL COMPONENT (TITLE, DESCRIPTION, DEPARTMENT, CATEGORY)
+  // Allows uploader & staff/admin to edit only metadata, keeping media file untouched.
   // =========================================================================
-  const PhotoEditorModal = ({ photo, imageUrl, title, onClose, onSave }) => {
-    const { addToast } = useAuth();
-    const canvasRef = React.useRef(null);
-    const imageRef = React.useRef(null);
-
-    const initialSrc = imageUrl || photo?.url || '';
-
-    // Transform State
-    const [aspectPreset, setAspectPreset] = useState('free'); // free, 1:1, 4:3, 16:9
-    const [zoom, setZoom] = useState(1); // 1 to 2.5
-    const [panX, setPanX] = useState(0); // -100 to 100
-    const [panY, setPanY] = useState(0); // -100 to 100
-    const [rotation, setRotation] = useState(0); // 0, 90, 180, 270
-    const [flipH, setFlipH] = useState(false);
-    const [flipV, setFlipV] = useState(false);
-
-    // Color/Filter State
-    const [brightness, setBrightness] = useState(0); // -100 to 100
-    const [contrast, setContrast] = useState(0); // -100 to 100
-    const [saturation, setSaturation] = useState(0); // -100 to 100
-    const [sharpness, setSharpness] = useState(0); // 0 to 100
-
-    // Resize State
-    const [origDimensions, setOrigDimensions] = useState({ width: 800, height: 600 });
-    const [targetWidth, setTargetWidth] = useState(800);
-    const [targetHeight, setTargetHeight] = useState(600);
-    const [lockAspect, setLockAspect] = useState(true);
-
-    // Active tool tab: 'crop', 'orient', 'filters', 'resize'
-    const [activeTab, setActiveTab] = useState('crop');
-    const [saving, setSaving] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState(false);
-
-    // Load initial image
-    useEffect(() => {
-      if (!initialSrc) return;
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        imageRef.current = img;
-        const w = img.naturalWidth || 800;
-        const h = img.naturalHeight || 600;
-        setOrigDimensions({ width: w, height: h });
-        setTargetWidth(w);
-        setTargetHeight(h);
-        setImageLoaded(true);
-      };
-      img.onerror = () => {
-        addToast?.('Failed to load image for editing', 'error');
-      };
-      img.src = initialSrc;
-    }, [initialSrc]);
-
-    // Handle Dimension changes with aspect ratio lock
-    const handleWidthChange = (val) => {
-      const w = parseInt(val, 10) || 10;
-      setTargetWidth(w);
-      if (lockAspect && origDimensions.width > 0) {
-        const ratio = origDimensions.height / origDimensions.width;
-        setTargetHeight(Math.round(w * ratio));
-      }
-    };
-
-    const handleHeightChange = (val) => {
-      const h = parseInt(val, 10) || 10;
-      setTargetHeight(h);
-      if (lockAspect && origDimensions.height > 0) {
-        const ratio = origDimensions.width / origDimensions.height;
-        setTargetWidth(Math.round(h * ratio));
-      }
-    };
-
-    // Fast Sharpness Convolution on ImageData
-    const applySharpen = (ctx, w, h, amount) => {
-      if (amount <= 0) return;
-      try {
-        const factor = (amount / 100) * 1.5;
-        const imgData = ctx.getImageData(0, 0, w, h);
-        const data = imgData.data;
-        const copy = new Uint8ClampedArray(data);
-
-        const centerWeight = 1 + 4 * factor;
-        const edgeWeight = -factor;
-
-        for (let y = 1; y < h - 1; y++) {
-          const rowIdx = y * w;
-          const upRowIdx = (y - 1) * w;
-          const downRowIdx = (y + 1) * w;
-          for (let x = 1; x < w - 1; x++) {
-            const idx = (rowIdx + x) * 4;
-            for (let c = 0; c < 3; c++) {
-              const up = (upRowIdx + x) * 4 + c;
-              const down = (downRowIdx + x) * 4 + c;
-              const left = (rowIdx + (x - 1)) * 4 + c;
-              const right = (rowIdx + (x + 1)) * 4 + c;
-              const val = copy[idx + c] * centerWeight +
-                          (copy[up] + copy[down] + copy[left] + copy[right]) * edgeWeight;
-              data[idx + c] = val > 255 ? 255 : (val < 0 ? 0 : val);
-            }
-          }
-        }
-        ctx.putImageData(imgData, 0, 0);
-      } catch (e) {
-        console.warn('Sharpen skipped (ImageData CORS restricted):', e);
-      }
-    };
-
-    // Render Canvas Pipeline
-    const renderToCanvas = (targetCanvas, isFull = false) => {
-      const img = imageRef.current;
-      if (!img || !targetCanvas) return;
-
-      const ctx = targetCanvas.getContext('2d');
-      if (!ctx) return;
-
-      // Base dimensions
-      let baseW = targetWidth > 0 ? targetWidth : (img.naturalWidth || 800);
-      let baseH = targetHeight > 0 ? targetHeight : (img.naturalHeight || 600);
-
-      // In preview mode, scale down for silky smooth performance
-      let outW = baseW;
-      let outH = baseH;
-      if (!isFull) {
-        const maxPrev = 600;
-        if (outW > maxPrev || outH > maxPrev) {
-          const s = Math.min(maxPrev / outW, maxPrev / outH);
-          outW = Math.round(outW * s);
-          outH = Math.round(outH * s);
-        }
-      }
-
-      // If rotation is 90 or 270, swap canvas target dimensions
-      const isSwapped = rotation === 90 || rotation === 270;
-      const canvasW = isSwapped ? outH : outW;
-      const canvasH = isSwapped ? outW : outH;
-
-      targetCanvas.width = canvasW;
-      targetCanvas.height = canvasH;
-
-      ctx.clearRect(0, 0, canvasW, canvasH);
-      ctx.save();
-
-      // CSS Filters for Brightness, Contrast, Saturation
-      const bPct = 100 + brightness;
-      const cPct = 100 + contrast;
-      const sPct = 100 + saturation;
-      ctx.filter = `brightness(${bPct}%) contrast(${cPct}%) saturate(${sPct}%)`;
-
-      // Center transformations
-      ctx.translate(canvasW / 2, canvasH / 2);
-      ctx.rotate((rotation * Math.PI) / 180);
-      ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-
-      // Crop calculations
-      let srcX = 0;
-      let srcY = 0;
-      let srcW = img.naturalWidth || 800;
-      let srcH = img.naturalHeight || 600;
-
-      if (aspectPreset !== 'free') {
-        let targetRatio = 1;
-        if (aspectPreset === '1:1') targetRatio = 1;
-        else if (aspectPreset === '4:3') targetRatio = 4 / 3;
-        else if (aspectPreset === '16:9') targetRatio = 16 / 9;
-
-        const currentRatio = srcW / srcH;
-        if (currentRatio > targetRatio) {
-          const cropW = srcH * targetRatio;
-          srcX = (srcW - cropW) / 2;
-          srcW = cropW;
-        } else {
-          const cropH = srcW / targetRatio;
-          srcY = (srcH - cropH) / 2;
-          srcH = cropH;
-        }
-      }
-
-      // Zoom & Pan adjustments
-      if (zoom > 1) {
-        const zoomedW = srcW / zoom;
-        const zoomedH = srcH / zoom;
-        const maxPanX = (srcW - zoomedW) / 2;
-        const maxPanY = (srcH - zoomedH) / 2;
-        srcX = srcX + (srcW - zoomedW) / 2 + (panX / 100) * maxPanX;
-        srcY = srcY + (srcH - zoomedH) / 2 + (panY / 100) * maxPanY;
-        srcW = zoomedW;
-        srcH = zoomedH;
-      }
-
-      // Draw onto canvas centered
-      ctx.drawImage(img, srcX, srcY, srcW, srcH, -outW / 2, -outH / 2, outW, outH);
-      ctx.restore();
-
-      // Sharpness Convolution Filter
-      if (sharpness > 0) {
-        applySharpen(ctx, canvasW, canvasH, sharpness);
-      }
-    };
-
-    // Re-render preview canvas whenever controls change
-    useEffect(() => {
-      if (imageLoaded && canvasRef.current) {
-        renderToCanvas(canvasRef.current, false);
-      }
-    }, [
-      imageLoaded,
-      aspectPreset,
-      zoom,
-      panX,
-      panY,
-      rotation,
-      flipH,
-      flipV,
-      brightness,
-      contrast,
-      saturation,
-      sharpness,
-      targetWidth,
-      targetHeight
-    ]);
-
-    // Reset All Controls
-    const handleReset = () => {
-      setAspectPreset('free');
-      setZoom(1);
-      setPanX(0);
-      setPanY(0);
-      setRotation(0);
-      setFlipH(false);
-      setFlipV(false);
-      setBrightness(0);
-      setContrast(0);
-      setSaturation(0);
-      setSharpness(0);
-      setTargetWidth(origDimensions.width);
-      setTargetHeight(origDimensions.height);
-      setLockAspect(true);
-      addToast?.('All photo adjustments reset to original', 'info');
-    };
-
-    // Save Changes
-    const handleSave = () => {
-      if (!imageRef.current) return;
-      setSaving(true);
-      try {
-        const fullCanvas = document.createElement('canvas');
-        renderToCanvas(fullCanvas, true);
-
-        const dataUrl = fullCanvas.toDataURL('image/jpeg', 0.92);
-        fullCanvas.toBlob((blob) => {
-          const editMeta = {
-            aspectPreset,
-            zoom,
-            panX,
-            panY,
-            rotation,
-            flipH,
-            flipV,
-            brightness,
-            contrast,
-            saturation,
-            sharpness,
-            width: fullCanvas.width,
-            height: fullCanvas.height
-          };
-          onSave(blob, dataUrl, editMeta);
-          setSaving(false);
-        }, 'image/jpeg', 0.92);
-      } catch (err) {
-        setSaving(false);
-        addToast?.('Failed to save edited photo: ' + err.message, 'error');
-      }
-    };
-
-    return h(
-      'div',
-      { className: 'fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-2xl animate-fade-in' },
-      h(
-        'div',
-        { className: 'relative w-full max-w-5xl max-h-[95vh] rounded-3xl border border-slate-800 bg-slate-950 p-4 sm:p-6 shadow-2xl flex flex-col justify-between overflow-hidden' },
-
-        // Top Header
-        h(
-          'div',
-          { className: 'flex items-center justify-between border-b border-slate-800/80 pb-3 flex-shrink-0' },
-          h(
-            'div',
-            { className: 'flex items-center gap-3' },
-            h('div', { className: 'w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 text-purple-400 flex items-center justify-center text-lg' }, '🎨'),
-            h(
-              'div',
-              null,
-              h('h2', { className: 'text-base sm:text-lg font-bold text-white' }, 'Photo Editing Studio'),
-              h('p', { className: 'text-xs text-slate-400' }, title || photo?.title || 'Crop • Rotate • Flip • Filters • Sharpness • Resize')
-            )
-          ),
-          h(
-            'div',
-            { className: 'flex items-center gap-2' },
-            h(
-              'button',
-              {
-                onClick: handleReset,
-                title: 'Reset all edits',
-                className: 'px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer flex items-center gap-1.5'
-              },
-              renderIcon(Icons.RefreshCw, { className: 'w-3.5 h-3.5' }),
-              'Reset'
-            ),
-            h(
-              'button',
-              {
-                onClick: onClose,
-                className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer'
-              },
-              renderIcon(Icons.X, { className: 'w-5 h-5' })
-            )
-          )
-        ),
-
-        // Main Studio Body (Two Columns: Canvas on Left, Controls on Right)
-        h(
-          'div',
-          { className: 'flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 py-4 overflow-y-auto min-h-0' },
-
-          // Left Preview Area (7 cols)
-          h(
-            'div',
-            { className: 'lg:col-span-7 flex flex-col items-center justify-center bg-slate-900/60 rounded-2xl border border-slate-800/80 p-3 relative min-h-[300px] overflow-hidden' },
-            
-            // Canvas Display
-            h('canvas', {
-              ref: canvasRef,
-              className: 'max-w-full max-h-[55vh] object-contain rounded-xl shadow-2xl border border-slate-800 bg-slate-950'
-            }),
-
-            // Floating live badges on preview
-            h(
-              'div',
-              { className: 'absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-slate-400 pointer-events-none' },
-              h('span', { className: 'px-2.5 py-1 rounded-md bg-black/75 border border-slate-800 text-cyan-300 font-mono backdrop-blur-md' },
-                `${targetWidth} × ${targetHeight} px ${rotation ? `• ${rotation}°` : ''} ${zoom > 1 ? `• ${Math.round(zoom * 100)}% zoom` : ''}`
-              ),
-              sharpness > 0 && h('span', { className: 'px-2.5 py-1 rounded-md bg-purple-950/80 border border-purple-500/40 text-purple-300 font-mono backdrop-blur-md' },
-                `Sharpness: +${sharpness}`
-              )
-            )
-          ),
-
-          // Right Controls Sidebar (5 cols)
-          h(
-            'div',
-            { className: 'lg:col-span-5 flex flex-col gap-3 bg-slate-900/40 rounded-2xl border border-slate-800/80 p-3.5 overflow-y-auto' },
-
-            // Tool Tabs
-            h(
-              'div',
-              { className: 'grid grid-cols-4 gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800/80 text-xs font-semibold' },
-              [
-                { id: 'crop', label: 'Crop' },
-                { id: 'orient', label: 'Rotate' },
-                { id: 'filters', label: 'Filters' },
-                { id: 'resize', label: 'Resize' }
-              ].map(tab =>
-                h(
-                  'button',
-                  {
-                    key: tab.id,
-                    type: 'button',
-                    onClick: () => setActiveTab(tab.id),
-                    className: `py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer ${
-                      activeTab === tab.id
-                        ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-850'
-                    }`
-                  },
-                  tab.label
-                )
-              )
-            ),
-
-            // TAB 1: CROP & ASPECT RATIO
-            activeTab === 'crop' && h(
-              'div',
-              { className: 'space-y-4 pt-1 animate-fade-in' },
-              h(
-                'div',
-                { className: 'space-y-1.5' },
-                h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Crop Aspect Ratio'),
-                h(
-                  'div',
-                  { className: 'grid grid-cols-2 gap-2' },
-                  [
-                    { id: 'free', label: 'Free / Original' },
-                    { id: '1:1', label: '1:1 Square' },
-                    { id: '4:3', label: '4:3 Standard' },
-                    { id: '16:9', label: '16:9 Widescreen' }
-                  ].map(preset =>
-                    h(
-                      'button',
-                      {
-                        key: preset.id,
-                        type: 'button',
-                        onClick: () => setAspectPreset(preset.id),
-                        className: `p-2 rounded-xl border text-xs font-bold transition cursor-pointer ${
-                          aspectPreset === preset.id
-                            ? 'bg-purple-600/20 border-purple-500 text-purple-300'
-                            : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-850'
-                        }`
-                      },
-                      preset.label
-                    )
-                  )
-                )
-              ),
-
-              // Zoom
-              h(
-                'div',
-                { className: 'space-y-1.5' },
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between text-xs' },
-                  h('span', { className: 'font-bold uppercase tracking-wider text-slate-400' }, 'Crop Zoom'),
-                  h('span', { className: 'font-mono text-cyan-300 font-bold' }, `${Math.round(zoom * 100)}%`)
-                ),
-                h('input', {
-                  type: 'range',
-                  min: 1,
-                  max: 2.5,
-                  step: 0.05,
-                  value: zoom,
-                  onChange: (e) => setZoom(parseFloat(e.target.value)),
-                  className: 'w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400'
-                })
-              ),
-
-              // Pan X & Y (if zoom > 1)
-              zoom > 1 && h(
-                'div',
-                { className: 'space-y-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 animate-fade-in' },
-                h(
-                  'div',
-                  { className: 'space-y-1' },
-                  h(
-                    'div',
-                    { className: 'flex items-center justify-between text-xs' },
-                    h('span', { className: 'text-slate-400' }, 'Horizontal Pan (X)'),
-                    h('span', { className: 'font-mono text-slate-300 text-[11px]' }, `${panX}%`)
-                  ),
-                  h('input', {
-                    type: 'range',
-                    min: -100,
-                    max: 100,
-                    value: panX,
-                    onChange: (e) => setPanX(parseInt(e.target.value, 10)),
-                    className: 'w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400'
-                  })
-                ),
-                h(
-                  'div',
-                  { className: 'space-y-1' },
-                  h(
-                    'div',
-                    { className: 'flex items-center justify-between text-xs' },
-                    h('span', { className: 'text-slate-400' }, 'Vertical Pan (Y)'),
-                    h('span', { className: 'font-mono text-slate-300 text-[11px]' }, `${panY}%`)
-                  ),
-                  h('input', {
-                    type: 'range',
-                    min: -100,
-                    max: 100,
-                    value: panY,
-                    onChange: (e) => setPanY(parseInt(e.target.value, 10)),
-                    className: 'w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400'
-                  })
-                )
-              )
-            ),
-
-            // TAB 2: ROTATE & FLIP
-            activeTab === 'orient' && h(
-              'div',
-              { className: 'space-y-4 pt-1 animate-fade-in' },
-              h(
-                'div',
-                { className: 'space-y-2' },
-                h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Rotate Orientation'),
-                h(
-                  'div',
-                  { className: 'grid grid-cols-2 gap-2' },
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      onClick: () => setRotation(r => ((r - 90) % 360 + 360) % 360),
-                      className: 'p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer'
-                    },
-                    '↺ Rotate 90° Left'
-                  ),
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      onClick: () => setRotation(r => (r + 90) % 360),
-                      className: 'p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer'
-                    },
-                    '↻ Rotate 90° Right'
-                  )
-                ),
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs' },
-                  h('span', { className: 'text-slate-400' }, 'Current Rotation Angle:'),
-                  h('span', { className: 'font-mono font-bold text-purple-400' }, `${rotation}°`)
-                )
-              ),
-
-              h(
-                'div',
-                { className: 'space-y-2 pt-2 border-t border-slate-800' },
-                h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Mirror & Flip'),
-                h(
-                  'div',
-                  { className: 'grid grid-cols-2 gap-2' },
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      onClick: () => setFlipH(f => !f),
-                      className: `p-3 rounded-xl border font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer ${
-                        flipH
-                          ? 'bg-purple-600/20 border-purple-500 text-purple-300'
-                          : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850'
-                      }`
-                    },
-                    '⇄ Flip Horizontal'
-                  ),
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      onClick: () => setFlipV(f => !f),
-                      className: `p-3 rounded-xl border font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer ${
-                        flipV
-                          ? 'bg-purple-600/20 border-purple-500 text-purple-300'
-                          : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850'
-                      }`
-                    },
-                    '⇅ Flip Vertical'
-                  )
-                )
-              )
-            ),
-
-            // TAB 3: LIGHTING, COLOR & SHARPNESS
-            activeTab === 'filters' && h(
-              'div',
-              { className: 'space-y-3.5 pt-1 animate-fade-in' },
-              
-              // Brightness
-              h(
-                'div',
-                { className: 'space-y-1' },
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between text-xs' },
-                  h('span', { className: 'font-bold text-slate-400' }, '☀️ Brightness'),
-                  h('span', { className: 'font-mono font-bold text-slate-300' }, `${brightness > 0 ? '+' : ''}${brightness}`)
-                ),
-                h('input', {
-                  type: 'range',
-                  min: -100,
-                  max: 100,
-                  value: brightness,
-                  onChange: (e) => setBrightness(parseInt(e.target.value, 10)),
-                  className: 'w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400'
-                })
-              ),
-
-              // Contrast
-              h(
-                'div',
-                { className: 'space-y-1' },
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between text-xs' },
-                  h('span', { className: 'font-bold text-slate-400' }, '◐ Contrast'),
-                  h('span', { className: 'font-mono font-bold text-slate-300' }, `${contrast > 0 ? '+' : ''}${contrast}`)
-                ),
-                h('input', {
-                  type: 'range',
-                  min: -100,
-                  max: 100,
-                  value: contrast,
-                  onChange: (e) => setContrast(parseInt(e.target.value, 10)),
-                  className: 'w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400'
-                })
-              ),
-
-              // Saturation
-              h(
-                'div',
-                { className: 'space-y-1' },
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between text-xs' },
-                  h('span', { className: 'font-bold text-slate-400' }, '🎨 Saturation'),
-                  h('span', { className: 'font-mono font-bold text-slate-300' }, `${saturation > 0 ? '+' : ''}${saturation}`)
-                ),
-                h('input', {
-                  type: 'range',
-                  min: -100,
-                  max: 100,
-                  value: saturation,
-                  onChange: (e) => setSaturation(parseInt(e.target.value, 10)),
-                  className: 'w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400'
-                })
-              ),
-
-              // Sharpness (Real-time 3x3 Convolution)
-              h(
-                'div',
-                { className: 'space-y-1 pt-2 border-t border-slate-800' },
-                h(
-                  'div',
-                  { className: 'flex items-center justify-between text-xs' },
-                  h('span', { className: 'font-bold text-purple-300' }, '✨ Sharpness (Convolution)'),
-                  h('span', { className: 'font-mono font-bold text-purple-300' }, `${sharpness}`)
-                ),
-                h('input', {
-                  type: 'range',
-                  min: 0,
-                  max: 100,
-                  value: sharpness,
-                  onChange: (e) => setSharpness(parseInt(e.target.value, 10)),
-                  className: 'w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400'
-                }),
-                h('p', { className: 'text-[11px] text-slate-500 italic' }, 'Applies high-pass unsharp mask convolution kernel')
-              )
-            ),
-
-            // TAB 4: RESIZE
-            activeTab === 'resize' && h(
-              'div',
-              { className: 'space-y-4 pt-1 animate-fade-in' },
-              h(
-                'div',
-                { className: 'grid grid-cols-2 gap-3' },
-                h(
-                  'div',
-                  { className: 'space-y-1' },
-                  h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Width (px)'),
-                  h('input', {
-                    type: 'number',
-                    value: targetWidth,
-                    onChange: (e) => handleWidthChange(e.target.value),
-                    className: 'w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-purple-500'
-                  })
-                ),
-                h(
-                  'div',
-                  { className: 'space-y-1' },
-                  h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Height (px)'),
-                  h('input', {
-                    type: 'number',
-                    value: targetHeight,
-                    onChange: (e) => handleHeightChange(e.target.value),
-                    className: 'w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-purple-500'
-                  })
-                )
-              ),
-
-              // Lock Aspect Ratio
-              h(
-                'label',
-                { className: 'flex items-center gap-2 text-xs text-slate-300 cursor-pointer' },
-                h('input', {
-                  type: 'checkbox',
-                  checked: lockAspect,
-                  onChange: (e) => setLockAspect(e.target.checked),
-                  className: 'rounded bg-slate-800 border-slate-700 text-purple-600 focus:ring-0'
-                }),
-                'Lock Aspect Ratio'
-              ),
-
-              // Quick Presets
-              h(
-                'div',
-                { className: 'space-y-1.5 pt-2 border-t border-slate-800' },
-                h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Resolution Presets'),
-                h(
-                  'div',
-                  { className: 'grid grid-cols-3 gap-2' },
-                  [
-                    { label: '100% (Original)', scale: 1 },
-                    { label: '75%', scale: 0.75 },
-                    { label: '50%', scale: 0.5 },
-                    { label: '1080p FHD', w: 1920, h: 1080 },
-                    { label: '720p HD', w: 1280, h: 720 },
-                    { label: '800×600', w: 800, h: 600 }
-                  ].map((p, idx) =>
-                    h(
-                      'button',
-                      {
-                        key: idx,
-                        type: 'button',
-                        onClick: () => {
-                          if (p.scale) {
-                            setTargetWidth(Math.round(origDimensions.width * p.scale));
-                            setTargetHeight(Math.round(origDimensions.height * p.scale));
-                          } else {
-                            setTargetWidth(p.w);
-                            setTargetHeight(p.h);
-                          }
-                        },
-                        className: 'p-2 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-[11px] font-bold text-slate-300 hover:text-white transition cursor-pointer'
-                      },
-                      p.label
-                    )
-                  )
-                )
-              )
-            )
-          )
-        ),
-
-        // Bottom Bar (Save Changes & Cancel)
-        h(
-          'div',
-          { className: 'flex items-center justify-between border-t border-slate-800/80 pt-3 flex-shrink-0' },
-          h(
-            'button',
-            {
-              type: 'button',
-              onClick: onClose,
-              disabled: saving,
-              className: 'px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition cursor-pointer'
-            },
-            'Cancel'
-          ),
-          h(
-            'button',
-            {
-              type: 'button',
-              onClick: handleSave,
-              disabled: saving || !imageLoaded,
-              className: 'px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-purple-600/30 transition cursor-pointer flex items-center gap-2'
-            },
-            saving ? 'Processing & Saving...' : 'Save Changes'
-          )
-        )
-      )
-    );
-  };
-
-  // =========================================================================
-  // ROTATE VIDEO MODAL COMPONENT (ORIENTATION ADJUSTER)
-  // Features: 90° Left, 90° Right, 180°, Reset 0°, Live Preview, Save & Cancel
-  // =========================================================================
-  const RotateVideoModal = ({ videoUrl, currentRotation = 0, title, onClose, onSave }) => {
-    const { addToast } = useAuth();
-    const [rotation, setRotation] = useState(Number(currentRotation) || 0);
-    const [saving, setSaving] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const videoRef = React.useRef(null);
-
-    let src = videoUrl || '';
-    if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/')) {
-      src = '/' + src;
-    }
-    src = src.replace(/\\/g, '/');
-
-    const rotateLeft = () => {
-      setRotation(prev => ((prev - 90) % 360 + 360) % 360);
-    };
-
-    const rotateRight = () => {
-      setRotation(prev => (prev + 90) % 360);
-    };
-
-    const rotate180 = () => {
-      setRotation(prev => (prev + 180) % 360);
-    };
-
-    const resetRotation = () => {
-      setRotation(0);
-    };
-
-    const handleSave = async () => {
-      setSaving(true);
-      try {
-        await onSave(rotation);
-      } catch (err) {
-        addToast?.('Failed to save video rotation: ' + err.message, 'error');
-      } finally {
-        setSaving(false);
-      }
-    };
-
-    const togglePlay = () => {
-      if (!videoRef.current) return;
-      if (videoRef.current.paused) {
-        videoRef.current.play().catch(e => console.warn(e));
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    return h(
-      'div',
-      { className: 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl animate-fade-in' },
-      h(
-        'div',
-        { className: 'relative w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-950 p-6 sm:p-8 shadow-2xl space-y-5' },
-
-        // Header
-        h(
-          'div',
-          { className: 'flex items-center justify-between border-b border-slate-800/80 pb-4' },
-          h(
-            'div',
-            { className: 'flex items-center gap-3' },
-            h('div', { className: 'w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center text-lg' }, '🔄'),
-            h(
-              'div',
-              null,
-              h('h2', { className: 'text-lg font-bold text-white' }, 'Rotate Video'),
-              h('p', { className: 'text-xs text-slate-400 mt-0.5' }, title || 'Adjust orientation (90° Left, 90° Right, 180°)')
-            )
-          ),
-          h(
-            'button',
-            { onClick: onClose, className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer' },
-            renderIcon(Icons.X, { className: 'w-5 h-5' })
-          )
-        ),
-
-        // Live Rotated Video Preview
-        h(
-          'div',
-          { className: 'relative w-full h-64 sm:h-80 bg-black rounded-2xl border border-slate-800 overflow-hidden flex items-center justify-center p-2' },
-          h('video', {
-            ref: videoRef,
-            src,
-            playsInline: true,
-            controls: true,
-            onClick: togglePlay,
-            onPlay: () => setIsPlaying(true),
-            onPause: () => setIsPlaying(false),
-            style: {
-              transform: `rotate(${rotation}deg) scale(${rotation % 180 !== 0 ? 0.72 : 1})`,
-              transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-            },
-            className: 'w-full h-full object-contain cursor-pointer'
-          }),
-          // Current Angle Badge
-          h(
-            'span',
-            { className: 'absolute bottom-3 left-3 px-3 py-1 rounded-full text-xs font-mono font-bold bg-black/80 text-indigo-300 border border-indigo-500/30 backdrop-blur-md' },
-            `Current Orientation: ${rotation}°`
-          )
-        ),
-
-        // Rotation Action Buttons
-        h(
-          'div',
-          { className: 'space-y-2' },
-          h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Choose Rotation Angle'),
-          h(
-            'div',
-            { className: 'grid grid-cols-2 sm:grid-cols-4 gap-2.5' },
-            h(
-              'button',
-              {
-                type: 'button',
-                onClick: rotateLeft,
-                className: 'p-3 rounded-xl bg-slate-900 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/40 text-xs font-bold text-white transition flex items-center justify-center gap-1.5 cursor-pointer'
-              },
-              '↺ 90° Left'
-            ),
-            h(
-              'button',
-              {
-                type: 'button',
-                onClick: rotateRight,
-                className: 'p-3 rounded-xl bg-slate-900 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/40 text-xs font-bold text-white transition flex items-center justify-center gap-1.5 cursor-pointer'
-              },
-              '↻ 90° Right'
-            ),
-            h(
-              'button',
-              {
-                type: 'button',
-                onClick: rotate180,
-                className: 'p-3 rounded-xl bg-slate-900 hover:bg-indigo-950/40 border border-slate-800 hover:border-indigo-500/40 text-xs font-bold text-white transition flex items-center justify-center gap-1.5 cursor-pointer'
-              },
-              '🔃 180°'
-            ),
-            h(
-              'button',
-              {
-                type: 'button',
-                onClick: resetRotation,
-                className: 'p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-300 hover:text-white transition flex items-center justify-center gap-1.5 cursor-pointer'
-              },
-              '↩️ Reset (0°)'
-            )
-          )
-        ),
-
-        // Save & Cancel Footer
-        h(
-          'div',
-          { className: 'flex items-center justify-end gap-3 pt-4 border-t border-slate-800/80' },
-          h(
-            'button',
-            {
-              type: 'button',
-              onClick: onClose,
-              disabled: saving,
-              className: 'px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition cursor-pointer'
-            },
-            'Cancel'
-          ),
-          h(
-            'button',
-            {
-              type: 'button',
-              onClick: handleSave,
-              disabled: saving,
-              className: 'px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-indigo-600/30 transition cursor-pointer flex items-center gap-2'
-            },
-            saving ? 'Saving...' : 'Save Changes'
-          )
-        )
-      )
-    );
-  };
-
-  // =========================================================================
-  // EDIT PHOTO MODAL COMPONENT (ADMIN METADATA & CATEGORY MANAGEMENT)
-  // =========================================================================
-  const EditPhotoModal = ({ photo, onClose, onUpdated }) => {
+  const EditMediaDetailsModal = ({ photo, onClose, onUpdated }) => {
     const { addToast } = useAuth();
     const [title, setTitle] = useState(photo.title || '');
     const [description, setDescription] = useState(photo.description || '');
-    const [section, setSection] = useState(photo.section || 'department');
-    const [category, setCategory] = useState(photo.category || '');
     const [department, setDepartment] = useState(photo.department || 'Information Technology');
-    const [eventYear, setEventYear] = useState(photo.eventYear || '2026');
-    const [company, setCompany] = useState(photo.company || 'Zoho');
-    const [status, setStatus] = useState(photo.status || 'Approved');
+    const [category, setCategory] = useState(photo.category || '');
     const [saving, setSaving] = useState(false);
+
+    const isVideo = photo.mediaType === 'video' || (photo.url && photo.url.match(/\.(mp4|mov|avi|webm)($|\?)/i)) || (photo.mimeType && photo.mimeType.startsWith('video/'));
 
     const handleSave = async (e) => {
       e.preventDefault();
       if (!title.trim()) {
-        addToast?.('Please enter a photo title', 'error');
+        addToast?.('Please enter a media title', 'error');
         return;
       }
 
@@ -2849,25 +1801,21 @@
         const updateData = {
           title: title.trim(),
           description: description.trim(),
-          section,
-          category: category.trim() || 'Campus Event',
-          department: section === 'department' ? department : 'College Level',
-          eventYear: section === 'symposium' ? eventYear : '2026',
-          company: section === 'placement' ? company : null,
-          status
+          department: department.trim() || 'Information Technology',
+          category: category.trim() || 'General'
         };
 
         if (window.ITDepartmentApi?.gallery?.updatePhoto) {
           const res = await window.ITDepartmentApi.gallery.updatePhoto(photo.id, updateData);
           if (res?.success) {
-            addToast?.(res.message || 'Photograph updated successfully!', 'success');
+            addToast?.('Media details updated successfully!', 'success');
             onUpdated(res.data || { ...photo, ...updateData });
           } else {
             throw new Error(res?.message || 'Update failed');
           }
         }
       } catch (err) {
-        addToast?.('Failed to update photo: ' + (err.message || 'Server error'), 'error');
+        addToast?.('Failed to update media details: ' + (err.message || 'Server error'), 'error');
       } finally {
         setSaving(false);
       }
@@ -2879,88 +1827,99 @@
       h(
         'div',
         { className: 'relative w-full max-w-xl max-h-[90vh] rounded-3xl border border-slate-800 bg-slate-950 p-6 sm:p-8 shadow-2xl overflow-y-auto space-y-5' },
+
+        // Header
         h(
           'div',
           { className: 'flex items-center justify-between border-b border-slate-800/80 pb-4' },
           h(
             'div',
             null,
-            h('h2', { className: 'text-lg font-bold text-white' }, 'Edit Photograph Metadata'),
-            h('p', { className: 'text-xs text-slate-400 mt-0.5' }, 'Administrator Gallery Control & Category Governance')
+            h('h2', { className: 'text-lg font-bold text-white flex items-center gap-2' },
+              renderIcon(Icons.Edit || Icons.FileText, { className: 'w-5 h-5 text-cyan-400' }),
+              'Edit Media Details'
+            ),
+            h('p', { className: 'text-xs text-slate-400 mt-0.5' },
+              `Update metadata for this ${isVideo ? 'video' : 'photo'}. The media file itself remains untouched.`
+            )
           ),
           h(
             'button',
-            { onClick: onClose, className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition' },
+            { onClick: onClose, className: 'p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer' },
             renderIcon(Icons.X, { className: 'w-5 h-5' })
           )
         ),
+
+        // Preview thumbnail banner
+        h(
+          'div',
+          { className: 'relative w-full h-36 rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center' },
+          isVideo
+            ? h('video', {
+                src: photo.url ? `${photo.url}#t=0.5` : '',
+                muted: true,
+                playsInline: true,
+                preload: 'metadata',
+                className: 'w-full h-full object-cover opacity-75'
+              })
+            : h('img', {
+                src: photo.url,
+                alt: photo.title,
+                className: 'w-full h-full object-cover opacity-75'
+              }),
+          h(
+            'div',
+            { className: 'absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/30 flex items-end p-3' },
+            h(
+              'span',
+              { className: `px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${isVideo ? 'bg-rose-600' : 'bg-cyan-600'} text-white shadow` },
+              isVideo ? '▶ Video File (Unchanged)' : '📷 Photo File (Unchanged)'
+            )
+          )
+        ),
+
+        // Form
         h(
           'form',
           { onSubmit: handleSave, className: 'space-y-4' },
+
+          // 1. Media Title / Name
           h(
             'div',
             { className: 'space-y-1.5' },
-            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Photo Title *'),
+            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-300' }, 'Media Title / Name *'),
             h('input', {
               type: 'text',
               value: title,
               onChange: (e) => setTitle(e.target.value),
               required: true,
+              placeholder: 'e.g. Annual Tech Symposium Keynote',
               className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-500'
             })
           ),
+
+          // 2. Description / Caption
           h(
             'div',
             { className: 'space-y-1.5' },
-            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Description'),
+            h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-300' }, 'Description / Caption'),
             h('textarea', {
               rows: 3,
               value: description,
               onChange: (e) => setDescription(e.target.value),
+              placeholder: 'Add details, context, or caption for this media...',
               className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
             })
           ),
+
+          // 3. Department & 4. Category / Tag
           h(
             'div',
             { className: 'grid grid-cols-1 sm:grid-cols-2 gap-3' },
             h(
               'div',
               { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Gallery Section'),
-              h(
-                'select',
-                {
-                  value: section,
-                  onChange: (e) => setSection(e.target.value),
-                  className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
-                },
-                SECTIONS.map(s => h('option', { key: s.id, value: s.id }, s.label))
-              )
-            ),
-            h(
-              'div',
-              { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Approval Status'),
-              h(
-                'select',
-                {
-                  value: status,
-                  onChange: (e) => setStatus(e.target.value),
-                  className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
-                },
-                h('option', { value: 'Approved' }, 'Approved (Visible Live)'),
-                h('option', { value: 'Pending Approval' }, 'Pending Approval'),
-                h('option', { value: 'Rejected' }, 'Rejected (Hidden)')
-              )
-            )
-          ),
-          h(
-            'div',
-            { className: 'grid grid-cols-1 sm:grid-cols-2 gap-3' },
-            section === 'department' && h(
-              'div',
-              { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Department'),
+              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-300' }, 'Department *'),
               h(
                 'select',
                 {
@@ -2971,46 +1930,21 @@
                 DEPARTMENTS.filter(d => d !== 'All Departments').map(d => h('option', { key: d, value: d }, d))
               )
             ),
-            section === 'symposium' && h(
-              'div',
-              { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Event Year'),
-              h(
-                'select',
-                {
-                  value: eventYear,
-                  onChange: (e) => setEventYear(e.target.value),
-                  className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
-                },
-                SYMPOSIUM_YEARS.filter(y => y !== 'All Years').map(y => h('option', { key: y, value: y }, y))
-              )
-            ),
-            section === 'placement' && h(
-              'div',
-              { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Company'),
-              h(
-                'select',
-                {
-                  value: company,
-                  onChange: (e) => setCompany(e.target.value),
-                  className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
-                },
-                PLACEMENT_COMPANIES.filter(c => c !== 'All Companies').map(c => h('option', { key: c, value: c }, c))
-              )
-            ),
             h(
               'div',
               { className: 'space-y-1.5' },
-              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-400' }, 'Category / Tag'),
+              h('label', { className: 'text-xs font-bold uppercase tracking-wider text-slate-300' }, 'Category / Tag *'),
               h('input', {
                 type: 'text',
                 value: category,
                 onChange: (e) => setCategory(e.target.value),
+                placeholder: 'e.g. Hackathon, Workshop, Cultural',
                 className: 'w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500'
               })
             )
           ),
+
+          // Buttons
           h(
             'div',
             { className: 'flex items-center justify-end gap-3 pt-3 border-t border-slate-800/80' },
@@ -3020,7 +1954,7 @@
                 type: 'button',
                 onClick: onClose,
                 disabled: saving,
-                className: 'px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition'
+                className: 'px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition cursor-pointer'
               },
               'Cancel'
             ),
@@ -3029,7 +1963,7 @@
               {
                 type: 'submit',
                 disabled: saving,
-                className: 'px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition'
+                className: 'px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition cursor-pointer flex items-center gap-1.5'
               },
               saving ? 'Saving...' : 'Save Changes'
             )
@@ -3039,9 +1973,6 @@
     );
   };
 
-  // =========================================================================
-  // UPLOAD PHOTO MODAL COMPONENT (WITH ANIMATED PROGRESS BAR & REAL MULTIPART UPLOAD)
-  // =========================================================================
   // =========================================================================
   // UPLOAD PHOTO / VIDEO MODAL COMPONENT (SUPPORT PHOTOS & VIDEOS UP TO 100MB)
   // =========================================================================
@@ -3061,9 +1992,6 @@
     const [mediaType, setMediaType] = useState('photo'); // 'photo' or 'video'
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [isEditingPhoto, setIsEditingPhoto] = useState(false);
-    const [isRotatingVideo, setIsRotatingVideo] = useState(false);
-    const [videoRotation, setVideoRotation] = useState(0);
 
     // Handle Local File Reading & Format / Size Validation (100MB Limit)
     const handleFileChange = (e) => {
@@ -3142,7 +2070,6 @@
           if (section === 'placement') formData.append('company', company);
           formData.append('file', selectedFile);
           formData.append('image', selectedFile); // fallback support
-          formData.append('rotation', videoRotation);
           formData.append('uploadedBy', JSON.stringify({
             id: currentUser?.id || currentUser?.rollNo || 'ANON',
             name: currentUser?.name || 'Academic User',
@@ -3161,7 +2088,6 @@
             eventYear: section === 'symposium' ? eventYear : '2026',
             company: section === 'placement' ? company : null,
             url: imageUrl.trim(),
-            rotation: videoRotation,
             uploadedBy: {
               id: currentUser?.id || currentUser?.rollNo || 'ANON',
               name: currentUser?.name || 'Academic User',
@@ -3412,11 +2338,8 @@
                   onClick: () => {
                     setSelectedFile(null);
                     setSelectedFileName('');
-                    setSelectedFile(null);
-                    setSelectedFileName('');
                     setFileSizeText('');
                     setImageUrl('');
-                    setVideoRotation(0);
                   },
                   className: 'text-slate-400 hover:text-white ml-2 text-xs font-bold cursor-pointer'
                 },
@@ -3435,10 +2358,6 @@
                   ? h('video', {
                       src: imageUrl,
                       controls: true,
-                      style: videoRotation ? {
-                        transform: `rotate(${videoRotation}deg) scale(${videoRotation % 180 !== 0 ? 0.72 : 1})`,
-                        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-                      } : undefined,
                       className: 'w-full max-h-56 object-contain bg-black'
                     })
                   : h('img', {
@@ -3449,37 +2368,7 @@
                 h(
                   'span',
                   { className: 'absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/80 text-cyan-300 backdrop-blur-md' },
-                  mediaType === 'video' ? `Video Preview (${videoRotation}°)` : 'Photo Preview'
-                )
-              ),
-
-              // Action Buttons to Edit Photo or Rotate Video before upload
-              mediaType === 'photo' && h(
-                'div',
-                { className: 'flex items-center justify-end' },
-                h(
-                  'button',
-                  {
-                    type: 'button',
-                    onClick: () => setIsEditingPhoto(true),
-                    className: 'px-3.5 py-1.5 rounded-xl bg-purple-600/90 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-purple-600/30 transition cursor-pointer'
-                  },
-                  renderIcon(Icons.Sliders || Icons.Edit, { className: 'w-3.5 h-3.5' }),
-                  '🎨 Edit Photo Before Upload (Crop, Rotate, Filters, Sharpness, Resize)'
-                )
-              ),
-              mediaType === 'video' && h(
-                'div',
-                { className: 'flex items-center justify-end' },
-                h(
-                  'button',
-                  {
-                    type: 'button',
-                    onClick: () => setIsRotatingVideo(true),
-                    className: 'px-3.5 py-1.5 rounded-xl bg-indigo-600/90 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-indigo-600/30 transition cursor-pointer'
-                  },
-                  renderIcon(Icons.RefreshCw, { className: 'w-3.5 h-3.5' }),
-                  `🔄 Rotate Video Before Upload (${videoRotation}°)`
+                  mediaType === 'video' ? 'Video Preview' : 'Photo Preview'
                 )
               )
             )
@@ -3510,35 +2399,7 @@
             )
           )
         )
-      ),
-
-      // Nested Photo Editor Modal (before upload)
-      isEditingPhoto && h(PhotoEditorModal, {
-        imageUrl,
-        title: selectedFileName || title,
-        onClose: () => setIsEditingPhoto(false),
-        onSave: (blob, dataUrl, editMeta) => {
-          const editedFile = new File([blob], selectedFileName || 'edited-photo.jpg', { type: 'image/jpeg' });
-          setSelectedFile(editedFile);
-          setImageUrl(dataUrl);
-          setFileSizeText((blob.size / (1024 * 1024)).toFixed(2) + ' MB');
-          setIsEditingPhoto(false);
-          addToast?.('Photo edits applied! Ready for upload.', 'success');
-        }
-      }),
-
-      // Nested Video Rotation Modal (before upload)
-      isRotatingVideo && h(RotateVideoModal, {
-        videoUrl: imageUrl,
-        currentRotation: videoRotation,
-        title: selectedFileName || title,
-        onClose: () => setIsRotatingVideo(false),
-        onSave: (newRot) => {
-          setVideoRotation(newRot);
-          setIsRotatingVideo(false);
-          addToast?.(`Video rotation set to ${newRot}°!`, 'success');
-        }
-      })
+      )
     );
   };
 
